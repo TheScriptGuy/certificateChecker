@@ -1,6 +1,7 @@
 # Certificate Checker
 
 Version: 0.03
+
 Author: TheScriptGuy
 
 With the growing usage of certificates within an organization, it's really easy to lose track of when a certificate will expire.
