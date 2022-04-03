@@ -1,157 +1,16 @@
 # Program:        Certificate Checker
 # Author:         Nolan Rumble
-# Date:           2022/03/05
-# Version:        0.03
-scriptVersion = "0.03"
+# Date:           2022/03/20
+# Version:        0.06
+scriptVersion = "0.06"
 
-import ssl, socket
 import argparse
 import datetime
+import sys
 import json
 
-from dateutil.relativedelta import relativedelta
-
-
-def getCertificate(__hostname):
-    ctx = ssl.create_default_context()
-    try:
-        with ctx.wrap_socket(socket.socket(), server_hostname=__hostname) as s:
-            s.connect((__hostname, 443))
-            cert = s.getpeercert()
-            return cert
-    except ssl.SSLCertVerificationError as e:
-        print('Certificate error - ',e.verify_message)
-        return None
-    except socket.gaierror as e:
-        print('Socket error - ',e.strerror)
-
-def printSubject(__certificateObject):
-    if __certificateObject != None:
-        subject = dict(x[0] for x in __certificateObject['subject'])
-        issued_to = subject['commonName']
-        print(issued_to)
-
-def printSubjectAltName(__certificateObject):
-    __subjectAltName = []
-
-    for field,value in __certificateObject['subjectAltName']:
-        __subjectAltName.append({field:value})
-    
-    print(__subjectAltName)
-
-def printIssuer(__certificateObject):
-    if __certificateObject != None:
-        issuer = dict(x[0] for x in __certificateObject['issuer'])
-        issued_by = issuer['commonName']
-        print(issued_by)
-
-def printNotBefore(__certificateObject):
-    if __certificateObject != None:
-        notBefore = __certificateObject['notBefore']
-        print(notBefore)
-
-def printNotAfter(__certificateObject):
-    if __certificateObject != None:
-        notAfter = __certificateObject['notAfter']
-        print(notAfter)
-
-
-def returnNotBefore(__certificateObject):
-    if __certificateObject != None:
-        return __certificateObject['notBefore']
-
-def returnNotAfter(__certificateObject):
-    if __certificateObject != None:
-        return __certificateObject['notAfter']
-
-def howMuchTimeLeft(__certificateObject):
-    if __certificateObject != None:
-        timeNow = datetime.datetime.now().replace(microsecond=0)
-        certNotAfter = datetime.datetime.strptime(returnNotAfter(__certificateObject), '%b %d %H:%M:%S %Y %Z')
-    
-        __delta = relativedelta(certNotAfter,timeNow)
-
-        myDeltaDate = {
-            'years': __delta.years,
-            'months': __delta.months,
-            'days': __delta.days,
-            'hours': __delta.hours,
-            'days': __delta.days,
-            'minutes': __delta.minutes,
-            'seconds': __delta.seconds,
-        }
-
-        timeLeft = []
-
-        for field in myDeltaDate:
-            if myDeltaDate[field] > 1:
-                timeLeft.append("%d %s" % (myDeltaDate[field],field))
-            else:
-                if myDeltaDate[field] == 1:
-                    timeLeft.append("%d %s" % (myDeltaDate[field], field[:-1]))
-    
-        return ', '.join(timeLeft)
-
-def checkIssuer(__certificateObject):
-    return True
-
-def checkRevocation(__certificateObject):
-    return True
-
-def checkTimeValidity(__certificateObject):
-    if __certificateObject != None:
-        timeNow = datetime.datetime.now().replace(microsecond=0).date()
-        certNotAfter = datetime.datetime.strptime(returnNotAfter(__certificateObject), '%b %d %H:%M:%S %Y %Z').date()
-        certNotBefore = datetime.datetime.strptime(returnNotBefore(__certificateObject), '%b %d %H:%M:%S %Y %Z').date()
-
-    
-        # Assume time not valid
-        isValid = False
-
-        if (certNotBefore < timeNow) and (certNotAfter > timeNow):
-            isValid = True
-        else:
-            isValid = False
-
-        return isValid
-
-def printOCSP(__certificateObject):
-    if __certificateObject != None:
-        __OCSPList = []
-        for value in __certificateObject['OCSP']:
-            __OCSPList.append(value)
-        print(__OCSPList)
-
-def printCRLDistributionPoints(__certificateObject):
-    if __certificateObject != None:
-        __CRLList = []
-    
-        for value in __certificateObject['crlDistributionPoints']:
-            __CRLList.append(value)
-    
-        print(__CRLList)
-
-def printCertificateSerialNumber(__certificateObject):
-    if __certificateObject != None:
-        certificateSerialNumber = __certificateObject['serialNumber']
-        print(certificateSerialNumber)
-
-def printCaIssuers(__certificateObject):
-    if __certificateObject != None:
-        certificateCaIssuers = __certificateObject['caIssuers']
-        print(certificateCaIssuers)
-
-def printHowMuchTimeLeft(__certificateObject):
-    if __certificateObject != None:
-        timeLeft = howMuchTimeLeft(__certificateObject)
-        print(timeLeft)
-
-def certificateValid(__certificateObject):
-    if __certificateObject != None:
-        if checkTimeValidity(__certificateObject) and checkRevocation(__certificateObject) and checkIssuer(__certificateObject):
-            print("Certificate good!")
-        else:
-            print("Certificate invalid!")
+from systemInfo import systemInfo,systemData
+from certificate import certificateModule
 
 def parseArguments():
     """
@@ -172,103 +31,132 @@ def parseArguments():
     parser.add_argument('--displayCertificateJSON', action='store_true',
                         help='Display certificate info in JSON format')
 
+    parser.add_argument('--displayScriptDataJSON', action='store_true',
+                        help='Display script info and queried certificates in JSON format')
+
     parser.add_argument('--displayTimeLeft', action='store_true',
                         help='Display time left until expiry on certificate.')
+
+    parser.add_argument('--setTag', default='',
+                        help='Set the tag for the query results. Creates tag.cfg file with tag.')
+                
+    parser.add_argument('--deleteTag', action='store_true',
+                        help='Delete the tag file - tag.cfg')
+                    
+    parser.add_argument('--getTag', action='store_true',
+                        help='Get the tag from tag.cfg file')
+            
+    parser.add_argument('--renewUuid', action='store_true',
+                        help='Renew the UUID value.')
+            
+    parser.add_argument('--getUuid', action='store_true',
+                        help='Get the UUID value from uuid.cfg file.')
+                
+    parser.add_argument('--deleteUuid', action='store_true',
+                        help='Remove the UUID value. Caution: when script runs again a new UUID will be generated.')
 
     global args
     args = parser.parse_args()
 
+def defineInfoArguments(o_systemData, o_systemInfo):
+    global args
+    # If setTag argument is set, create the new Tag.
+    if args.setTag:
+        o_systemData.setTag(args.setTag)
+        print('New tag set.')
+        sys.exit(0)
+
+    # If getTag is set, it will grab the value in tag.cfg file.
+    if args.getTag:
+        print(o_systemInfo.getTag())
+        sys.exit(0)
+
+    # If deleteTag is set, it will delete the tag.cfg file.
+    if args.deleteTag:
+        o_systemData.deleteTag()
+        sys.exit(0)
+
+    # If getUuid is set, it grab the value in uuid.cfg
+    if args.getUuid:
+        print(o_systemInfo.getUuid())
+        sys.exit(0)
+
+    # If deleteUuid is set, the uuid.cfg file will be deleted.
+    if args.deleteUuid:
+        o_systemData.deleteUuid()
+        sys.exit(0)
+
+    # If renewUuid is set, first delete uuid.cfg file, then generate a new uuid.
+    if args.renewUuid:
+        o_systemData.deleteUuid()
+        o_systemData.createUuidIfNotExist()
+        sys.exit(0)
 
 
-def printCertInfo(__certificateObject):
-    printSubject(__certificateObject)
-    printIssuer(__certificateObject)
-    printSubjectAltName(__certificateObject)
-    printNotBefore(__certificateObject)
-    printNotAfter(__certificateObject)
-    printOCSP(__certificateObject)
-    printCRLDistributionPoints(__certificateObject)
-    printCaIssuers(__certificateObject)
-    printCertificateSerialNumber(__certificateObject)
-    printHowMuchTimeLeft(__certificateObject)
+def gatherData(certResults):
+    """
+    This will collect all the data into a uniform data structure that can 
+    help with measuring results across multiple executions. 
 
-def printCertInfoJSON(__certificateObject):
-    jsonCertInfoFormat = json.dumps(__certificateObject)
-    print(jsonCertInfoFormat)
+    Data that is included is:
+    * deviceUuid         - a unique device identifier.
+    * deviceTag          - a tag for the device to help with aggregating data across.
+                           multiple endpoints (for example all production, development, qa devices).
+    * hostName           - the hostname of the device where script is executing.
+    * scriptUTCStartTime - script start time (UTC format).
+    * scriptUTCEndTime   - script end time (UTC format).
+    * queryResults       - The results of all queries that were performed against the nameservers.  
+    """
+    myInfo = systemInfo.systemInfo()
 
-def convertCertificateObject2Json(__hostname,__startTime,__endTime,__certificateObject):
-    myJsonCertificateInfo = {}
-    certKeys = __certificateObject.keys()
-    
-    startTime = __startTime.strftime("%Y/%m/%d %H:%M:%S.%f")
-    endTime = __endTime.strftime("%Y/%m/%d %H:%M:%S.%f")
-    queryTime = str((__endTime - __startTime).total_seconds())
+    if myInfo.uuid == "":
+        n = systemData.systemData()
+        n.createUuidIfNotExist()
+        myInfo.uuid = myInfo.getUuid()
 
-    myJsonCertificateInfo["dataVersion"] = 1
-    myJsonCertificateInfo["hostname"] = __hostname
-    myJsonCertificateInfo["startTime"] = startTime
-    myJsonCertificateInfo["endTime"] = endTime
-    myJsonCertificateInfo["queryTime"] = queryTime
+    myData = {
+        "deviceUuid": myInfo.uuid,
+        "deviceTag": myInfo.deviceTag,
+        "clientHostName": myInfo.hostname,
+        "dataFormatVersion": 1,
+        "certResults": certResults
+    }
 
-    myJsonCertificateInfo["certificateInfo"] = {}
-
-    # Certificate might not have subject defined.
-    if 'subject' in certKeys:
-        myJsonCertificateInfo["certificateInfo"]["subject"] = dict(x[0] for x in __certificateObject['subject'])
-    
-    myJsonCertificateInfo["certificateInfo"]["certificateIssuer"] = dict(x[0] for x in __certificateObject['issuer'])
-    
-    myJsonCertificateInfo["certificateInfo"]["version"] = __certificateObject['version']
-    myJsonCertificateInfo["certificateInfo"]["serialNumber"] = __certificateObject['serialNumber']
-    myJsonCertificateInfo["certificateInfo"]["notBefore"] = __certificateObject['notBefore']
-    myJsonCertificateInfo["certificateInfo"]["notAfter"] = __certificateObject['notAfter']
-
-    myJsonCertificateInfo["certificateInfo"]["timeLeft"] = howMuchTimeLeft(__certificateObject)
-
-    # Certificate might not have OCSP defined
-    if 'OCSP' in certKeys:
-        myJsonCertificateInfo["certificateInfo"]["OCSP"] = __certificateObject['OCSP']
-    
-    # Certificate might not have CRL defined
-    if 'crlDistributionPoints' in certKeys: 
-        myJsonCertificateInfo["certificateInfo"]["crlDistributionPoints"] = __certificateObject['crlDistributionPoints']
-    
-    myJsonCertificateInfo["certificateInfo"]["caIssuers"] = __certificateObject['caIssuers']
-
-
-    # Initialize subjectAltName
-    myJsonCertificateInfo["certificateInfo"]["subjectAltName"] = {}
-    # Keep track of how many entries there are
-    subjectAltNameCounter = 0
-
-    for field,value in __certificateObject['subjectAltName']:
-        myJsonCertificateInfo["certificateInfo"]["subjectAltName"].update({field + str(subjectAltNameCounter):value})
-        subjectAltNameCounter += 1
-
-    # Reset number of entries
-    subjectAltNameCounter = 0
-
-    return myJsonCertificateInfo
-
+    return myData
 
 
 if __name__ == "__main__":
     parseArguments()
-    
+
+    o_mySystemData = systemData.systemData()
+    o_myInfo = systemInfo.systemInfo()
+
+    defineInfoArguments(o_mySystemData,o_myInfo)
+
     jsonCertificateInfo = {}
 
-    obj_startTime = datetime.datetime.now()
-    myCertificate = getCertificate(args.hostname)
-    obj_endTime = datetime.datetime.now()
-
+    o_myCertificate = certificateModule.certificateModule()
+    o_startTime = datetime.datetime.now()
     
+    myCertificate = o_myCertificate.getCertificate(args.hostname)
+    
+    o_endTime = datetime.datetime.now()
+
+    jsonCertificateInfo = o_myCertificate.convertCertificateObject2Json(args.hostname,o_startTime,o_endTime,myCertificate)
+    
+    jsonScriptData = gatherData(jsonCertificateInfo)
+
     if myCertificate != None:
         if args.displayCertificate:
-            printCertInfo(myCertificate)
+            o_myCertificate.printCertInfo(myCertificate)
     
         if args.displayTimeLeft:
-            howMuchTimeLeft(myCertificate)
+            print(o_myCertificate.howMuchTimeLeft(myCertificate))
 
         if args.displayCertificateJSON:
-            jsonCertificateInfo = convertCertificateObject2Json(args.hostname,obj_startTime,obj_endTime,myCertificate)
-            printCertInfoJSON(jsonCertificateInfo)
+            o_myCertificate.printCertInfoJSON(jsonCertificateInfo)
+        
+        if args.displayScriptDataJSON:
+            myJSONScriptData = json.dumps(jsonScriptData)
+            print(myJSONScriptData)
+
