@@ -54,6 +54,8 @@ optional arguments:
   --getUuid             Get the UUID value from uuid.cfg file.
   --deleteUuid          Remove the UUID value. Caution: when script runs again
                         a new UUID will be generated.
+  --uploadJsonData UPLOADJSONDATA
+                        Upload JSON data to HTTP URL via HTTP POST method.
 ```
 
 
