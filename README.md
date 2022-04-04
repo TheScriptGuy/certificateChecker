@@ -63,6 +63,5 @@ optional arguments:
 Features to add:
 * convert script to object orientated programming (partially done)
 * Supply own CA certificate repository
-* Post results to a webserver using POST method
 * send email notification that script is about to expire within <X> number of days.
 
