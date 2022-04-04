@@ -1,8 +1,8 @@
 # Program:        Certificate Checker
 # Author:         Nolan Rumble
-# Date:           2022/03/20
-# Version:        0.06
-scriptVersion = "0.06"
+# Date:           2022/04/03
+# Version:        0.07
+scriptVersion = "0.07"
 
 import argparse
 import datetime
@@ -54,6 +54,10 @@ def parseArguments():
                 
     parser.add_argument('--deleteUuid', action='store_true',
                         help='Remove the UUID value. Caution: when script runs again a new UUID will be generated.')
+
+    parser.add_argument('--uploadJsonData', default='',
+                        help='Upload JSON data to HTTP URL via HTTP POST method.')
+
 
     global args
     args = parser.parse_args()
@@ -126,24 +130,35 @@ def gatherData(certResults):
 
 
 if __name__ == "__main__":
+    # Get all the arguments sent through to the script
     parseArguments()
 
+    # Set initial objects for systemData and systemInfo
     o_mySystemData = systemData.systemData()
     o_myInfo = systemInfo.systemInfo()
 
+    # Gather system data and info
     defineInfoArguments(o_mySystemData,o_myInfo)
-
+    
+    # initialize jsonCertificateInfo
     jsonCertificateInfo = {}
 
+    # Define initial certificate object
     o_myCertificate = certificateModule.certificateModule()
+    
+    # For SSL performance measurement - START
     o_startTime = datetime.datetime.now()
     
+    # Connect to the hostname from the --hostname argument and get the certificate associated with it.
     myCertificate = o_myCertificate.getCertificate(args.hostname)
     
+    # For SSL performance measurement - END
     o_endTime = datetime.datetime.now()
 
+    # Convert the certificate object into JSON format.
     jsonCertificateInfo = o_myCertificate.convertCertificateObject2Json(args.hostname,o_startTime,o_endTime,myCertificate)
     
+    # Append system data to JSON certificate structure
     jsonScriptData = gatherData(jsonCertificateInfo)
 
     if myCertificate != None:
@@ -151,12 +166,19 @@ if __name__ == "__main__":
             o_myCertificate.printCertInfo(myCertificate)
     
         if args.displayTimeLeft:
+            # Display the remaining time left on the certificate being queried.
             print(o_myCertificate.howMuchTimeLeft(myCertificate))
 
         if args.displayCertificateJSON:
+            # Display the certificate JSON structure
             o_myCertificate.printCertInfoJSON(jsonCertificateInfo)
         
         if args.displayScriptDataJSON:
+            # Display the certificate and system JSON structure
             myJSONScriptData = json.dumps(jsonScriptData)
             print(myJSONScriptData)
+
+        if args.uploadJsonData:
+            # Upload the system data and certificate information to the appropriate URL
+            print(o_myCertificate.uploadJsonData(jsonScriptData,args.uploadJsonData))
 

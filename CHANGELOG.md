@@ -1,4 +1,8 @@
 # 2022/04/03
+## Version 0.07
+## Changes
+Added ability to post the results of the certificate check and system data where query is performed from (in JSON format) to a specific URL via HTTP post method.
+
 ## Version 0.06 
 ### Bugfixes
 Added some error handling for when a host doesn't exist.
