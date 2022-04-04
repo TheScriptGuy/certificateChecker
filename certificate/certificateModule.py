@@ -4,6 +4,7 @@ import ssl, socket
 import argparse
 import datetime
 import json
+import requests
 
 from dateutil.relativedelta import relativedelta
 
@@ -231,6 +232,16 @@ class certificateModule:
 
             return myJsonCertificateInfo
 
+    def uploadJsonData(self,__certificateJsonData,__httpUrl):
+        """
+        This will upload the json data to a URL via a POST method.
+        If the verbose argument is set, it'll display what URL it's being
+        submitted to as well as the json data (jsonData).
+        When the response is returned, it'll return the X-Headers that are sent back
+        from the server.
+        """
+        x = requests.post(__httpUrl, json = __certificateJsonData)
+        return x.headers
 
 
    
