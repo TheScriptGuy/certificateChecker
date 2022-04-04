@@ -1,6 +1,6 @@
 # Certificate Checker
 
-Version: 0.06
+Version: 0.07
 
 Author: TheScriptGuy
 
@@ -33,7 +33,7 @@ usage: certCheck.py [-h] [--hostname HOSTNAME] [--displayCertificate]
                     [--displayTimeLeft] [--setTag SETTAG] [--deleteTag]
                     [--getTag] [--renewUuid] [--getUuid] [--deleteUuid]
 
-Certificate Checker V0.06
+Certificate Checker V0.07
 
 optional arguments:
   -h, --help            show this help message and exit
