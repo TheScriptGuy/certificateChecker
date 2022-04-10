@@ -1,4 +1,7 @@
 # Certificate Module
+# Version: 0.01
+# Last updated: 2022-04-10
+# Author: TheScriptGuy
 
 import ssl, socket
 import argparse
@@ -11,7 +14,11 @@ from dateutil.relativedelta import relativedelta
 class certificateModule:
 
     def getCertificate(self,__hostname):
+        """
+        Connect to the host and get the certificate.
+        """
         __ctx = ssl.create_default_context()
+
         try:
             with __ctx.wrap_socket(socket.socket(), server_hostname=__hostname) as s:
                 s.connect((__hostname, 443))
@@ -26,6 +33,10 @@ class certificateModule:
             print('Socket error - ',e.strerror)
             return None
 
+        except FileNotFoundError as e:
+            print('File not found - ', e.strerror)
+            return None
+
         except OSError as e:
             print('OSError - ', e.strerror)
             return None
@@ -35,12 +46,18 @@ class certificateModule:
             return None
 
     def printSubject(self,__certificateObject):
+        """
+        Print the subject name of the certificate.
+        """
         if __certificateObject != None:
             subject = dict(x[0] for x in __certificateObject['subject'])
             issued_to = subject['commonName']
             print("Subject: ",issued_to)
 
     def printSubjectAltName(self,__certificateObject):
+        """
+        Print the Subject Alternate Name(s) of the certificate
+        """
         __subjectAltName = []
 
         for field,value in __certificateObject['subjectAltName']:
@@ -49,31 +66,49 @@ class certificateModule:
         print("Subject Alt Name: ", __subjectAltName)
 
     def printIssuer(self,__certificateObject):
+        """
+        Print the Issuer of the certificate.
+        """
         if __certificateObject != None:
             issuer = dict(x[0] for x in __certificateObject['issuer'])
             issued_by = issuer['commonName']
             print("Issued by: ", issued_by)
 
     def printNotBefore(self,__certificateObject):
+        """
+        Print the notBefore field of the certificate.
+        """
         if __certificateObject != None:
             notBefore = __certificateObject['notBefore']
             print("Certificate start date: ", notBefore)
 
     def printNotAfter(self,__certificateObject):
+        """
+        Print the notAfter field of the certificate.
+        """
         if __certificateObject != None:
             notAfter = __certificateObject['notAfter']
             print("Certificate end date: ", notAfter)
 
 
     def returnNotBefore(self,__certificateObject):
+        """
+        Return the notBefore field from the certificate.
+        """
         if __certificateObject != None:
             return __certificateObject['notBefore']
 
     def returnNotAfter(self,__certificateObject):
+        """
+        Return the notAfter field from the certificate.
+        """
         if __certificateObject != None:
             return __certificateObject['notAfter']
 
     def howMuchTimeLeft(self,__certificateObject):
+        """
+        Return the remaining time left on the certificate.
+        """
         if __certificateObject != None:
             timeNow = datetime.datetime.now().replace(microsecond=0)
             certNotAfter = datetime.datetime.strptime(self.returnNotAfter(__certificateObject), '%b %d %H:%M:%S %Y %Z')
@@ -102,12 +137,23 @@ class certificateModule:
             return ', '.join(timeLeft)
 
     def checkIssuer(self,__certificateObject):
+        """
+        Check to see if issuers are trusted
+        """
         return True
 
     def checkRevocation(self,__certificateObject):
+        """
+        Check to see if certificate hasn't been revoked.
+        """
         return True
 
     def checkTimeValidity(self,__certificateObject):
+        """
+        Check to see if the certificate is valid:
+            current date is after certificate start date
+            current date is before certificate expiry date
+        """
         if __certificateObject != None:
             timeNow = datetime.datetime.now().replace(microsecond=0).date()
             certNotAfter = datetime.datetime.strptime(self.returnNotAfter(__certificateObject), '%b %d %H:%M:%S %Y %Z').date()
@@ -125,6 +171,9 @@ class certificateModule:
             return isValid
 
     def printOCSP(self,__certificateObject):
+        """
+        Print the OCSP field of the certificate.
+        """
         if __certificateObject != None:
             __OCSPList = []
             for value in __certificateObject['OCSP']:
@@ -132,6 +181,9 @@ class certificateModule:
             print("OCSP: ", __OCSPList)
 
     def printCRLDistributionPoints(self,__certificateObject):
+        """
+        Print the CRL distribution points of the certificate
+        """
         if __certificateObject != None:
             __CRLList = []
             if 'crlDistributionPoints' in __certificateObject:
@@ -140,21 +192,34 @@ class certificateModule:
                 print("CRL: ", __CRLList)
 
     def printCertificateSerialNumber(self,__certificateObject):
+        """
+        Print the certificate serial number
+        """
         if __certificateObject != None:
             certificateSerialNumber = __certificateObject['serialNumber']
             print("Serial Number: ", certificateSerialNumber)
 
     def printCaIssuers(self,__certificateObject):
+        """
+        Print the certificates CA issuers.
+        """
         if __certificateObject != None:
             certificateCaIssuers = __certificateObject['caIssuers']
             print("CA Issuers: ", certificateCaIssuers)
 
     def printHowMuchTimeLeft(self,__certificateObject):
+        """
+        Print how much time is left on the certificate
+        """
         if __certificateObject != None:
             timeLeft = self.howMuchTimeLeft(__certificateObject)
             print("Time left: ", timeLeft)
 
     def certificateValid(self,__certificateObject):
+        """
+        Currently not in use.
+        Check to see if the certificate is valid (Time, Recovation, Issuer)
+        """
         if __certificateObject != None:
             if self.checkTimeValidity(__certificateObject) and self.checkRevocation(__certificateObject) and self.checkIssuer(__certificateObject):
                 print("Certificate good!")
@@ -162,6 +227,9 @@ class certificateModule:
                 print("Certificate invalid!")
 
     def printCertInfo(self,__certificateObject):
+        """
+        Print out all the certificate properties.
+        """
         self.printSubject(__certificateObject)
         self.printIssuer(__certificateObject)
         self.printSubjectAltName(__certificateObject)
@@ -174,11 +242,17 @@ class certificateModule:
         self.printHowMuchTimeLeft(__certificateObject)
 
     def printCertInfoJSON(self,__certificateObject):
+        """
+        Print the certificate information in JSON format.
+        """
         if __certificateObject != None:
             jsonCertInfoFormat = json.dumps(__certificateObject)
             print(jsonCertInfoFormat)
 
     def convertCertificateObject2Json(self,__hostname,__startTime,__endTime,__certificateObject):
+        """
+        Convert the certificate object into JSON format.
+        """
         if __certificateObject != None:
             myJsonCertificateInfo = {}
             certKeys = __certificateObject.keys()
@@ -248,6 +322,7 @@ class certificateModule:
 
     def __init__(self):
         self.initialized = True
+        self.moduleVersion = "0.01"
         self.certificate = {}
 
 
