@@ -58,7 +58,118 @@ optional arguments:
                         Upload JSON data to HTTP URL via HTTP POST method.
 ```
 
+## Example of JSON structure for certificate specifically
+```json
+{
+    "hostname": "apple.com",
+    "startTime": "2022/04/10 11:51:38.435369",
+    "endTime": "2022/04/10 11:51:38.493124",
+    "queryTime": "0.057755",
+    "certificateInfo":
+    {
+        "subject":
+        {
+            "businessCategory": "Private Organization",
+            "jurisdictionCountryName": "US",
+            "jurisdictionStateOrProvinceName": "California",
+            "serialNumber": "C0806592",
+            "countryName": "US",
+            "stateOrProvinceName": "California",
+            "localityName": "Cupertino",
+            "organizationName": "Apple Inc.",
+            "organizationalUnitName": "management:idms.group.665035",
+            "commonName": "apple.com"
+        },
+        "certificateIssuer":
+        {
+            "countryName": "US",
+            "organizationName": "Apple Inc.",
+            "commonName": "Apple Public EV Server ECC CA 1 - G1"
+        },
+        "version": 3,
+        "serialNumber": "5E9661C3DD43CAB7D09D24C429A7C708",
+        "notBefore": "Jun 22 11:26:36 2021 GMT",
+        "notAfter": "Jul 22 11:26:35 2022 GMT",
+        "timeLeft": "3 months, 11 days, 23 hours, 34 minutes, 57 seconds",
+        "OCSP":
+        [
+            "http://ocsp.apple.com/ocsp03-apevsecc1g101"
+        ],
+        "crlDistributionPoints":
+        [
+            "http://crl.apple.com/apevsecc1g1.crl"
+        ],
+        "caIssuers":
+        [
+            "http://certs.apple.com/apevsecc1g1.der"
+        ],
+        "subjectAltName":
+        {
+            "DNS0": "apple.com"
+        }
+    }
+}
+```
 
+An example of the JSON structure which includes the hostname information as well:
+```json
+{
+    "deviceUuid": "074e760e-08ce-4ef9-a61c-5a028ee6db3f",
+    "deviceTag": "Production",
+    "clientHostName": "PRODCERT01",
+    "dataFormatVersion": 1,
+    "certResults":
+    {
+        "hostname": "apple.com",
+        "startTime": "2022/04/10 11:55:00.085726",
+        "endTime": "2022/04/10 11:55:00.140277",
+        "queryTime": "0.054551",
+        "certificateInfo":
+        {
+            "subject":
+            {
+                "businessCategory": "Private Organization",
+                "jurisdictionCountryName": "US",
+                "jurisdictionStateOrProvinceName": "California",
+                "serialNumber": "C0806592",
+                "countryName": "US",
+                "stateOrProvinceName": "California",
+                "localityName": "Cupertino",
+                "organizationName": "Apple Inc.",
+                "organizationalUnitName": "management:idms.group.665035",
+                "commonName": "apple.com"
+            },
+            "certificateIssuer":
+            {
+                "countryName": "US",
+                "organizationName": "Apple Inc.",
+                "commonName": "Apple Public EV Server ECC CA 1 - G1"
+            },
+            "version": 3,
+            "serialNumber": "5E9661C3DD43CAB7D09D24C429A7C708",
+            "notBefore": "Jun 22 11:26:36 2021 GMT",
+            "notAfter": "Jul 22 11:26:35 2022 GMT",
+            "timeLeft": "3 months, 11 days, 23 hours, 31 minutes, 35 seconds",
+            "OCSP":
+            [
+                "http://ocsp.apple.com/ocsp03-apevsecc1g101"
+            ],
+            "crlDistributionPoints":
+            [
+                "http://crl.apple.com/apevsecc1g1.crl"
+            ],
+            "caIssuers":
+            [
+                "http://certs.apple.com/apevsecc1g1.der"
+            ],
+            "subjectAltName":
+            {
+                "DNS0": "apple.com"
+            }
+        }
+    }
+}
+```
 
 Features to add:
 * convert script to object orientated programming (partially done)
