@@ -52,7 +52,7 @@ class certificateModule:
         if __certificateObject != None:
             subject = dict(x[0] for x in __certificateObject['subject'])
             issued_to = subject['commonName']
-            print("Subject: ",issued_to)
+            print("Subject: ",issued_to, end='')
 
     def printSubjectAltName(self,__certificateObject):
         """
@@ -231,6 +231,7 @@ class certificateModule:
         Print out all the certificate properties.
         """
         self.printSubject(__certificateObject)
+        print()
         self.printIssuer(__certificateObject)
         self.printSubjectAltName(__certificateObject)
         self.printNotBefore(__certificateObject)

@@ -1,7 +1,13 @@
+# 2022/04/15
+## Version 0.08
+## Changes
+Added queryFile option. Allows the querying of multiple hostnames in a single file on filesystem or downloading it from a HTTP/HTTPS link.
+Updated JSON format to reflect new data version due to multiple certificates that can now appear in structure.
+Updated the display output of howMuchTimeLeft function to also show the commonName of the certificate.
+
 # 2022/04/10
 ## Changes
 Adding comments to certificateModule and a version number.
-
 
 # 2022/04/03
 ## Version 0.07
