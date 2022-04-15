@@ -431,4 +431,4 @@ Features to add:
 * convert script to object orientated programming (partially done)
 * Supply own CA certificate repository
 * send email notification that script is about to expire within <X> number of days.
-
+* have the ability to connect to hosts on a port other than 443
