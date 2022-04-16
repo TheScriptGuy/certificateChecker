@@ -1,5 +1,5 @@
 # Certificate Data Handling
-# Version: 0.02
+# Version: 0.03
 
 import sys
 from os import path
@@ -77,7 +77,7 @@ class certData:
             for line in myQueries:
                 if ":" in line:
                     tmpLine = line.split(':')
-                    queries.append({"hostname": tmpLine[0], "port": tmpLine[1]})
+                    queries.append({"hostname": tmpLine[0], "port": int(tmpLine[1])})
                 else:
                     queries.append({"hostname": line, "port": 443 })
     
@@ -95,7 +95,7 @@ class certData:
         for line in queryFile:
             if ":" in line:
                 tmpLine = line.rstrip('\n').split(':')
-                queries.append({"hostname": tmpLine[0], "port": tmpLine[1]})
+                queries.append({"hostname": tmpLine[0], "port": int(tmpLine[1])})
             else:
                 queries.append({"hostname": line.rstrip('\n'), "port": 443 })
     

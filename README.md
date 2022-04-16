@@ -1,6 +1,6 @@
 # Certificate Checker
 
-Version: 0.08
+Version: 0.09
 
 Author: TheScriptGuy
 
@@ -34,7 +34,7 @@ usage: certCheck.py [-h] [--hostname HOSTNAME] [--displayCertificate]
                     [--deleteTag] [--getTag] [--renewUuid] [--getUuid]
                     [--deleteUuid]
 
-Certificate Checker V0.08
+Certificate Checker V0.09
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -66,6 +66,7 @@ optional arguments:
 ```json
 {
     "hostname": "apple.com",
+    "port": 443,
     "startTime": "2022/04/10 11:51:38.435369",
     "endTime": "2022/04/10 11:51:38.493124",
     "queryTime": "0.057755",
@@ -121,11 +122,12 @@ An example of the JSON structure which includes the hostname information as well
     "deviceUuid": "074e7305-1231-d9a3-a61c-5a028ee6db3f",
     "deviceTag": "ProductionMonitoring",
     "clientHostName": "PRODMON01",
-    "dataFormatVersion": 2,
+    "dataFormatVersion": 3,
     "certResults":
     [
         {
             "hostname": "apple.com",
+            "port": 443,
             "startTime": "2022/04/15 10:12:39.139486",
             "endTime": "2022/04/15 10:12:39.230373",
             "queryTime": "0.090887",
@@ -344,6 +346,7 @@ An example of the JSON structure which includes the hostname information as well
         },
         {
             "hostname": "abc.com",
+            "port": 443,
             "startTime": "2022/04/15 10:12:39.333884",
             "endTime": "2022/04/15 10:12:39.424769",
             "queryTime": "0.090885",

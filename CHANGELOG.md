@@ -1,4 +1,8 @@
 # 2022/04/15
+## Version 0.09
+## Changes
+* Added ability to query a custom port. Script will by default connect on port 443, but you can append a port number in the --queryFile reference (the file that it's iterating through) with a :port_number. e.g. example.com:443
+
 ## Version 0.08
 ## Changes
 * Added queryFile option. Allows the querying of multiple hostnames in a single file on filesystem or downloading it from a HTTP/HTTPS link.

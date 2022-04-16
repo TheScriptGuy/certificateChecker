@@ -1,8 +1,8 @@
 # Program:        Certificate Checker
 # Author:         Nolan Rumble
 # Date:           2022/04/15
-# Version:        0.08
-scriptVersion = "0.08"
+# Version:        0.09
+scriptVersion = "0.09"
 
 import argparse
 import datetime
@@ -127,7 +127,7 @@ def gatherData(certResults):
         "deviceUuid": myInfo.uuid,
         "deviceTag": myInfo.deviceTag,
         "clientHostName": myInfo.hostname,
-        "dataFormatVersion": 2,
+        "dataFormatVersion": 3,
         "certResults": certResults
     }
 
@@ -177,13 +177,13 @@ if __name__ == "__main__":
             o_startTime = datetime.datetime.now()
     
             # Connect to the hostname from the queryFile argument and get the certificate associated with it.
-            myCertificate = o_myCertificate.getCertificate(myHostname["hostname"])
+            myCertificate = o_myCertificate.getCertificate(myHostname["hostname"],myHostname["port"])
     
             # For SSL performance measurement - END
             o_endTime = datetime.datetime.now()
 
             # Convert the certificate object into JSON format.
-            jsonCertificateInfo = o_myCertificate.convertCertificateObject2Json(myHostname["hostname"],o_startTime,o_endTime,myCertificate)
+            jsonCertificateInfo = o_myCertificate.convertCertificateObject2Json(myHostname["hostname"],myHostname["port"],o_startTime,o_endTime,myCertificate)
 
             jsonScriptData.append(jsonCertificateInfo)
             
