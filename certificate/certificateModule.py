@@ -1,6 +1,6 @@
 # Certificate Module
-# Version: 0.01
-# Last updated: 2022-04-10
+# Version: 0.02
+# Last updated: 2022-04-15
 # Author: TheScriptGuy
 
 import ssl, socket
@@ -13,7 +13,7 @@ from dateutil.relativedelta import relativedelta
 
 class certificateModule:
 
-    def getCertificate(self,__hostname):
+    def getCertificate(self,__hostname,__port):
         """
         Connect to the host and get the certificate.
         """
@@ -21,7 +21,7 @@ class certificateModule:
 
         try:
             with __ctx.wrap_socket(socket.socket(), server_hostname=__hostname) as s:
-                s.connect((__hostname, 443))
+                s.connect((__hostname, __port))
                 cert = s.getpeercert()
                 return cert
         
@@ -250,7 +250,7 @@ class certificateModule:
             jsonCertInfoFormat = json.dumps(__certificateObject)
             print(jsonCertInfoFormat)
 
-    def convertCertificateObject2Json(self,__hostname,__startTime,__endTime,__certificateObject):
+    def convertCertificateObject2Json(self,__hostname,__port,__startTime,__endTime,__certificateObject):
         """
         Convert the certificate object into JSON format.
         """
@@ -263,6 +263,7 @@ class certificateModule:
             queryTime = str((__endTime - __startTime).total_seconds())
 
             myJsonCertificateInfo["hostname"] = __hostname
+            myJsonCertificateInfo["port"] = int(__port)
             myJsonCertificateInfo["startTime"] = startTime
             myJsonCertificateInfo["endTime"] = endTime
             myJsonCertificateInfo["queryTime"] = queryTime
@@ -323,7 +324,7 @@ class certificateModule:
 
     def __init__(self):
         self.initialized = True
-        self.moduleVersion = "0.01"
+        self.moduleVersion = "0.02"
         self.certificate = {}
 
 
