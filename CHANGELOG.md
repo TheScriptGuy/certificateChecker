@@ -1,4 +1,11 @@
 # 2022/04/15
+## Version 0.10
+## Fixes
+* Fixed a bug with the --hostname argument and the amount of keyword arguments that needed to be used.
+
+## Changes
+* Added the ability to do a custom port with the --hostname argument. For example, `--hostname example.com` assumes you want to connect on TCP port 443. The entry `--hostname example.com:1234` connections to example.com on TCP port 1234.
+
 ## Version 0.09
 ## Changes
 * Added ability to query a custom port. Script will by default connect on port 443, but you can append a port number in the --queryFile reference (the file that it's iterating through) with a :port_number. e.g. example.com:443

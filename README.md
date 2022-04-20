@@ -34,7 +34,7 @@ usage: certCheck.py [-h] [--hostname HOSTNAME] [--displayCertificate]
                     [--deleteTag] [--getTag] [--renewUuid] [--getUuid]
                     [--deleteUuid]
 
-Certificate Checker V0.09
+Certificate Checker V0.10
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -434,3 +434,4 @@ Features to add:
 * convert script to object orientated programming (partially done)
 * Supply own CA certificate repository
 * send email notification that script is about to expire within <X> number of days.
+* have the ability to connect to hosts on a port other than 443

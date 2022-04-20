@@ -1,8 +1,8 @@
 # Program:        Certificate Checker
 # Author:         Nolan Rumble
-# Date:           2022/04/15
-# Version:        0.09
-scriptVersion = "0.09"
+# Date:           2022/04/20
+# Version:        0.10
+scriptVersion = "0.10"
 
 import argparse
 import datetime
@@ -211,13 +211,20 @@ if __name__ == "__main__":
         o_startTime = datetime.datetime.now()
     
         # Connect to the hostname from the --hostname argument and get the certificate associated with it.
-        myCertificate = o_myCertificate.getCertificate(args.hostname)
+        if ":" in args.hostname:
+            tmpLine = args.hostname.split(':')
+            hostnameQuery = {"hostname": tmpLine[0], "port": int(tmpLine[1])}
+
+        else:
+            hostnameQuery = {"hostname": line, "port": 443 }
+
+        myCertificate = o_myCertificate.getCertificate(hostnameQuery["hostname"],hostnameQuery["port"])
     
         # For SSL performance measurement - END
         o_endTime = datetime.datetime.now()
 
         # Convert the certificate object into JSON format.
-        jsonCertificateInfo = o_myCertificate.convertCertificateObject2Json(args.hostname,o_startTime,o_endTime,myCertificate)
+        jsonCertificateInfo = o_myCertificate.convertCertificateObject2Json(hostnameQuery["hostname"],hostnameQuery["port"],o_startTime,o_endTime,myCertificate)
     
         # Append system data to JSON certificate structure
         jsonScriptData = gatherData(jsonCertificateInfo)
