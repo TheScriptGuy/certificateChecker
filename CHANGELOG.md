@@ -1,4 +1,9 @@
 # 2022/04/15
+## Version 0.11
+## Fixes
+* Insert None values for a hostname that doesn't have a valid certificate into the Json output.
+* Fixed bug with --hostname argument and not having the the port defined
+
 ## Version 0.10
 ## Fixes
 * Fixed a bug with the --hostname argument and the amount of keyword arguments that needed to be used.

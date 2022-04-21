@@ -1,8 +1,8 @@
 # Program:        Certificate Checker
 # Author:         Nolan Rumble
 # Date:           2022/04/20
-# Version:        0.10
-scriptVersion = "0.10"
+# Version:        0.11
+scriptVersion = "0.11"
 
 import argparse
 import datetime
@@ -135,6 +135,10 @@ def gatherData(certResults):
 
 
 def checkArguments(__myCertificate, __jsonCertificateInfo):
+    if args.displayCertificateJSON:
+            # Display the certificate JSON structure
+            o_myCertificate.printCertInfoJSON(__jsonCertificateInfo)
+
     if __myCertificate != None:
         if args.displayCertificate:
             o_myCertificate.printCertInfo(__myCertificate)
@@ -145,9 +149,88 @@ def checkArguments(__myCertificate, __jsonCertificateInfo):
             o_myCertificate.printSubject(__myCertificate)
             print(" ", o_myCertificate.howMuchTimeLeft(__myCertificate))
 
-        if args.displayCertificateJSON:
-            # Display the certificate JSON structure
-            o_myCertificate.printCertInfoJSON(__jsonCertificateInfo)
+def processQueryFile():
+    myCertData = certData.certData()
+        
+    jsonScriptData = []
+
+    for myHostname in myCertData.loadQueriesFile(args.queryFile):
+        # Define initial certificate object
+        o_myCertificate = certificateModule.certificateModule()
+    
+        # For SSL performance measurement - START
+        o_startTime = datetime.datetime.now()
+    
+        # Connect to the hostname from the queryFile argument and get the certificate associated with it.
+        myCertificate = o_myCertificate.getCertificate(myHostname["hostname"],myHostname["port"])
+    
+        # For SSL performance measurement - END
+        o_endTime = datetime.datetime.now()
+
+        # Convert the certificate object into JSON format.
+        jsonCertificateInfo = o_myCertificate.convertCertificateObject2Json(myHostname["hostname"],myHostname["port"],o_startTime,o_endTime,myCertificate)
+
+        jsonScriptData.append(jsonCertificateInfo)
+            
+        checkArguments(myCertificate,jsonCertificateInfo)
+
+    jsonScriptData = gatherData(jsonScriptData)
+
+    if args.displayScriptDataJSON:
+        # Display the certificate and system JSON structure
+        myJSONScriptData = json.dumps(jsonScriptData)
+        print(myJSONScriptData)
+        
+    if args.uploadJsonData:
+        # Upload the system data and certificate information to the appropriate URL
+        print(o_myCertificate.uploadJsonData(jsonScriptData,args.uploadJsonData))
+
+def processHostname():
+    # Define initial certificate object
+    o_myCertificate = certificateModule.certificateModule()
+
+    # For SSL performance measurement - START
+    o_startTime = datetime.datetime.now()
+
+    # Connect to the hostname from the --hostname argument and get the certificate associated with it.
+    if ":" in args.hostname:
+        tmpLine = args.hostname.split(':')
+        hostnameQuery = {"hostname": tmpLine[0], "port": int(tmpLine[1])}
+
+    else:
+        hostnameQuery = {"hostname": args.hostname, "port": 443 }
+
+    myCertificate = o_myCertificate.getCertificate(hostnameQuery["hostname"],hostnameQuery["port"])
+
+    # For SSL performance measurement - END
+    o_endTime = datetime.datetime.now()
+
+    # Convert the certificate object into JSON format.
+    jsonCertificateInfo = o_myCertificate.convertCertificateObject2Json(hostnameQuery["hostname"],hostnameQuery["port"],o_startTime,o_endTime,myCertificate)
+
+    # Append system data to JSON certificate structure
+    jsonScriptData = gatherData(jsonCertificateInfo)
+
+    if args.displayCertificateJSON:
+        # Display the certificate JSON structure
+        o_myCertificate.printCertInfoJSON(jsonCertificateInfo)
+
+    if args.displayCertificate:
+            o_myCertificate.printCertInfo(myCertificate)
+
+    if args.displayTimeLeft:
+        # Display the remaining time left on the certificate being queried.
+        print(o_myCertificate.howMuchTimeLeft(myCertificate))
+
+    if args.displayScriptDataJSON:
+        # Display the certificate and system JSON structure
+        myJSONScriptData = json.dumps(jsonScriptData)
+        print(myJSONScriptData)
+
+    if args.uploadJsonData:
+        # Upload the system data and certificate information to the appropriate URL
+        print(o_myCertificate.uploadJsonData(jsonScriptData,args.uploadJsonData))
+
 
 if __name__ == "__main__":
     # Get all the arguments sent through to the script
@@ -165,89 +248,9 @@ if __name__ == "__main__":
     jsonScriptData = {}
 
     if args.queryFile:
-        myCertData = certData.certData()
-        
-        jsonScriptData = []
+        processQueryFile()
+        sys.exit(0)
 
-        for myHostname in myCertData.loadQueriesFile(args.queryFile):
-            # Define initial certificate object
-            o_myCertificate = certificateModule.certificateModule()
-    
-            # For SSL performance measurement - START
-            o_startTime = datetime.datetime.now()
-    
-            # Connect to the hostname from the queryFile argument and get the certificate associated with it.
-            myCertificate = o_myCertificate.getCertificate(myHostname["hostname"],myHostname["port"])
-    
-            # For SSL performance measurement - END
-            o_endTime = datetime.datetime.now()
-
-            # Convert the certificate object into JSON format.
-            jsonCertificateInfo = o_myCertificate.convertCertificateObject2Json(myHostname["hostname"],myHostname["port"],o_startTime,o_endTime,myCertificate)
-
-            jsonScriptData.append(jsonCertificateInfo)
-            
-            checkArguments(myCertificate,jsonCertificateInfo)
-
-        jsonScriptData = gatherData(jsonScriptData)
-
-        if args.displayScriptDataJSON:
-            # Display the certificate and system JSON structure
-            myJSONScriptData = json.dumps(jsonScriptData)
-            print(myJSONScriptData)
-        
-        if args.uploadJsonData:
-            # Upload the system data and certificate information to the appropriate URL
-            print(o_myCertificate.uploadJsonData(jsonScriptData,args.uploadJsonData))
-
-
-
-    else:
-        
-        # Define initial certificate object
-        o_myCertificate = certificateModule.certificateModule()
-    
-        # For SSL performance measurement - START
-        o_startTime = datetime.datetime.now()
-    
-        # Connect to the hostname from the --hostname argument and get the certificate associated with it.
-        if ":" in args.hostname:
-            tmpLine = args.hostname.split(':')
-            hostnameQuery = {"hostname": tmpLine[0], "port": int(tmpLine[1])}
-
-        else:
-            hostnameQuery = {"hostname": line, "port": 443 }
-
-        myCertificate = o_myCertificate.getCertificate(hostnameQuery["hostname"],hostnameQuery["port"])
-    
-        # For SSL performance measurement - END
-        o_endTime = datetime.datetime.now()
-
-        # Convert the certificate object into JSON format.
-        jsonCertificateInfo = o_myCertificate.convertCertificateObject2Json(hostnameQuery["hostname"],hostnameQuery["port"],o_startTime,o_endTime,myCertificate)
-    
-        # Append system data to JSON certificate structure
-        jsonScriptData = gatherData(jsonCertificateInfo)
-
-
-        if myCertificate != None:
-            if args.displayCertificate:
-                o_myCertificate.printCertInfo(myCertificate)
-    
-            if args.displayTimeLeft:
-                # Display the remaining time left on the certificate being queried.
-                print(o_myCertificate.howMuchTimeLeft(myCertificate))
-
-            if args.displayCertificateJSON:
-                # Display the certificate JSON structure
-                o_myCertificate.printCertInfoJSON(jsonCertificateInfo)
-        
-            if args.displayScriptDataJSON:
-                # Display the certificate and system JSON structure
-                myJSONScriptData = json.dumps(jsonScriptData)
-                print(myJSONScriptData)
-
-            if args.uploadJsonData:
-                # Upload the system data and certificate information to the appropriate URL
-                print(o_myCertificate.uploadJsonData(jsonScriptData,args.uploadJsonData))
-
+    if args.hostname:
+        processHostname()
+        sys.exit(0)

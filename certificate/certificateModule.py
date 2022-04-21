@@ -1,6 +1,6 @@
 # Certificate Module
-# Version: 0.02
-# Last updated: 2022-04-15
+# Version: 0.03
+# Last updated: 2022-04-20
 # Author: TheScriptGuy
 
 import ssl, socket
@@ -26,23 +26,28 @@ class certificateModule:
                 return cert
         
         except ssl.SSLCertVerificationError as e:
-            print('Certificate error - ',e.verify_message)
+            connectHost = __hostname + ":" + str(__port)
+            print(connectHost + ' - Certificate error - ',e.verify_message)
             return None
         
         except socket.gaierror as e:
-            print('Socket error - ',e.strerror)
+            connectHost = __hostname + ":" + str(__port)
+            print(connectHost + 'Socket error - ',e.strerror)
             return None
 
         except FileNotFoundError as e:
-            print('File not found - ', e.strerror)
+            connectHost = __hostname + ":" + str(__port)
+            print(connectHost + ' - File not found - ', e.strerror)
             return None
 
         except OSError as e:
-            print('OSError - ', e.strerror)
+            connectHost = __hostname + ":" + str(__port)
+            print(connectHost + ' - OSError - ', e.strerror)
             return None
 
         except TimeoutError as e:
-            print('Timeout error - ', e.strerror)
+            connectHost = __hostname + ":" + str(__port)
+            print(connectHost + ' - Timeout error - ', e.strerror)
             return None
 
     def printSubject(self,__certificateObject):
@@ -133,8 +138,10 @@ class certificateModule:
                 else:
                     if myDeltaDate[field] == 1:
                         timeLeft.append("%d %s" % (myDeltaDate[field], field[:-1]))
-    
-            return ', '.join(timeLeft)
+                    return ', '.join(timeLeft)
+        else:
+            timeLeft = "Invalid certificate"
+        return timeLeft
 
     def checkIssuer(self,__certificateObject):
         """
@@ -230,17 +237,20 @@ class certificateModule:
         """
         Print out all the certificate properties.
         """
-        self.printSubject(__certificateObject)
-        print()
-        self.printIssuer(__certificateObject)
-        self.printSubjectAltName(__certificateObject)
-        self.printNotBefore(__certificateObject)
-        self.printNotAfter(__certificateObject)
-        self.printOCSP(__certificateObject)
-        self.printCRLDistributionPoints(__certificateObject)
-        self.printCaIssuers(__certificateObject)
-        self.printCertificateSerialNumber(__certificateObject)
-        self.printHowMuchTimeLeft(__certificateObject)
+        if __certificateObject != None:
+            self.printSubject(__certificateObject)
+            print()
+            self.printIssuer(__certificateObject)
+            self.printSubjectAltName(__certificateObject)
+            self.printNotBefore(__certificateObject)
+            self.printNotAfter(__certificateObject)
+            self.printOCSP(__certificateObject)
+            self.printCRLDistributionPoints(__certificateObject)
+            self.printCaIssuers(__certificateObject)
+            self.printCertificateSerialNumber(__certificateObject)
+            self.printHowMuchTimeLeft(__certificateObject)
+        else:
+            print("No certificate info to display!")
 
     def printCertInfoJSON(self,__certificateObject):
         """
@@ -249,27 +259,45 @@ class certificateModule:
         if __certificateObject != None:
             jsonCertInfoFormat = json.dumps(__certificateObject)
             print(jsonCertInfoFormat)
+        else:
+            jsonCertInfoFormat = {
+                "subject": {"None": "None"},
+                "certificateIssuer" : {"None": "None"},
+                "version" : 0,
+                "serialNumber" : "0",
+                "notBefore" : "Jan 1 00:00:00 0000 GMT",
+                "notAfter" : "Jan 1 00:00:00 0000 GMT",
+                "timeLeft" : "0 seconds",
+                "OCSP" : "None",
+                "crlDistributionPoints" : "None",
+                "caIssuers" : "None",
+                "subjectAltName" : {"None": "None"}    
+            }
+            print(jsonCertInfoFormat)
+
 
     def convertCertificateObject2Json(self,__hostname,__port,__startTime,__endTime,__certificateObject):
         """
         Convert the certificate object into JSON format.
         """
-        if __certificateObject != None:
-            myJsonCertificateInfo = {}
-            certKeys = __certificateObject.keys()
+        myJsonCertificateInfo = {}
         
-            startTime = __startTime.strftime("%Y/%m/%d %H:%M:%S.%f")
-            endTime = __endTime.strftime("%Y/%m/%d %H:%M:%S.%f")
-            queryTime = str((__endTime - __startTime).total_seconds())
+        startTime = __startTime.strftime("%Y/%m/%d %H:%M:%S.%f")
+        endTime = __endTime.strftime("%Y/%m/%d %H:%M:%S.%f")
+        queryTime = str((__endTime - __startTime).total_seconds())
 
-            myJsonCertificateInfo["hostname"] = __hostname
-            myJsonCertificateInfo["port"] = int(__port)
-            myJsonCertificateInfo["startTime"] = startTime
-            myJsonCertificateInfo["endTime"] = endTime
-            myJsonCertificateInfo["queryTime"] = queryTime
+        myJsonCertificateInfo["hostname"] = __hostname
+        myJsonCertificateInfo["port"] = int(__port)
+        myJsonCertificateInfo["startTime"] = startTime
+        myJsonCertificateInfo["endTime"] = endTime
+        myJsonCertificateInfo["queryTime"] = queryTime
 
-            myJsonCertificateInfo["certificateInfo"] = {}
+        myJsonCertificateInfo["certificateInfo"] = {}
 
+        if __certificateObject != None:
+
+            certKeys = __certificateObject.keys()
+            
             # Certificate might not have subject defined.
             if 'subject' in certKeys:
                 myJsonCertificateInfo["certificateInfo"]["subject"] = dict(x[0] for x in __certificateObject['subject'])
@@ -306,7 +334,20 @@ class certificateModule:
             # Reset number of entries
             subjectAltNameCounter = 0
 
-            return myJsonCertificateInfo
+        else:
+            myJsonCertificateInfo["certificateInfo"]["subject"] = {"None": "None"}
+            myJsonCertificateInfo["certificateInfo"]["certificateIssuer"] = {"None": "None"}
+            myJsonCertificateInfo["certificateInfo"]["version"] = 0
+            myJsonCertificateInfo["certificateInfo"]["serialNumber"] = "0"
+            myJsonCertificateInfo["certificateInfo"]["notBefore"] = "Jan 1 00:00:00 0000 GMT"
+            myJsonCertificateInfo["certificateInfo"]["notAfter"] = "Jan 1 00:00:00 0000 GMT"
+            myJsonCertificateInfo["certificateInfo"]["timeLeft"] = "0 seconds"
+            myJsonCertificateInfo["certificateInfo"]["OCSP"] = "None"
+            myJsonCertificateInfo["certificateInfo"]["crlDistributionPoints"] = "None"
+            myJsonCertificateInfo["certificateInfo"]["caIssuers"] = "None"
+            myJsonCertificateInfo["certificateInfo"]["subjectAltName"] = {"None": "None"}
+            
+        return myJsonCertificateInfo
 
     def uploadJsonData(self,__certificateJsonData,__httpUrl):
         """
