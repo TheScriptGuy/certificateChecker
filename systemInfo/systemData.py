@@ -6,7 +6,7 @@ from os import path
 class systemData:
     """systemData class"""
 
-    def setTag(self,tagName):
+    def setTag(self, tagName):
         """Set the tag for data aggregation purposes."""
         with open(self.tagFilename, 'w') as f_tag:
             f_tag.write(tagName)

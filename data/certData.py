@@ -1,5 +1,5 @@
 # Certificate Data Handling
-# Version: 0.03
+# Version: 0.04
 
 import sys
 from os import path
@@ -8,13 +8,12 @@ import requests
 class certData:
     """certData class"""
 
-    def writeResults(self,results,outputFile):
+    def writeResults(self, results, outputFile):
         """Send the json data to the outputFile variable."""
-        outputfile = open(outputFile,"w",encoding="utf-8")
-        outputfile.write(json.dumps(results))
-        outputfile.close
+        with open(outputFile, "w", encoding="utf-8") as outputfile:
+            outputfile.write(json.dumps(results))
 
-    def getFileFromURL(self,fileURL):
+    def getFileFromURL(self, fileURL):
         """This function will download the contents of fileURL and return a list with the contents."""
         tmpData = []
         try:
@@ -48,7 +47,7 @@ class certData:
 
         return tmpData
 
-    def uploadJsonHTTP(self,url,jsonData):
+    def uploadJsonHTTP(self, url, jsonData):
         """
         This will upload the json data to a URL via a POST method.
         If the verbose argument is set, it'll display what URL it's being
@@ -59,7 +58,7 @@ class certData:
         x = requests.post(url, json = jsonData)
         return x.headers
 
-    def loadQueriesFile(self,queriesFile):
+    def loadQueriesFile(self, queriesFile):
         """
         This will load the queries that need to be performed against each name server.
         One query per line. Right now it's only meant to be for 'A' record resolutions.

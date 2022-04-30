@@ -169,7 +169,7 @@ def processQueryFile():
         o_endTime = datetime.datetime.now()
 
         # Convert the certificate object into JSON format.
-        jsonCertificateInfo = o_myCertificate.convertCertificateObject2Json(myHostname["hostname"], myHostname["port"], o_startTime, o_endTime,myCertificate)
+        jsonCertificateInfo = o_myCertificate.convertCertificateObject2Json(myHostname["hostname"], myHostname["port"], o_startTime, o_endTime, myCertificate)
 
         jsonScriptData.append(jsonCertificateInfo)
 
