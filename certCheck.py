@@ -147,7 +147,6 @@ def checkArguments(__myCertificate, __jsonCertificateInfo):
 
         if args.displayTimeLeft:
             # Display the remaining time left on the certificate being queried.
-            #print(__myCertificate)
             o_myCertificate.printSubject(__myCertificate)
             print(" ", o_myCertificate.howMuchTimeLeft(__myCertificate))
 

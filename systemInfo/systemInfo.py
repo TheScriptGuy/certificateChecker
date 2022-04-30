@@ -25,7 +25,7 @@ class systemInfo:
     def getTag(self):
         """Get the tag."""
         if path.exists(self.tagFilename):
-            with open(self.tagFilename,'r') as f_tag:
+            with open(self.tagFilename, 'r') as f_tag:
                 myTag = f_tag.readline().rstrip()
             return myTag
         else:
@@ -36,4 +36,3 @@ class systemInfo:
         self.hostname = self.getHostname()
         self.uuid = self.getUuid()
         self.deviceTag = self.getTag()
-

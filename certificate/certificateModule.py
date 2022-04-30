@@ -65,7 +65,7 @@ class certificateModule:
         __subjectAltName = []
 
         for field, value in __certificateObject['subjectAltName']:
-            __subjectAltName.append({field:value})
+            __subjectAltName.append({field: value})
 
         print("Subject Alt Name: ", __subjectAltName)
 
@@ -249,7 +249,6 @@ class certificateModule:
             }
             print(jsonCertInfoFormat)
 
-
     def convertCertificateObject2Json(self, __hostname, __port, __startTime, __endTime, __certificateObject):
         """Convert the certificate object into JSON format."""
         myJsonCertificateInfo = {}
@@ -299,7 +298,7 @@ class certificateModule:
             subjectAltNameCounter = 0
 
             for field, value in __certificateObject['subjectAltName']:
-                myJsonCertificateInfo["certificateInfo"]["subjectAltName"].update({field + str(subjectAltNameCounter):value})
+                myJsonCertificateInfo["certificateInfo"]["subjectAltName"].update({field + str(subjectAltNameCounter): value})
                 subjectAltNameCounter += 1
 
             # Reset number of entries
