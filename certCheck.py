@@ -204,7 +204,7 @@ def processHostname():
         hostnameQuery = {"hostname": tmpLine[0], "port": int(tmpLine[1])}
 
     else:
-        hostnameQuery = {"hostname": args.hostname, "port": 443 }
+        hostnameQuery = {"hostname": args.hostname, "port": 443}
 
     myCertificate = o_myCertificate.getCertificate(hostnameQuery["hostname"], hostnameQuery["port"])
 
