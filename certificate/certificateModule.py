@@ -156,7 +156,6 @@ class certificateModule:
             certNotAfter = datetime.datetime.strptime(self.returnNotAfter(__certificateObject), '%b %d %H:%M:%S %Y %Z').date()
             certNotBefore = datetime.datetime.strptime(self.returnNotBefore(__certificateObject), '%b %d %H:%M:%S %Y %Z').date()
 
-
             # Assume time not valid
             isValid = bool((certNotBefore < timeNow) and (certNotAfter > timeNow))
 
@@ -293,7 +292,6 @@ class certificateModule:
                 myJsonCertificateInfo["certificateInfo"]["crlDistributionPoints"] = __certificateObject['crlDistributionPoints']
 
             myJsonCertificateInfo["certificateInfo"]["caIssuers"] = __certificateObject['caIssuers']
-
 
             # Initialize subjectAltName
             myJsonCertificateInfo["certificateInfo"]["subjectAltName"] = {}

@@ -65,8 +65,6 @@ def parseArguments():
     parser.add_argument('--deleteUuid', action='store_true',
                         help='Remove the UUID value. Caution: when script runs again a new UUID will be generated.')
 
-
-
     global args
     args = parser.parse_args()
 

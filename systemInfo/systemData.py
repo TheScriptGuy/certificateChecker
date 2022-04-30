@@ -37,7 +37,6 @@ class systemData:
         """Generate a uuid."""
         return str(uuid.uuid4())
 
-
     def createUuidIfNotExist(self):
         """Check to see if uuid doesn't exist first."""
         if not path.exists(self.uuidFilename):
