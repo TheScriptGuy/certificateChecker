@@ -24,12 +24,12 @@ class certificateModule:
                 s.connect((__hostname, __port))
                 cert = s.getpeercert()
                 return cert
-        
+
         except ssl.SSLCertVerificationError as e:
             connectHost = __hostname + ":" + str(__port)
             print(connectHost + ' - Certificate error - ',e.verify_message)
             return None
-        
+
         except socket.gaierror as e:
             connectHost = __hostname + ":" + str(__port)
             print(connectHost + 'Socket error - ',e.strerror)
@@ -67,7 +67,7 @@ class certificateModule:
 
         for field,value in __certificateObject['subjectAltName']:
             __subjectAltName.append({field:value})
-    
+
         print("Subject Alt Name: ", __subjectAltName)
 
     def printIssuer(self,__certificateObject):
@@ -117,7 +117,7 @@ class certificateModule:
         if __certificateObject != None:
             timeNow = datetime.datetime.now().replace(microsecond=0)
             certNotAfter = datetime.datetime.strptime(self.returnNotAfter(__certificateObject), '%b %d %H:%M:%S %Y %Z')
-    
+
             __delta = relativedelta(certNotAfter,timeNow)
 
             myDeltaDate = {
@@ -166,7 +166,7 @@ class certificateModule:
             certNotAfter = datetime.datetime.strptime(self.returnNotAfter(__certificateObject), '%b %d %H:%M:%S %Y %Z').date()
             certNotBefore = datetime.datetime.strptime(self.returnNotBefore(__certificateObject), '%b %d %H:%M:%S %Y %Z').date()
 
-    
+
             # Assume time not valid
             isValid = False
 
@@ -271,7 +271,7 @@ class certificateModule:
                 "OCSP" : "None",
                 "crlDistributionPoints" : "None",
                 "caIssuers" : "None",
-                "subjectAltName" : {"None": "None"}    
+                "subjectAltName" : {"None": "None"}
             }
             print(jsonCertInfoFormat)
 
@@ -281,7 +281,7 @@ class certificateModule:
         Convert the certificate object into JSON format.
         """
         myJsonCertificateInfo = {}
-        
+
         startTime = __startTime.strftime("%Y/%m/%d %H:%M:%S.%f")
         endTime = __endTime.strftime("%Y/%m/%d %H:%M:%S.%f")
         queryTime = str((__endTime - __startTime).total_seconds())
@@ -297,13 +297,13 @@ class certificateModule:
         if __certificateObject != None:
 
             certKeys = __certificateObject.keys()
-            
+
             # Certificate might not have subject defined.
             if 'subject' in certKeys:
                 myJsonCertificateInfo["certificateInfo"]["subject"] = dict(x[0] for x in __certificateObject['subject'])
-    
+
             myJsonCertificateInfo["certificateInfo"]["certificateIssuer"] = dict(x[0] for x in __certificateObject['issuer'])
-    
+
             myJsonCertificateInfo["certificateInfo"]["version"] = __certificateObject['version']
             myJsonCertificateInfo["certificateInfo"]["serialNumber"] = __certificateObject['serialNumber']
             myJsonCertificateInfo["certificateInfo"]["notBefore"] = __certificateObject['notBefore']
@@ -314,11 +314,11 @@ class certificateModule:
             # Certificate might not have OCSP defined
             if 'OCSP' in certKeys:
                 myJsonCertificateInfo["certificateInfo"]["OCSP"] = __certificateObject['OCSP']
-    
+
             # Certificate might not have CRL defined
-            if 'crlDistributionPoints' in certKeys: 
+            if 'crlDistributionPoints' in certKeys:
                 myJsonCertificateInfo["certificateInfo"]["crlDistributionPoints"] = __certificateObject['crlDistributionPoints']
-    
+
             myJsonCertificateInfo["certificateInfo"]["caIssuers"] = __certificateObject['caIssuers']
 
 
@@ -346,7 +346,7 @@ class certificateModule:
             myJsonCertificateInfo["certificateInfo"]["crlDistributionPoints"] = "None"
             myJsonCertificateInfo["certificateInfo"]["caIssuers"] = "None"
             myJsonCertificateInfo["certificateInfo"]["subjectAltName"] = {"None": "None"}
-            
+
         return myJsonCertificateInfo
 
     def uploadJsonData(self,__certificateJsonData,__httpUrl):
@@ -361,7 +361,7 @@ class certificateModule:
         return x.headers
 
 
-   
+
 
     def __init__(self):
         self.initialized = True
