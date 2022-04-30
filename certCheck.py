@@ -46,19 +46,19 @@ def parseArguments():
 
     parser.add_argument('--setTag', default='',
                         help='Set the tag for the query results. Creates tag.cfg file with tag.')
-                
+
     parser.add_argument('--deleteTag', action='store_true',
                         help='Delete the tag file - tag.cfg')
-                    
+
     parser.add_argument('--getTag', action='store_true',
                         help='Get the tag from tag.cfg file')
-            
+
     parser.add_argument('--renewUuid', action='store_true',
                         help='Renew the UUID value.')
-            
+
     parser.add_argument('--getUuid', action='store_true',
                         help='Get the UUID value from uuid.cfg file.')
-                
+
     parser.add_argument('--deleteUuid', action='store_true',
                         help='Remove the UUID value. Caution: when script runs again a new UUID will be generated.')
 
@@ -104,8 +104,8 @@ def defineInfoArguments(o_systemData, o_systemInfo):
 
 def gatherData(certResults):
     """
-    This will collect all the data into a uniform data structure that can 
-    help with measuring results across multiple executions. 
+    This will collect all the data into a uniform data structure that can
+    help with measuring results across multiple executions.
 
     Data that is included is:
     * deviceUuid         - a unique device identifier.
@@ -114,7 +114,7 @@ def gatherData(certResults):
     * hostName           - the hostname of the device where script is executing.
     * scriptUTCStartTime - script start time (UTC format).
     * scriptUTCEndTime   - script end time (UTC format).
-    * queryResults       - The results of all queries that were performed against the nameservers.  
+    * queryResults       - The results of all queries that were performed against the nameservers.
     """
     myInfo = systemInfo.systemInfo()
 
@@ -151,19 +151,19 @@ def checkArguments(__myCertificate, __jsonCertificateInfo):
 
 def processQueryFile():
     myCertData = certData.certData()
-        
+
     jsonScriptData = []
 
     for myHostname in myCertData.loadQueriesFile(args.queryFile):
         # Define initial certificate object
         o_myCertificate = certificateModule.certificateModule()
-    
+
         # For SSL performance measurement - START
         o_startTime = datetime.datetime.now()
-    
+
         # Connect to the hostname from the queryFile argument and get the certificate associated with it.
         myCertificate = o_myCertificate.getCertificate(myHostname["hostname"],myHostname["port"])
-    
+
         # For SSL performance measurement - END
         o_endTime = datetime.datetime.now()
 
@@ -171,7 +171,7 @@ def processQueryFile():
         jsonCertificateInfo = o_myCertificate.convertCertificateObject2Json(myHostname["hostname"],myHostname["port"],o_startTime,o_endTime,myCertificate)
 
         jsonScriptData.append(jsonCertificateInfo)
-            
+
         checkArguments(myCertificate,jsonCertificateInfo)
 
     jsonScriptData = gatherData(jsonScriptData)
@@ -180,7 +180,7 @@ def processQueryFile():
         # Display the certificate and system JSON structure
         myJSONScriptData = json.dumps(jsonScriptData)
         print(myJSONScriptData)
-        
+
     if args.uploadJsonData:
         # Upload the system data and certificate information to the appropriate URL
         print(o_myCertificate.uploadJsonData(jsonScriptData,args.uploadJsonData))
@@ -242,7 +242,7 @@ if __name__ == "__main__":
 
     # Gather system data and info
     defineInfoArguments(o_mySystemData,o_myInfo)
-    
+
     # initialize jsonCertificateInfo
     jsonCertificateInfo = {}
     jsonScriptData = {}

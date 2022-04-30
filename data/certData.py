@@ -6,19 +6,16 @@ from os import path
 import requests
 
 class certData:
+    """certData class"""
 
     def writeResults(self,results,outputFile):
-        """
-        Send the json data to the outputFile variable.
-        """
+        """Send the json data to the outputFile variable."""
         outputfile = open(outputFile,"w",encoding="utf-8")
         outputfile.write(json.dumps(results))
         outputfile.close
 
     def getFileFromURL(self,fileURL):
-        """
-        This function will download the contents of fileURL and return a list with the contents.
-        """
+        """This function will download the contents of fileURL and return a list with the contents."""
         tmpData = []
         try:
             urlData = requests.get(fileURL)
@@ -54,7 +51,7 @@ class certData:
     def uploadJsonHTTP(self,url,jsonData):
         """
         This will upload the json data to a URL via a POST method.
-        If the verbose argument is set, it'll display what URL it's being 
+        If the verbose argument is set, it'll display what URL it's being
         submitted to as well as the json data (jsonData).
         When the response is returned, it'll return the X-Headers that are sent back
         from the server.
@@ -68,10 +65,9 @@ class certData:
         One query per line. Right now it's only meant to be for 'A' record resolutions.
         """
         queries = []
-    
-        """
-        Check to see if queriesFile is a URL and if it is, attempt to download it
-        """
+
+        # Check to see if queriesFile is a URL and if it is, attempt to download it
+        
         if queriesFile.startswith('http://') or queriesFile.startswith('https://'):
             myQueries = self.getFileFromURL(queriesFile)
             for line in myQueries:
@@ -80,30 +76,29 @@ class certData:
                     queries.append({"hostname": tmpLine[0], "port": int(tmpLine[1])})
                 else:
                     queries.append({"hostname": line, "port": 443 })
-    
+
             return queries
-    
-        """
-        Check to see if if the file exists. If not, exit with error code 1.
-        """
+
+        # Check to see if if the file exists. If not, exit with error code 1.
         if not path.exists(queriesFile):
             print('I cannot find file ' + queriesFile)
             sys.exit(1)
-    
+
         queryFile = open(queriesFile, "r", encoding="utf-8")
-    
+
         for line in queryFile:
             if ":" in line:
                 tmpLine = line.rstrip('\n').split(':')
                 queries.append({"hostname": tmpLine[0], "port": int(tmpLine[1])})
             else:
                 queries.append({"hostname": line.rstrip('\n'), "port": 443 })
-    
+
         queryFile.close()
-    
+
         return queries
 
     def __init__(self):
+        """Initialize the certData class."""
         self.initialized = True
         self.version = "0.02"
 
