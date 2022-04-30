@@ -64,8 +64,7 @@ class certData:
         """
         queries = []
 
-        # Check to see if queriesFile is a URL and if it is, attempt to download it
-        
+        # Check to see if queriesFile is a URL and if it is, attempt to download it.
         if queriesFile.startswith('http://') or queriesFile.startswith('https://'):
             myQueries = self.getFileFromURL(queriesFile)
             for line in myQueries:
@@ -73,7 +72,7 @@ class certData:
                     tmpLine = line.split(':')
                     queries.append({"hostname": tmpLine[0], "port": int(tmpLine[1])})
                 else:
-                    queries.append({"hostname": line, "port": 443 })
+                    queries.append({"hostname": line, "port": 443})
 
             return queries
 
@@ -89,7 +88,7 @@ class certData:
                 tmpLine = line.rstrip('\n').split(':')
                 queries.append({"hostname": tmpLine[0], "port": int(tmpLine[1])})
             else:
-                queries.append({"hostname": line.rstrip('\n'), "port": 443 })
+                queries.append({"hostname": line.rstrip('\n'), "port": 443})
 
         queryFile.close()
 
