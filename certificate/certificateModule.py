@@ -147,12 +147,7 @@ class certificateModule:
 
 
             # Assume time not valid
-            isValid = False
-
-            if (certNotBefore < timeNow) and (certNotAfter > timeNow):
-                isValid = True
-            else:
-                isValid = False
+            isValid = bool((certNotBefore < timeNow) and (certNotAfter > timeNow))
 
             return isValid
 

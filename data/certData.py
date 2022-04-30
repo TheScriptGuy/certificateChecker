@@ -21,14 +21,9 @@ class certData:
             if urlData.status_code == 200:
                 tmpData = urlData.text.split('\n')
                 try:
-                    """
-                    Attempt to remove any blank entries in the dict
-                    """
+                    # Attempt to remove any blank entries in the dict
                     tmpData.remove('')
                 except ValueError:
-                    """
-                    Do nothing
-                    """
                     pass
             else:
                 tmpData = ['Error while retrieving URL']
