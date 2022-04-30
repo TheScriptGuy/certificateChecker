@@ -53,7 +53,7 @@ class certData:
         When the response is returned, it'll return the X-Headers that are sent back
         from the server.
         """
-        x = requests.post(url, json = jsonData)
+        x = requests.post(url, json=jsonData)
         return x.headers
 
     @staticmethod
@@ -65,7 +65,7 @@ class certData:
         queries = []
 
         # Check to see if queriesFile is a URL and if it is, attempt to download it
-
+        
         if queriesFile.startswith('http://') or queriesFile.startswith('https://'):
             myQueries = self.getFileFromURL(queriesFile)
             for line in myQueries:

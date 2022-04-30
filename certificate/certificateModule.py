@@ -14,7 +14,8 @@ from dateutil.relativedelta import relativedelta
 class certificateModule:
     """certificateModule class"""
 
-    def getCertificate(self, __hostname, __port):
+    @staticmethod
+    def getCertificate(__hostname, __port):
         """Connect to the host and get the certificate."""
         __ctx = ssl.create_default_context()
 
@@ -48,7 +49,7 @@ class certificateModule:
             connectHost = __hostname + ":" + str(__port)
             print(connectHost + ' - Timeout error - ', e.strerror)
             return None
-
+    
     @staticmethod
     def printSubject(__certificateObject):
         """Print the subject name of the certificate."""
@@ -81,7 +82,7 @@ class certificateModule:
         if __certificateObject is not None:
             notBefore = __certificateObject['notBefore']
             print("Certificate start date: ", notBefore)
-
+ 
     @staticmethod
     def printNotAfter(__certificateObject):
         """Print the notAfter field of the certificate."""
@@ -131,7 +132,7 @@ class certificateModule:
         else:
             certResult = "Invalid certificate"
         return certResult
-
+    
     @staticmethod
     def checkIssuer(__certificateObject):
         """Check to see if issuers are trusted."""
@@ -328,7 +329,7 @@ class certificateModule:
         When the response is returned, it'll return the X-Headers that are sent back
         from the server.
         """
-        x = requests.post(__httpUrl, json = __certificateJsonData)
+        x = requests.post(__httpUrl, json=__certificateJsonData)
         return x.headers
 
     def __init__(self):
