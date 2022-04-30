@@ -2,7 +2,6 @@
 # Author:         Nolan Rumble
 # Date:           2022/04/20
 # Version:        0.11
-scriptVersion = "0.11"
 
 import argparse
 import datetime
@@ -12,6 +11,8 @@ import json
 from systemInfo import systemInfo,systemData
 from certificate import certificateModule
 from data import certData
+
+scriptVersion = "0.11"
 
 def parseArguments():
     """
