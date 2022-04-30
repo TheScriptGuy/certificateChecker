@@ -48,7 +48,7 @@ class certificateModule:
             connectHost = __hostname + ":" + str(__port)
             print(connectHost + ' - Timeout error - ', e.strerror)
             return None
-    
+
     @staticmethod
     def printSubject(__certificateObject):
         """Print the subject name of the certificate."""
@@ -81,7 +81,7 @@ class certificateModule:
         if __certificateObject is not None:
             notBefore = __certificateObject['notBefore']
             print("Certificate start date: ", notBefore)
- 
+
     @staticmethod
     def printNotAfter(__certificateObject):
         """Print the notAfter field of the certificate."""
@@ -131,7 +131,7 @@ class certificateModule:
         else:
             certResult = "Invalid certificate"
         return certResult
-    
+
     @staticmethod
     def checkIssuer(__certificateObject):
         """Check to see if issuers are trusted."""

@@ -65,7 +65,7 @@ class certData:
         queries = []
 
         # Check to see if queriesFile is a URL and if it is, attempt to download it
-        
+
         if queriesFile.startswith('http://') or queriesFile.startswith('https://'):
             myQueries = self.getFileFromURL(queriesFile)
             for line in myQueries:
