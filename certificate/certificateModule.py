@@ -48,15 +48,17 @@ class certificateModule:
             connectHost = __hostname + ":" + str(__port)
             print(connectHost + ' - Timeout error - ', e.strerror)
             return None
-
-    def printSubject(self, __certificateObject):
+    
+    @staticmethod
+    def printSubject(__certificateObject):
         """Print the subject name of the certificate."""
         if __certificateObject is not None:
             subject = dict(x[0] for x in __certificateObject['subject'])
             issued_to = subject['commonName']
             print("Subject: ", issued_to, end='')
 
-    def printSubjectAltName(self, __certificateObject):
+    @staticmethod
+    def printSubjectAltName(__certificateObject):
         """Print the Subject Alternate Name(s) of the certificate."""
         __subjectAltName = []
 
@@ -65,32 +67,36 @@ class certificateModule:
 
         print("Subject Alt Name: ", __subjectAltName)
 
-    def printIssuer(self, __certificateObject):
+    @staticmethod
+    def printIssuer(__certificateObject):
         """Print the Issuer of the certificate."""
         if __certificateObject is not None:
             issuer = dict(x[0] for x in __certificateObject['issuer'])
             issued_by = issuer['commonName']
             print("Issued by: ", issued_by)
 
-    def printNotBefore(self, __certificateObject):
+    @staticmethod
+    def printNotBefore(__certificateObject):
         """Print the notBefore field of the certificate."""
         if __certificateObject is not None:
             notBefore = __certificateObject['notBefore']
             print("Certificate start date: ", notBefore)
-
-    def printNotAfter(self, __certificateObject):
+ 
+    @staticmethod
+    def printNotAfter(__certificateObject):
         """Print the notAfter field of the certificate."""
         if __certificateObject is not None:
             notAfter = __certificateObject['notAfter']
             print("Certificate end date: ", notAfter)
 
-
-    def returnNotBefore(self, __certificateObject):
+    @staticmethod
+    def returnNotBefore(__certificateObject):
         """Return the notBefore field from the certificate."""
         if __certificateObject is not None:
             return __certificateObject['notBefore']
 
-    def returnNotAfter(self, __certificateObject):
+    @staticmethod
+    def returnNotAfter(__certificateObject):
         """Return the notAfter field from the certificate."""
         if __certificateObject is not None:
             return __certificateObject['notAfter']
@@ -125,16 +131,19 @@ class certificateModule:
         else:
             certResult = "Invalid certificate"
         return certResult
-
-    def checkIssuer(self, __certificateObject):
+    
+    @staticmethod
+    def checkIssuer(__certificateObject):
         """Check to see if issuers are trusted."""
         return True
 
-    def checkRevocation(self, __certificateObject):
+    @staticmethod
+    def checkRevocation(__certificateObject):
         """Check to see if certificate hasn't been revoked."""
         return True
 
-    def checkTimeValidity(self, __certificateObject):
+    @staticmethod
+    def checkTimeValidity(__certificateObject):
         """
         Check to see if the certificate is valid:
             current date is after certificate start date
@@ -151,7 +160,8 @@ class certificateModule:
 
             return isValid
 
-    def printOCSP(self, __certificateObject):
+    @staticmethod
+    def printOCSP(__certificateObject):
         """Print the OCSP field of the certificate."""
         if __certificateObject is not None:
             __OCSPList = []
@@ -159,7 +169,8 @@ class certificateModule:
                 __OCSPList.append(value)
             print("OCSP: ", __OCSPList)
 
-    def printCRLDistributionPoints(self, __certificateObject):
+    @staticmethod
+    def printCRLDistributionPoints(__certificateObject):
         """Print the CRL distribution points of the certificate."""
         if __certificateObject is not None:
             __CRLList = []
@@ -168,13 +179,15 @@ class certificateModule:
                     __CRLList.append(value)
                 print("CRL: ", __CRLList)
 
-    def printCertificateSerialNumber(self, __certificateObject):
+    @staticmethod
+    def printCertificateSerialNumber(__certificateObject):
         """Print the certificate serial number."""
         if __certificateObject is not None:
             certificateSerialNumber = __certificateObject['serialNumber']
             print("Serial Number: ", certificateSerialNumber)
 
-    def printCaIssuers(self, __certificateObject):
+    @staticmethod
+    def printCaIssuers(__certificateObject):
         """Print the certificates CA issuers."""
         if __certificateObject is not None:
             certificateCaIssuers = __certificateObject['caIssuers']
