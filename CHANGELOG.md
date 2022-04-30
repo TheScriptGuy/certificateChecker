@@ -1,4 +1,9 @@
 # 2022/04/15
+## Version 0.12
+## Fixes
+* Aligning code with best practices.
+* Fixing logic with displaying the amount of time left until certificate expires.
+
 ## Version 0.11
 ## Fixes
 * Insert None values for a hostname that doesn't have a valid certificate into the Json output.

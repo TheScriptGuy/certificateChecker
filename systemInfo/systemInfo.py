@@ -15,9 +15,8 @@ class systemInfo:
     def getUuid(self):
         """Get the uuid."""
         if path.exists(self.uuidFilename):
-            f_uuid = open(self.uuidFilename,'r')
-            myUuid = f_uuid.readline()
-            f_uuid.close()
+            with open(self.uuidFilename) as f_uuid:
+                myUuid = f_uuid.readline()
             return myUuid
         else:
             return ""
@@ -25,9 +24,8 @@ class systemInfo:
     def getTag(self):
         """Get the tag."""
         if path.exists(self.tagFilename):
-            f_tag = open(self.tagFilename,'r')
-            myTag = f_tag.readline().rstrip()
-            f_tag.close()
+            with open(self.tagFilename,'r') as f_tag:
+                myTag = f_tag.readline().rstrip()
             return myTag
         else:
             return ""

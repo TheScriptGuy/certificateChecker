@@ -1,6 +1,6 @@
 # Certificate Checker
 
-Version: 0.11
+Version: 0.12
 
 Author: TheScriptGuy
 
@@ -34,7 +34,7 @@ usage: certCheck.py [-h] [--hostname HOSTNAME] [--displayCertificate]
                     [--deleteTag] [--getTag] [--renewUuid] [--getUuid]
                     [--deleteUuid]
 
-Certificate Checker V0.11
+Certificate Checker V0.12
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -115,41 +115,6 @@ optional arguments:
     }
 }
 ```
-
-An example of where a certificate is not presented by the hostname.
-```json
-{
-    "hostname": "invalidhostname.com",
-    "port": 443,
-    "startTime": "2022/04/20 16:18:20.999088",
-    "endTime": "2022/04/20 16:18:21.710320",
-    "queryTime": "0.711232",
-    "certificateInfo":
-    {
-        "subject":
-        {
-            "None": "None"
-        },
-        "certificateIssuer":
-        {
-            "None": "None"
-        },
-        "version": 0,
-        "serialNumber": "0",
-        "notBefore": "Jan 1 00:00:00 0000 GMT",
-        "notAfter": "Jan 1 00:00:00 0000 GMT",
-        "timeLeft": "0 seconds",
-        "OCSP": "None",
-        "crlDistributionPoints": "None",
-        "caIssuers": "None",
-        "subjectAltName":
-        {
-            "None": "None"
-        }
-    }
-}
-```
-
 
 An example of the JSON structure which includes the hostname information as well:
 ```json

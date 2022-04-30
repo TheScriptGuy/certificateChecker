@@ -8,9 +8,8 @@ class systemData:
 
     def setTag(self,tagName):
         """Set the tag for data aggregation purposes."""
-        f_tag = open(self.tagFilename,'w')
-        f_tag.write(tagName)
-        f_tag.close()
+        with open(self.tagFilename, 'w') as f_tag:
+            f_tag.write(tagName)
 
     def deleteTag(self):
         """Delete the tag."""
@@ -42,9 +41,8 @@ class systemData:
         """Check to see if uuid doesn't exist first."""
         if not path.exists(self.uuidFilename):
             newUuid = self.generateUuid()
-            f_uuid = open(self.uuidFilename,'w')
-            f_uuid.write(str(newUuid))
-            f_uuid.close()
+            with open(self.uuidFilename, 'w') as f_uuid:
+                f_uuid.write(str(newUuid))
 
     def __init__(self):
         """Initialize the class."""

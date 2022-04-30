@@ -137,8 +137,8 @@ def gatherData(certResults):
 
 def checkArguments(__myCertificate, __jsonCertificateInfo):
     if args.displayCertificateJSON:
-            # Display the certificate JSON structure
-            o_myCertificate.printCertInfoJSON(__jsonCertificateInfo)
+        # Display the certificate JSON structure
+        o_myCertificate.printCertInfoJSON(__jsonCertificateInfo)
 
     if __myCertificate != None:
         if args.displayCertificate:
@@ -217,7 +217,8 @@ def processHostname():
         o_myCertificate.printCertInfoJSON(jsonCertificateInfo)
 
     if args.displayCertificate:
-            o_myCertificate.printCertInfo(myCertificate)
+        # Display the certificate properties.
+        o_myCertificate.printCertInfo(myCertificate)
 
     if args.displayTimeLeft:
         # Display the remaining time left on the certificate being queried.
