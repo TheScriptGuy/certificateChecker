@@ -8,7 +8,7 @@ import datetime
 import sys
 import json
 
-from systemInfo import systemInfo,systemData
+from systemInfo import systemInfo, systemData
 from certificate import certificateModule
 from data import certData
 
@@ -163,17 +163,17 @@ def processQueryFile():
         o_startTime = datetime.datetime.now()
 
         # Connect to the hostname from the queryFile argument and get the certificate associated with it.
-        myCertificate = o_myCertificate.getCertificate(myHostname["hostname"],myHostname["port"])
+        myCertificate = o_myCertificate.getCertificate(myHostname["hostname"], myHostname["port"])
 
         # For SSL performance measurement - END
         o_endTime = datetime.datetime.now()
 
         # Convert the certificate object into JSON format.
-        jsonCertificateInfo = o_myCertificate.convertCertificateObject2Json(myHostname["hostname"],myHostname["port"],o_startTime,o_endTime,myCertificate)
+        jsonCertificateInfo = o_myCertificate.convertCertificateObject2Json(myHostname["hostname"], myHostname["port"], o_startTime, o_endTime,myCertificate)
 
         jsonScriptData.append(jsonCertificateInfo)
 
-        checkArguments(myCertificate,jsonCertificateInfo)
+        checkArguments(myCertificate, jsonCertificateInfo)
 
     jsonScriptData = gatherData(jsonScriptData)
 
@@ -184,7 +184,7 @@ def processQueryFile():
 
     if args.uploadJsonData:
         # Upload the system data and certificate information to the appropriate URL
-        print(o_myCertificate.uploadJsonData(jsonScriptData,args.uploadJsonData))
+        print(o_myCertificate.uploadJsonData(jsonScriptData, args.uploadJsonData))
 
 def processHostname():
     # Define initial certificate object
@@ -201,13 +201,13 @@ def processHostname():
     else:
         hostnameQuery = {"hostname": args.hostname, "port": 443 }
 
-    myCertificate = o_myCertificate.getCertificate(hostnameQuery["hostname"],hostnameQuery["port"])
+    myCertificate = o_myCertificate.getCertificate(hostnameQuery["hostname"], hostnameQuery["port"])
 
     # For SSL performance measurement - END
     o_endTime = datetime.datetime.now()
 
     # Convert the certificate object into JSON format.
-    jsonCertificateInfo = o_myCertificate.convertCertificateObject2Json(hostnameQuery["hostname"],hostnameQuery["port"],o_startTime,o_endTime,myCertificate)
+    jsonCertificateInfo = o_myCertificate.convertCertificateObject2Json(hostnameQuery["hostname"], hostnameQuery["port"], o_startTime, o_endTime, myCertificate)
 
     # Append system data to JSON certificate structure
     jsonScriptData = gatherData(jsonCertificateInfo)
@@ -230,7 +230,7 @@ def processHostname():
 
     if args.uploadJsonData:
         # Upload the system data and certificate information to the appropriate URL
-        print(o_myCertificate.uploadJsonData(jsonScriptData,args.uploadJsonData))
+        print(o_myCertificate.uploadJsonData(jsonScriptData, args.uploadJsonData))
 
 
 if __name__ == "__main__":
@@ -242,7 +242,7 @@ if __name__ == "__main__":
     o_myInfo = systemInfo.systemInfo()
 
     # Gather system data and info
-    defineInfoArguments(o_mySystemData,o_myInfo)
+    defineInfoArguments(o_mySystemData, o_myInfo)
 
     # initialize jsonCertificateInfo
     jsonCertificateInfo = {}
