@@ -51,7 +51,7 @@ class certificateModule:
 
     def printSubject(self, __certificateObject):
         """Print the subject name of the certificate."""
-        if __certificateObject != None:
+        if __certificateObject is not None:
             subject = dict(x[0] for x in __certificateObject['subject'])
             issued_to = subject['commonName']
             print("Subject: ", issued_to, end='')
@@ -67,37 +67,37 @@ class certificateModule:
 
     def printIssuer(self, __certificateObject):
         """Print the Issuer of the certificate."""
-        if __certificateObject != None:
+        if __certificateObject is not None:
             issuer = dict(x[0] for x in __certificateObject['issuer'])
             issued_by = issuer['commonName']
             print("Issued by: ", issued_by)
 
     def printNotBefore(self, __certificateObject):
         """Print the notBefore field of the certificate."""
-        if __certificateObject != None:
+        if __certificateObject is not None:
             notBefore = __certificateObject['notBefore']
             print("Certificate start date: ", notBefore)
 
     def printNotAfter(self, __certificateObject):
         """Print the notAfter field of the certificate."""
-        if __certificateObject != None:
+        if __certificateObject is not None:
             notAfter = __certificateObject['notAfter']
             print("Certificate end date: ", notAfter)
 
 
     def returnNotBefore(self, __certificateObject):
         """Return the notBefore field from the certificate."""
-        if __certificateObject != None:
+        if __certificateObject is not None:
             return __certificateObject['notBefore']
 
     def returnNotAfter(self, __certificateObject):
         """Return the notAfter field from the certificate."""
-        if __certificateObject != None:
+        if __certificateObject is not None:
             return __certificateObject['notAfter']
 
     def howMuchTimeLeft(self, __certificateObject):
         """Return the remaining time left on the certificate."""
-        if __certificateObject != None:
+        if __certificateObject is not None:
             timeNow = datetime.datetime.now().replace(microsecond=0)
             certNotAfter = datetime.datetime.strptime(self.returnNotAfter(__certificateObject), '%b %d %H:%M:%S %Y %Z')
 
@@ -140,7 +140,7 @@ class certificateModule:
             current date is after certificate start date
             current date is before certificate expiry date
         """
-        if __certificateObject != None:
+        if __certificateObject is not None:
             timeNow = datetime.datetime.now().replace(microsecond=0).date()
             certNotAfter = datetime.datetime.strptime(self.returnNotAfter(__certificateObject), '%b %d %H:%M:%S %Y %Z').date()
             certNotBefore = datetime.datetime.strptime(self.returnNotBefore(__certificateObject), '%b %d %H:%M:%S %Y %Z').date()
@@ -153,7 +153,7 @@ class certificateModule:
 
     def printOCSP(self, __certificateObject):
         """Print the OCSP field of the certificate."""
-        if __certificateObject != None:
+        if __certificateObject is not None:
             __OCSPList = []
             for value in __certificateObject['OCSP']:
                 __OCSPList.append(value)
@@ -161,7 +161,7 @@ class certificateModule:
 
     def printCRLDistributionPoints(self, __certificateObject):
         """Print the CRL distribution points of the certificate."""
-        if __certificateObject != None:
+        if __certificateObject is not None:
             __CRLList = []
             if 'crlDistributionPoints' in __certificateObject:
                 for value in __certificateObject['crlDistributionPoints']:
@@ -170,19 +170,19 @@ class certificateModule:
 
     def printCertificateSerialNumber(self, __certificateObject):
         """Print the certificate serial number."""
-        if __certificateObject != None:
+        if __certificateObject is not None:
             certificateSerialNumber = __certificateObject['serialNumber']
             print("Serial Number: ", certificateSerialNumber)
 
     def printCaIssuers(self, __certificateObject):
         """Print the certificates CA issuers."""
-        if __certificateObject != None:
+        if __certificateObject is not None:
             certificateCaIssuers = __certificateObject['caIssuers']
             print("CA Issuers: ", certificateCaIssuers)
 
     def printHowMuchTimeLeft(self, __certificateObject):
         """Print how much time is left on the certificate."""
-        if __certificateObject != None:
+        if __certificateObject is not None:
             timeLeft = self.howMuchTimeLeft(__certificateObject)
             print("Time left: ", timeLeft)
 
@@ -191,7 +191,7 @@ class certificateModule:
         Currently not in use.
         Check to see if the certificate is valid (Time, Recovation, Issuer)
         """
-        if __certificateObject != None:
+        if __certificateObject is not None:
             if self.checkTimeValidity(__certificateObject) and self.checkRevocation(__certificateObject) and self.checkIssuer(__certificateObject):
                 print("Certificate good!")
             else:
@@ -199,7 +199,7 @@ class certificateModule:
 
     def printCertInfo(self, __certificateObject):
         """Print out all the certificate properties."""
-        if __certificateObject != None:
+        if __certificateObject is not None:
             self.printSubject(__certificateObject)
             print()
             self.printIssuer(__certificateObject)
@@ -216,7 +216,7 @@ class certificateModule:
 
     def printCertInfoJSON(self, __certificateObject):
         """Print the certificate information in JSON format."""
-        if __certificateObject != None:
+        if __certificateObject is not None:
             jsonCertInfoFormat = json.dumps(__certificateObject)
             print(jsonCertInfoFormat)
         else:
@@ -252,7 +252,7 @@ class certificateModule:
 
         myJsonCertificateInfo["certificateInfo"] = {}
 
-        if __certificateObject != None:
+        if __certificateObject is not None:
 
             certKeys = __certificateObject.keys()
 

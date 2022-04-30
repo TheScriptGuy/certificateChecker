@@ -140,7 +140,7 @@ def checkArguments(__myCertificate, __jsonCertificateInfo):
         # Display the certificate JSON structure
         o_myCertificate.printCertInfoJSON(__jsonCertificateInfo)
 
-    if __myCertificate != None:
+    if __myCertificate is not None:
         if args.displayCertificate:
             o_myCertificate.printCertInfo(__myCertificate)
 
