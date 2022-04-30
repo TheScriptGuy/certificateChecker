@@ -11,6 +11,7 @@ import requests
 
 from dateutil.relativedelta import relativedelta
 
+
 class certificateModule:
     """certificateModule class"""
 
@@ -337,5 +338,3 @@ class certificateModule:
         self.initialized = True
         self.moduleVersion = "0.04"
         self.certificate = {}
-
-

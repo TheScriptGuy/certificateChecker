@@ -5,6 +5,7 @@ import sys
 from os import path
 import requests
 
+
 class certData:
     """certData class"""
 
@@ -98,4 +99,3 @@ class certData:
         """Initialize the certData class."""
         self.initialized = True
         self.version = "0.02"
-

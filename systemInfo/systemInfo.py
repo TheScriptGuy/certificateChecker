@@ -2,6 +2,7 @@ import socket
 import os.path
 from os import path
 
+
 class systemInfo:
     """systemInfo class"""
 

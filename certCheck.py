@@ -12,7 +12,9 @@ from systemInfo import systemInfo, systemData
 from certificate import certificateModule
 from data import certData
 
+
 scriptVersion = "0.12"
+
 
 def parseArguments():
     """
@@ -67,6 +69,7 @@ def parseArguments():
 
     global args
     args = parser.parse_args()
+
 
 def defineInfoArguments(o_systemData, o_systemInfo):
     global args
@@ -150,6 +153,7 @@ def checkArguments(__myCertificate, __jsonCertificateInfo):
             o_myCertificate.printSubject(__myCertificate)
             print(" ", o_myCertificate.howMuchTimeLeft(__myCertificate))
 
+
 def processQueryFile():
     myCertData = certData.certData()
 
@@ -185,6 +189,7 @@ def processQueryFile():
     if args.uploadJsonData:
         # Upload the system data and certificate information to the appropriate URL
         print(o_myCertificate.uploadJsonData(jsonScriptData, args.uploadJsonData))
+
 
 def processHostname():
     # Define initial certificate object
