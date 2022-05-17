@@ -44,9 +44,8 @@ class sendDataMongoDB:
         if "uri" in __destination:
             __mongoUri = __destination["uri"]
         else:
-           print("MongoDB uri not provided in mongo.cfg file.")
-           sys.exit(1)
-
+            print("MongoDB uri not provided in mongo.cfg file.")
+            sys.exit(1)
 
         if "username" in __destination:
             __mongoUsername = __destination["username"]
@@ -79,7 +78,7 @@ class sendDataMongoDB:
             __mongoConnectionString = f"mongodb{__srv}://{__mongoLoginCredentials}@{__mongoUri}/"
         return __mongoConnectionString
 
-    def createDB(self,__destination):
+    def createDB(self, __destination):
         """create a destination database to upload the data to."""
         # Defaults to certificateDataDB if not defined.
         if "databaseName" in __destination:
@@ -101,7 +100,7 @@ class sendDataMongoDB:
 
         return __mongoClient[__mongoDatabase]
 
-    def createCollection(self,__mongoConnection,__collectionName="certCollection"):
+    def createCollection(self, __mongoConnection, __collectionName="certCollection"):
         """create a collection within the DB."""
         return __mongoConnection[__collectionName]
 
