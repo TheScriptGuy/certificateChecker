@@ -3,7 +3,8 @@
 # Last updated: 2022-04-30
 # Author: TheScriptGuy
 
-import ssl, socket
+import ssl
+import socket
 import argparse
 import datetime
 import json

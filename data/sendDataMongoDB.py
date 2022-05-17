@@ -33,11 +33,10 @@ class sendDataMongoDB:
             sys.exit(1)
 
         return __uploadResult
-        
+
     @staticmethod
     def connectionString(__destination):
         """Define the connection string to be used to connect to a MongoDB."""
-
         # The bare minimum for the URI string is having a hostname/IP address to connect to.
         # If this is blank, make sure we exit.
         if "uri" in __destination:

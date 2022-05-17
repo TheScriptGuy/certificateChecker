@@ -17,10 +17,7 @@ scriptVersion = "0.13"
 
 
 def parseArguments():
-    """
-    Create argument options and parse through them to determine what to do with script.
-    """
-
+    """Create argument options and parse through them to determine what to do with script."""
     # Instantiate the parser
     global scriptVersion
     parser = argparse.ArgumentParser(description='Certificate Checker v' + scriptVersion)
@@ -207,7 +204,7 @@ def processQueryFile():
         # Upload the results to the MongoDB
         # It's only at this point that the database/collection gets created
         # (if this is the first entry to be uploaded)
-        uploadResult = sdMDB.sendResults(jsonScriptData,collection)
+        uploadResult = sdMDB.sendResults(jsonScriptData, collection)
 
 
 def processHostname():
@@ -274,7 +271,7 @@ def processHostname():
         # Upload the results to the MongoDB
         # It's only at this point that the database/collection gets created
         # (if this is the first entry to be uploaded)
-        uploadResult = sdMDB.sendResults(jsonScriptData,collection)
+        uploadResult = sdMDB.sendResults(jsonScriptData, collection)
 
 
 if __name__ == "__main__":
