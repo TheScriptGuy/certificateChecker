@@ -1,3 +1,8 @@
+# 2022/05/16
+## Version 0.13
+## Additions
+* Adding support for MongoDB data upload (using sendDataMongoDB class)
+
 # 2022/04/15
 ## Version 0.12
 ## Fixes

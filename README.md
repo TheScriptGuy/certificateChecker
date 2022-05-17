@@ -1,6 +1,6 @@
 # Certificate Checker
 
-Version: 0.12
+Version: 0.13
 
 Author: TheScriptGuy
 
@@ -34,7 +34,7 @@ usage: certCheck.py [-h] [--hostname HOSTNAME] [--displayCertificate]
                     [--deleteTag] [--getTag] [--renewUuid] [--getUuid]
                     [--deleteUuid]
 
-Certificate Checker V0.12
+Certificate Checker V0.13
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -52,6 +52,8 @@ optional arguments:
                         local files and HTTP/HTTPS links
   --uploadJsonData UPLOADJSONDATA
                         Upload JSON data to HTTP URL via HTTP POST method.
+  --mongoDB             Upload results to MongoDB. Connection details stored
+                        in mongo.cfg
   --setTag SETTAG       Set the tag for the query results. Creates tag.cfg
                         file with tag.
   --deleteTag           Delete the tag file - tag.cfg
@@ -61,6 +63,38 @@ optional arguments:
   --deleteUuid          Remove the UUID value. Caution: when script runs again
                         a new UUID will be generated.
 ```
+
+## Example to upload to mongoDB
+First configure the `mongo.cfg` file with the connection details in json format.
+
+Important things to note about the mongo.cfg file:
+* The fields `username`, `password`, `database`, `collection` are all optional.
+* Only `uri` is mandatory.
+
+* If `database` isn't specified then the field defaults to `certificateDataDB.`
+* If `collection` isn't specified then the field defaults to `certCollection`.
+
+```json
+{
+    "uri": "192.168.100.10",
+    "username": "mongoUsername",
+    "password": "m0ng0P4ssw0rd",
+    "database": "myCertDatabase"
+    "collection": "myCertCollection"
+}
+```
+
+To send the data to the MongoDB run the following command (for a single host):
+```bash
+$ python3 certCheck.py --hostname apple.com --mongoDB
+$
+```
+To upload the results from multiple queries:
+```bash
+$ python3 certCheck.py --queryFile myQueries --mongoDB
+$
+```
+
 
 ## Example of JSON structure for certificate specifically
 ```json
@@ -431,7 +465,5 @@ An example of the JSON structure which includes the hostname information as well
 ```
 
 Features to add:
-* convert script to object orientated programming (partially done)
 * Supply own CA certificate repository
 * send email notification that script is about to expire within <X> number of days.
-* have the ability to connect to hosts on a port other than 443

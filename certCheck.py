@@ -1,7 +1,7 @@
 # Program:        Certificate Checker
 # Author:         Nolan Rumble
-# Date:           2022/04/20
-# Version:        0.12
+# Date:           2022/05/16
+# Version:        0.13
 
 import argparse
 import datetime
@@ -11,9 +11,9 @@ import json
 from systemInfo import systemInfo, systemData
 from certificate import certificateModule
 from data import certData
+from data import sendDataMongoDB
 
-
-scriptVersion = "0.12"
+scriptVersion = "0.13"
 
 
 def parseArguments():
@@ -23,7 +23,7 @@ def parseArguments():
 
     # Instantiate the parser
     global scriptVersion
-    parser = argparse.ArgumentParser(description='Certificate Checker V' + scriptVersion)
+    parser = argparse.ArgumentParser(description='Certificate Checker v' + scriptVersion)
 
     # Optional arguments
     parser.add_argument('--hostname', default="google.com",
@@ -46,6 +46,9 @@ def parseArguments():
 
     parser.add_argument('--uploadJsonData', default='',
                         help='Upload JSON data to HTTP URL via HTTP POST method.')
+
+    parser.add_argument('--mongoDB', action='store_true',
+                        help='Upload results to MongoDB. Connection details stored in mongo.cfg')
 
     parser.add_argument('--setTag', default='',
                         help='Set the tag for the query results. Creates tag.cfg file with tag.')
@@ -187,6 +190,26 @@ def processQueryFile():
         # Upload the system data and certificate information to the appropriate URL
         print(o_myCertificate.uploadJsonData(jsonScriptData, args.uploadJsonData))
 
+    if args.mongoDB:
+        # Upload the data to the mongoDB, defined by mongo.cfg
+        # Define the sendDataMongoDB object
+        sdMDB = sendDataMongoDB.sendDataMongoDB()
+
+        # Load the configuration file (mongo.cfg)
+        mongoConnect = sdMDB.loadConfigurationFile()
+
+        # Create the connection request.
+        connection = sdMDB.createDB(mongoConnect)
+
+        # Create the collection in the database.
+        collection = sdMDB.createCollection(connection)
+
+        # Upload the results to the MongoDB
+        # It's only at this point that the database/collection gets created
+        # (if this is the first entry to be uploaded)
+        uploadResult = sdMDB.sendResults(jsonScriptData,collection)
+
+
 
 def processHostname():
     # Define initial certificate object
@@ -234,6 +257,25 @@ def processHostname():
     if args.uploadJsonData:
         # Upload the system data and certificate information to the appropriate URL
         print(o_myCertificate.uploadJsonData(jsonScriptData, args.uploadJsonData))
+
+    if args.mongoDB:
+        # Upload the data to the mongoDB, defined by mongo.cfg
+        # Define the sendDataMongoDB object
+        sdMDB = sendDataMongoDB.sendDataMongoDB()
+
+        # Load the configuration file (mongo.cfg)
+        mongoConnect = sdMDB.loadConfigurationFile()
+
+        # Create the connection request.
+        connection = sdMDB.createDB(mongoConnect)
+
+        # Create the collection in the database.
+        collection = sdMDB.createCollection(connection)
+
+        # Upload the results to the MongoDB
+        # It's only at this point that the database/collection gets created
+        # (if this is the first entry to be uploaded)
+        uploadResult = sdMDB.sendResults(jsonScriptData,collection)
 
 
 if __name__ == "__main__":

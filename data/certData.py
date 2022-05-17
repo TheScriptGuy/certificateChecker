@@ -98,4 +98,4 @@ class certData:
     def __init__(self):
         """Initialize the certData class."""
         self.initialized = True
-        self.version = "0.02"
+        self.version = "0.04"
