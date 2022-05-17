@@ -32,7 +32,6 @@ class sendDataMongoDB:
             print("Server connection timeout error when uploadint data.")
             sys.exit(1)
 
-
         return __uploadResult
         
     @staticmethod
@@ -86,7 +85,6 @@ class sendDataMongoDB:
         else:
             __mongoDatabase = "certificateDataDB"
 
-     
         __mongoConnectionString = self.connectionString(__destination)
 
         try:

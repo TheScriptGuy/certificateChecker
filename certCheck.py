@@ -210,7 +210,6 @@ def processQueryFile():
         uploadResult = sdMDB.sendResults(jsonScriptData,collection)
 
 
-
 def processHostname():
     # Define initial certificate object
     o_myCertificate = certificateModule.certificateModule()
