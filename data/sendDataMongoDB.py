@@ -1,6 +1,5 @@
 # send data to <mongodb location>
-# In development: mongodb
-# Version 0.01
+# Version 0.02
 
 import pymongo
 from pymongo import MongoClient
@@ -101,7 +100,24 @@ class sendDataMongoDB:
         """create a collection within the DB."""
         return __mongoConnection[__collectionName]
 
+    def uploadDataToMongoDB(self, __jsonScriptData):
+        """Upload the data to MongoDB"""
+        # Load the configuration file (mongo.cfg)
+        mongoConnect = self.loadConfigurationFile()
+
+        # Create the connection request.
+        connection = self.createDB(mongoConnect)
+
+        # Create the collection in the database.
+        collection = self.createCollection(connection)
+
+        # Upload the results to the MongoDB
+        # It's only at this point that the database/collection gets created
+        # (if this is the first entry to be uploaded)
+        uploadResult = self.sendResults(__jsonScriptData, collection)
+        return uploadResult
+
     def __init__(self):
         """Initialize the sendDataMongoDB class."""
         self.initialized = True
-        self.version = "0.01"
+        self.version = "0.02"

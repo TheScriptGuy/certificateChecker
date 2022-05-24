@@ -1,7 +1,7 @@
 # Program:        Certificate Checker
 # Author:         Nolan Rumble
-# Date:           2022/05/16
-# Version:        0.13
+# Date:           2022/05/24
+# Version:        0.14
 
 import argparse
 import datetime
@@ -13,7 +13,7 @@ from certificate import certificateModule
 from data import certData
 from data import sendDataMongoDB
 
-scriptVersion = "0.13"
+scriptVersion = "0.14"
 
 
 def parseArguments():
@@ -191,21 +191,8 @@ def processQueryFile():
         # Upload the data to the mongoDB, defined by mongo.cfg
         # Define the sendDataMongoDB object
         sdMDB = sendDataMongoDB.sendDataMongoDB()
-
-        # Load the configuration file (mongo.cfg)
-        mongoConnect = sdMDB.loadConfigurationFile()
-
-        # Create the connection request.
-        connection = sdMDB.createDB(mongoConnect)
-
-        # Create the collection in the database.
-        collection = sdMDB.createCollection(connection)
-
-        # Upload the results to the MongoDB
-        # It's only at this point that the database/collection gets created
-        # (if this is the first entry to be uploaded)
-        uploadResult = sdMDB.sendResults(jsonScriptData, collection)
-
+        uploadResult = sdMDB.uploadDataToMongoDB(jsonScriptData))
+        print(uploadResult)
 
 def processHostname():
     # Define initial certificate object
@@ -258,21 +245,8 @@ def processHostname():
         # Upload the data to the mongoDB, defined by mongo.cfg
         # Define the sendDataMongoDB object
         sdMDB = sendDataMongoDB.sendDataMongoDB()
-
-        # Load the configuration file (mongo.cfg)
-        mongoConnect = sdMDB.loadConfigurationFile()
-
-        # Create the connection request.
-        connection = sdMDB.createDB(mongoConnect)
-
-        # Create the collection in the database.
-        collection = sdMDB.createCollection(connection)
-
-        # Upload the results to the MongoDB
-        # It's only at this point that the database/collection gets created
-        # (if this is the first entry to be uploaded)
-        uploadResult = sdMDB.sendResults(jsonScriptData, collection)
-
+        uploadResult = sdMDB.uploadDataToMongoDB(jsonScriptData))
+        print(uploadResult)
 
 if __name__ == "__main__":
     # Get all the arguments sent through to the script

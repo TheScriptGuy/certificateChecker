@@ -1,3 +1,8 @@
+# 2022/05/24
+## Version 0.14
+## Changes
+* Changed the logic of how the MongoDB feature works. Moved the entries to the sendDataMongoDB.py file.
+
 # 2022/05/16
 ## Version 0.13
 ## Additions
