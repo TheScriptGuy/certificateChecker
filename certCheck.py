@@ -191,7 +191,7 @@ def processQueryFile():
         # Upload the data to the mongoDB, defined by mongo.cfg
         # Define the sendDataMongoDB object
         sdMDB = sendDataMongoDB.sendDataMongoDB()
-        uploadResult = sdMDB.uploadDataToMongoDB(jsonScriptData))
+        uploadResult = sdMDB.uploadDataToMongoDB(jsonScriptData)
         print(uploadResult)
 
 def processHostname():
@@ -245,7 +245,7 @@ def processHostname():
         # Upload the data to the mongoDB, defined by mongo.cfg
         # Define the sendDataMongoDB object
         sdMDB = sendDataMongoDB.sendDataMongoDB()
-        uploadResult = sdMDB.uploadDataToMongoDB(jsonScriptData))
+        uploadResult = sdMDB.uploadDataToMongoDB(jsonScriptData)
         print(uploadResult)
 
 if __name__ == "__main__":
