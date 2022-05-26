@@ -1,7 +1,7 @@
 # Program:        Certificate Checker
 # Author:         Nolan Rumble
-# Date:           2022/05/24
-# Version:        0.14
+# Date:           2022/05/25
+# Version:        0.15
 
 import argparse
 import datetime
@@ -13,7 +13,7 @@ from certificate import certificateModule
 from data import certData
 from data import sendDataMongoDB
 
-scriptVersion = "0.14"
+scriptVersion = "0.15"
 
 
 def parseArguments():
@@ -129,7 +129,7 @@ def gatherData(certResults):
         "deviceUuid": myInfo.uuid,
         "deviceTag": myInfo.deviceTag,
         "clientHostName": myInfo.hostname,
-        "dataFormatVersion": 3,
+        "dataFormatVersion": 4,
         "certResults": certResults
     }
 
@@ -152,6 +152,10 @@ def checkArguments(__myCertificate, __jsonCertificateInfo):
 
 
 def processQueryFile():
+    if args.displayCertificateJSON:
+        print("Please use the --displayScriptDataJSON argument with the query file option")
+        sys.exit(1)
+
     myCertData = certData.certData()
 
     jsonScriptData = []

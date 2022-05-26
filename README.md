@@ -34,7 +34,7 @@ usage: certCheck.py [-h] [--hostname HOSTNAME] [--displayCertificate]
                     [--deleteTag] [--getTag] [--renewUuid] [--getUuid]
                     [--deleteUuid]
 
-Certificate Checker V0.14
+Certificate Checker V0.15
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -145,7 +145,8 @@ $
         "subjectAltName":
         {
             "DNS0": "apple.com"
-        }
+        },
+        "percentageUtilization": "6.32"
     }
 }
 ```
@@ -156,7 +157,7 @@ An example of the JSON structure which includes the hostname information as well
     "deviceUuid": "074e7305-1231-d9a3-a61c-5a028ee6db3f",
     "deviceTag": "ProductionMonitoring",
     "clientHostName": "PRODMON01",
-    "dataFormatVersion": 3,
+    "dataFormatVersion": 4,
     "certResults":
     [
         {
@@ -206,7 +207,8 @@ An example of the JSON structure which includes the hostname information as well
                 "subjectAltName":
                 {
                     "DNS0": "apple.com"
-                }
+                }"percentageUtilization": "6.32",
+                "percentageUtilization": "10.23"
             }
         },
         {
@@ -376,7 +378,8 @@ An example of the JSON structure which includes the hostname information as well
                     "DNS128": "developers.android.google.cn",
                     "DNS129": "source.android.google.cn"
                 }
-            }
+            },
+            "percentageUtilization": "15.42"
         },
         {
             "hostname": "abc.com",
@@ -458,6 +461,7 @@ An example of the JSON structure which includes the hostname information as well
                     "DNS39": "*.blackishtv.com",
                     "DNS40": "ngtvfe.com"
                 }
+                "percentageUtilization": "14.21"
             }
         }
     ]

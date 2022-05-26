@@ -1,3 +1,14 @@
+# 2022/05/25
+## Version 0.15
+## Fixes
+* Fixed a logic flaw with the --displayCertificateJSON and --queryFile argument.
+
+## Additions
+* Added a percentage utilization of the certificate time frame.
+
+## Changes
+* Updated the dataFormatVersion to reflect the new version format with the new percentageUtilization field.
+
 # 2022/05/24
 ## Version 0.14
 ## Changes

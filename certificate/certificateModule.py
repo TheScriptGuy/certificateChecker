@@ -255,6 +255,33 @@ class certificateModule:
                 "subjectAltName" : {"None": "None"}
             }
             print(jsonCertInfoFormat)
+    
+    def calculateCertificateUtilization(self, __notBefore, __notAfter):
+        """Calculating the percentage utilization of the certificate"""
+        # May 23 19:59:46 2022 GMT
+
+        certificateDateFormat = "%b %d %H:%M:%S %Y %Z"
+
+        # Convert __notBefore to datetime object
+        notBeforeTime = datetime.datetime.strptime(__notBefore, certificateDateFormat)
+        # Convert __notAfter to datetime object
+        notAfterTime = datetime.datetime.strptime(__notAfter, certificateDateFormat)
+
+        # Get the current time.
+        currentTime = datetime.datetime.now()
+        
+        # Calculate totalTime
+        totalTime = notAfterTime - notBeforeTime
+        
+        rest = notAfterTime - currentTime
+        total = notAfterTime - notBeforeTime
+
+        # Calculate the percentage utilization of the time available before expiry.
+        percentageUtilization = 100 - (rest / total * 100)
+
+        # Return the percentage utilization as a string formatted to 2 places.
+        return f"{percentageUtilization:.2f}"
+
 
     def convertCertificateObject2Json(self, __hostname, __port, __startTime, __endTime, __certificateObject):
         """Convert the certificate object into JSON format."""
@@ -308,6 +335,9 @@ class certificateModule:
                 myJsonCertificateInfo["certificateInfo"]["subjectAltName"].update({field + str(subjectAltNameCounter): value})
                 subjectAltNameCounter += 1
 
+            # Percentage Utilization of certificate
+            myJsonCertificateInfo["certificateInfo"]["percentageUtilization"] = self.calculateCertificateUtilization(__certificateObject['notBefore'], __certificateObject['notAfter'])
+
             # Reset number of entries
             subjectAltNameCounter = 0
 
@@ -323,6 +353,7 @@ class certificateModule:
             myJsonCertificateInfo["certificateInfo"]["crlDistributionPoints"] = "None"
             myJsonCertificateInfo["certificateInfo"]["caIssuers"] = "None"
             myJsonCertificateInfo["certificateInfo"]["subjectAltName"] = {"None": "None"}
+            myJsonCertificateInfo["certificateInfo"]["percentageUtilization"] = "0.00"
 
         return myJsonCertificateInfo
 
@@ -340,5 +371,5 @@ class certificateModule:
     def __init__(self):
         """Initialize the class."""
         self.initialized = True
-        self.moduleVersion = "0.04"
+        self.moduleVersion = "0.05"
         self.certificate = {}
