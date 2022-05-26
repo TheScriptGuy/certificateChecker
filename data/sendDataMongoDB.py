@@ -27,8 +27,8 @@ class sendDataMongoDB:
         """upload the __results to __destCollection mongodb object."""
         try:
             __uploadResult = __destCollection.insert_one(__results)
-        except pymongo.errors.ServerSelectionTimeoutError as e:
-            print("Server connection timeout error when uploadint data.")
+        except pymongo.errors.ServerSelectionTimeoutError:
+            print("Server connection timeout error when uploading data.")
             sys.exit(1)
 
         return __uploadResult
@@ -87,10 +87,10 @@ class sendDataMongoDB:
 
         try:
             __mongoClient = MongoClient(__mongoConnectionString)
-        except pymongo.errors.ConfigurationError as e:
+        except pymongo.errors.ConfigurationError:
             print("mongo.cfg configuration error.")
             sys.exit(1)
-        except pymongo.errors.ServerSelectionTimeoutError as e:
+        except pymongo.errors.ServerSelectionTimeoutError:
             print("Server connection timeout error.")
             sys.exit(1)
 
