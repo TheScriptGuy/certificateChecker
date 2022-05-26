@@ -19,8 +19,7 @@ class systemInfo:
             with open(self.uuidFilename) as f_uuid:
                 myUuid = f_uuid.readline()
             return myUuid
-        else:
-            return ""
+        return ""
 
     def getTag(self):
         """Get the tag."""
@@ -28,8 +27,7 @@ class systemInfo:
             with open(self.tagFilename, 'r') as f_tag:
                 myTag = f_tag.readline().rstrip().split(',')
             return myTag
-        else:
-            return []
+        return []
 
     def __init__(self):
         """Initialize the class."""

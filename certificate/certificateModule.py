@@ -98,16 +98,14 @@ class certificateModule:
         """Return the notBefore field from the certificate."""
         if __certificateObject is not None:
             return __certificateObject['notBefore']
-        else:
-            return ""
+        return ""
 
     @staticmethod
     def returnNotAfter(__certificateObject):
         """Return the notAfter field from the certificate."""
         if __certificateObject is not None:
             return __certificateObject['notAfter']
-        else:
-            return ""
+        return ""
 
     def howMuchTimeLeft(self, __certificateObject):
         """Return the remaining time left on the certificate."""
@@ -166,8 +164,7 @@ class certificateModule:
             isValid = bool((certNotBefore < timeNow) and (certNotAfter > timeNow))
 
             return isValid
-        else:
-            return False
+        return False
 
     @staticmethod
     def printOCSP(__certificateObject):
