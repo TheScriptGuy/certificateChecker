@@ -26,13 +26,14 @@ class systemInfo:
         """Get the tag."""
         if path.exists(self.tagFilename):
             with open(self.tagFilename, 'r') as f_tag:
-                myTag = f_tag.readline().rstrip()
+                myTag = f_tag.readline().rstrip().split(',')
             return myTag
         else:
-            return ""
+            return []
 
     def __init__(self):
         """Initialize the class."""
         self.hostname = self.getHostname()
         self.uuid = self.getUuid()
         self.deviceTag = self.getTag()
+        self.classVersion = "0.02"

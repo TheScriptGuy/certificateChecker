@@ -1,7 +1,7 @@
 # Program:        Certificate Checker
 # Author:         Nolan Rumble
-# Date:           2022/05/25
-# Version:        0.15
+# Date:           2022/05/26
+# Version:        0.16
 
 import argparse
 import datetime
@@ -13,7 +13,7 @@ from certificate import certificateModule
 from data import certData
 from data import sendDataMongoDB
 
-scriptVersion = "0.15"
+scriptVersion = "0.16"
 
 
 def parseArguments():
@@ -48,7 +48,7 @@ def parseArguments():
                         help='Upload results to MongoDB. Connection details stored in mongo.cfg')
 
     parser.add_argument('--setTag', default='',
-                        help='Set the tag for the query results. Creates tag.cfg file with tag.')
+                        help='Set the tag for the query results. Creates tag.cfg file with tag. Use commas to separate multiple tags.')
 
     parser.add_argument('--deleteTag', action='store_true',
                         help='Delete the tag file - tag.cfg')
@@ -67,7 +67,6 @@ def parseArguments():
 
     global args
     args = parser.parse_args()
-
 
 def defineInfoArguments(o_systemData, o_systemInfo):
     global args
@@ -103,7 +102,6 @@ def defineInfoArguments(o_systemData, o_systemInfo):
         o_systemData.createUuidIfNotExist()
         sys.exit(0)
 
-
 def gatherData(certResults):
     """
     This will collect all the data into a uniform data structure that can
@@ -129,12 +127,11 @@ def gatherData(certResults):
         "deviceUuid": myInfo.uuid,
         "deviceTag": myInfo.deviceTag,
         "clientHostName": myInfo.hostname,
-        "dataFormatVersion": 4,
+        "dataFormatVersion": 5,
         "certResults": certResults
     }
 
     return myData
-
 
 def checkArguments(__myCertificate, __jsonCertificateInfo):
     if args.displayCertificateJSON:
@@ -149,7 +146,6 @@ def checkArguments(__myCertificate, __jsonCertificateInfo):
             # Display the remaining time left on the certificate being queried.
             o_myCertificate.printSubject(__myCertificate)
             print(" ", o_myCertificate.howMuchTimeLeft(__myCertificate))
-
 
 def processQueryFile():
     if args.displayCertificateJSON:

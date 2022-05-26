@@ -1,3 +1,11 @@
+# 2022/05/26
+## Version 0.16
+## Additions
+* Add ability for tagging a device with multiple tags. See README.md for to apply.
+
+## Changes
+* Updated the dataFormatVersion to reflect the new multiple tag options.
+
 # 2022/05/25
 ## Version 0.15
 ## Fixes
