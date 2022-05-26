@@ -120,7 +120,6 @@ class certificateModule:
                 'months': __delta.months,
                 'days': __delta.days,
                 'hours': __delta.hours,
-                'days': __delta.days,
                 'minutes': __delta.minutes,
                 'seconds': __delta.seconds,
             }
