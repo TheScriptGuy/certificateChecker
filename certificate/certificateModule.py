@@ -42,15 +42,16 @@ class certificateModule:
             print(connectHost + ' - File not found - ', e.strerror)
             return None
 
+        except TimeoutError as e:
+            connectHost = __hostname + ":" + str(__port)
+            print(connectHost + ' - Timeout error - ', e.strerror)
+            return None
+
         except OSError as e:
             connectHost = __hostname + ":" + str(__port)
             print(connectHost + ' - OSError - ', e.strerror)
             return None
 
-        except TimeoutError as e:
-            connectHost = __hostname + ":" + str(__port)
-            print(connectHost + ' - Timeout error - ', e.strerror)
-            return None
 
     @staticmethod
     def printSubject(__certificateObject):
@@ -150,7 +151,7 @@ class certificateModule:
         return True
 
     @staticmethod
-    def checkTimeValidity(__certificateObject):
+    def checkTimeValidity(self, __certificateObject):
         """
         Check to see if the certificate is valid:
             current date is after certificate start date
@@ -272,7 +273,7 @@ class certificateModule:
 
         # Calculate totalTime
         totalTime = notAfterTime - notBeforeTime
- 
+
         rest = notAfterTime - currentTime
         total = notAfterTime - notBeforeTime
 
@@ -281,7 +282,6 @@ class certificateModule:
 
         # Return the percentage utilization as a string formatted to 2 places.
         return f"{percentageUtilization:.2f}"
-
 
     def convertCertificateObject2Json(self, __hostname, __port, __startTime, __endTime, __certificateObject):
         """Convert the certificate object into JSON format."""

@@ -68,7 +68,9 @@ def parseArguments():
     global args
     args = parser.parse_args()
 
+
 def defineInfoArguments(o_systemData, o_systemInfo):
+    """This validates the arguments used for tag and uuid definitions."""
     global args
     # If setTag argument is set, create the new Tag.
     if args.setTag:
@@ -102,6 +104,7 @@ def defineInfoArguments(o_systemData, o_systemInfo):
         o_systemData.createUuidIfNotExist()
         sys.exit(0)
 
+
 def gatherData(certResults):
     """
     This will collect all the data into a uniform data structure that can
@@ -133,7 +136,9 @@ def gatherData(certResults):
 
     return myData
 
+
 def checkArguments(__myCertificate, __jsonCertificateInfo):
+    """This will see how the data needs to be displayed to stdout."""
     if args.displayCertificateJSON:
         # Display the certificate JSON structure
         o_myCertificate.printCertInfoJSON(__jsonCertificateInfo)
@@ -147,7 +152,14 @@ def checkArguments(__myCertificate, __jsonCertificateInfo):
             o_myCertificate.printSubject(__myCertificate)
             print(" ", o_myCertificate.howMuchTimeLeft(__myCertificate))
 
+
 def processQueryFile():
+    """
+    This will get all the contents of the query file to be used when polling
+    multiple hosts
+    """
+    # First check to see if the --displayCertificateJSON argument is used.
+    # This argument cannot be used in conjunction with the --queryFile argument
     if args.displayCertificateJSON:
         print("Please use the --displayScriptDataJSON argument with the query file option")
         sys.exit(1)
@@ -194,7 +206,9 @@ def processQueryFile():
         uploadResult = sdMDB.uploadDataToMongoDB(jsonScriptData)
         print(uploadResult)
 
+
 def processHostname():
+    """This will attempt to connect to the hostname defined by the --hostname argument."""
     # Define initial certificate object
     o_myCertificate = certificateModule.certificateModule()
 
@@ -247,6 +261,7 @@ def processHostname():
         sdMDB = sendDataMongoDB.sendDataMongoDB()
         uploadResult = sdMDB.uploadDataToMongoDB(jsonScriptData)
         print(uploadResult)
+
 
 if __name__ == "__main__":
     # Get all the arguments sent through to the script
