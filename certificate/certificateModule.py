@@ -256,8 +256,7 @@ class certificateModule:
 
     def calculateCertificateUtilization(self, __notBefore, __notAfter):
         """Calculating the percentage utilization of the certificate"""
-        # May 23 19:59:46 2022 GMT
-
+        # Certificate date/time format that is to be interpreted by datetime module.
         certificateDateFormat = "%b %d %H:%M:%S %Y %Z"
 
         # Convert __notBefore to datetime object
@@ -268,9 +267,7 @@ class certificateModule:
         # Get the current time.
         currentTime = datetime.datetime.now()
 
-        # Calculate totalTime
-        totalTime = notAfterTime - notBeforeTime
-
+        # Calculate the differences between currentTime, notAfterTime, and notBeforeTime
         rest = notAfterTime - currentTime
         total = notAfterTime - notBeforeTime
 
