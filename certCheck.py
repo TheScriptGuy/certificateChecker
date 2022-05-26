@@ -19,7 +19,6 @@ scriptVersion = "0.16"
 def parseArguments():
     """Create argument options and parse through them to determine what to do with script."""
     # Instantiate the parser
-    global scriptVersion
     parser = argparse.ArgumentParser(description='Certificate Checker v' + scriptVersion)
 
     # Optional arguments
@@ -71,7 +70,6 @@ def parseArguments():
 
 def defineInfoArguments(o_systemData, o_systemInfo):
     """This validates the arguments used for tag and uuid definitions."""
-    global args
     # If setTag argument is set, create the new Tag.
     if args.setTag:
         o_systemData.setTag(args.setTag)
