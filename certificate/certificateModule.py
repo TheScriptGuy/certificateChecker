@@ -255,7 +255,7 @@ class certificateModule:
                 "subjectAltName" : {"None": "None"}
             }
             print(jsonCertInfoFormat)
-    
+
     def calculateCertificateUtilization(self, __notBefore, __notAfter):
         """Calculating the percentage utilization of the certificate"""
         # May 23 19:59:46 2022 GMT
@@ -269,10 +269,10 @@ class certificateModule:
 
         # Get the current time.
         currentTime = datetime.datetime.now()
-        
+
         # Calculate totalTime
         totalTime = notAfterTime - notBeforeTime
-        
+ 
         rest = notAfterTime - currentTime
         total = notAfterTime - notBeforeTime
 
