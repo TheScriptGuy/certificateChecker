@@ -1,5 +1,4 @@
 import socket
-import os.path
 from os import path
 
 
@@ -34,4 +33,4 @@ class systemInfo:
         self.hostname = self.getHostname()
         self.uuid = self.getUuid()
         self.deviceTag = self.getTag()
-        self.classVersion = "0.02"
+        self.classVersion = "0.03"
