@@ -15,6 +15,12 @@ from data import sendDataMongoDB
 
 scriptVersion = "0.16"
 
+# Global Variables
+args = None
+o_myCertificate = None
+o_myInfo = None
+o_mySystemData = None
+
 
 def parseArguments():
     """Create argument options and parse through them to determine what to do with script."""
@@ -207,7 +213,6 @@ def processQueryFile():
 
 def processHostname():
     """This will attempt to connect to the hostname defined by the --hostname argument."""
-    global o_myCertificate
     # Define initial certificate object
     o_myCertificate = certificateModule.certificateModule()
 
@@ -267,9 +272,7 @@ if __name__ == "__main__":
     parseArguments()
 
     # Set initial objects for systemData and systemInfo
-    global o_mySystemData
     o_mySystemData = systemData.systemData()
-    global o_myInfo
     o_myInfo = systemInfo.systemInfo()
 
     # Gather system data and info
