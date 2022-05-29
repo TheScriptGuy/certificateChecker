@@ -154,10 +154,11 @@ class certificateModule:
             current date is after certificate start date
             current date is before certificate expiry date
         """
+        certTimeFormat = "%b %d %H:%M:%S %Y %Z"
         if __certificateObject is not None:
             timeNow = datetime.datetime.now().replace(microsecond=0).date()
-            certNotAfter = datetime.datetime.strptime(self.returnNotAfter(__certificateObject), '%b %d %H:%M:%S %Y %Z').date()
-            certNotBefore = datetime.datetime.strptime(self.returnNotBefore(__certificateObject), '%b %d %H:%M:%S %Y %Z').date()
+            certNotAfter = datetime.datetime.strptime(certificateModule.returnNotAfter(__certificateObject), certTimeFormat).date()
+            certNotBefore = datetime.datetime.strptime(certificateModule.returnNotBefore(__certificateObject), certTimeFormat).date()
 
             # Assume time not valid
             isValid = bool((certNotBefore < timeNow) and (certNotAfter > timeNow))

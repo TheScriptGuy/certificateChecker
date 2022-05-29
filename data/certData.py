@@ -1,10 +1,11 @@
 # Certificate Data Handling
-# Version: 0.05
+# Version: 0.06
 
 import sys
 from os import path
 import requests
 import json
+import socket
 
 class certData:
     """certData class"""
@@ -62,13 +63,13 @@ class certData:
     def loadQueriesFile(queriesFile):
         """
         This will load the queries that need to be performed against each name server.
-        One query per line. Right now it's only meant to be for 'A' record resolutions.
+        One hostname entry per line.
         """
         queries = []
 
         # Check to see if queriesFile is a URL and if it is, attempt to download it.
         if queriesFile.startswith('http://') or queriesFile.startswith('https://'):
-            myQueries = getFileFromURL(queriesFile)
+            myQueries = certData.getFileFromURL(queriesFile)
             for line in myQueries:
                 if ":" in line:
                     tmpLine = line.split(':')
@@ -99,4 +100,4 @@ class certData:
     def __init__(self):
         """Initialize the certData class."""
         self.initialized = True
-        self.version = "0.04"
+        self.version = "0.06"
