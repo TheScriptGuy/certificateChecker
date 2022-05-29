@@ -1,11 +1,10 @@
 # Certificate Module
-# Version: 0.04
-# Last updated: 2022-04-30
+# Version: 0.06
+# Last updated: 2022-05-29
 # Author: TheScriptGuy
 
 import ssl
 import socket
-import argparse
 import datetime
 import json
 import requests
@@ -34,7 +33,7 @@ class certificateModule:
 
         except socket.gaierror as e:
             connectHost = __hostname + ":" + str(__port)
-            print(connectHost + 'Socket error - ', e.strerror)
+            print(connectHost + ' - Socket error - ', e.strerror)
             return None
 
         except FileNotFoundError as e:
@@ -111,7 +110,7 @@ class certificateModule:
         """Return the remaining time left on the certificate."""
         if __certificateObject is not None:
             timeNow = datetime.datetime.now().replace(microsecond=0)
-            certNotAfter = datetime.datetime.strptime(self.returnNotAfter(__certificateObject), '%b %d %H:%M:%S %Y %Z')
+            certNotAfter = datetime.datetime.strptime(self.returnNotAfter(__certificateObject), self.certTimeFormat)
 
             __delta = relativedelta(certNotAfter, timeNow)
 
@@ -148,17 +147,16 @@ class certificateModule:
         return True
 
     @staticmethod
-    def checkTimeValidity(__certificateObject):
+    def checkTimeValidity(self, __certificateObject):
         """
         Check to see if the certificate is valid:
             current date is after certificate start date
             current date is before certificate expiry date
         """
-        certTimeFormat = "%b %d %H:%M:%S %Y %Z"
         if __certificateObject is not None:
             timeNow = datetime.datetime.now().replace(microsecond=0).date()
-            certNotAfter = datetime.datetime.strptime(certificateModule.returnNotAfter(__certificateObject), certTimeFormat).date()
-            certNotBefore = datetime.datetime.strptime(certificateModule.returnNotBefore(__certificateObject), certTimeFormat).date()
+            certNotAfter = datetime.datetime.strptime(self.returnNotAfter(__certificateObject), self.certTimeFormat).date()
+            certNotBefore = datetime.datetime.strptime(self.returnNotBefore(__certificateObject), self.certTimeFormat).date()
 
             # Assume time not valid
             isValid = bool((certNotBefore < timeNow) and (certNotAfter > timeNow))
@@ -256,13 +254,10 @@ class certificateModule:
 
     def calculateCertificateUtilization(self, __notBefore, __notAfter):
         """Calculating the percentage utilization of the certificate"""
-        # Certificate date/time format that is to be interpreted by datetime module.
-        certificateDateFormat = "%b %d %H:%M:%S %Y %Z"
-
         # Convert __notBefore to datetime object
-        notBeforeTime = datetime.datetime.strptime(__notBefore, certificateDateFormat)
+        notBeforeTime = datetime.datetime.strptime(__notBefore, self.certTimeFormat)
         # Convert __notAfter to datetime object
-        notAfterTime = datetime.datetime.strptime(__notAfter, certificateDateFormat)
+        notAfterTime = datetime.datetime.strptime(__notAfter, self.certTimeFormat)
 
         # Get the current time.
         currentTime = datetime.datetime.now()
@@ -365,5 +360,8 @@ class certificateModule:
     def __init__(self):
         """Initialize the class."""
         self.initialized = True
-        self.moduleVersion = "0.05"
+        self.moduleVersion = "0.06"
         self.certificate = {}
+
+        # Certificate date/time format that is to be interpreted by datetime module.
+        self.certTimeFormat = "%b %d %H:%M:%S %Y %Z"

@@ -71,6 +71,7 @@ def parseArguments():
                         help='Remove the UUID value. Caution: when script runs again a new UUID will be generated.')
 
     global args
+
     args = parser.parse_args()
 
 
@@ -192,16 +193,15 @@ def processQueryFile():
 
         checkArguments(myCertificate, jsonCertificateInfo)
 
-    jsonScriptData = gatherData(jsonScriptData)
+    myJsonScriptData = gatherData(jsonScriptData)
 
     if args.displayScriptDataJSON:
         # Display the certificate and system JSON structure
-        myJSONScriptData = json.dumps(jsonScriptData)
-        print(myJSONScriptData)
+        print(json.dumps(myJsonScriptData))
 
     if args.uploadJsonData:
         # Upload the system data and certificate information to the appropriate URL
-        print(o_myCertificate.uploadJsonData(jsonScriptData, args.uploadJsonData))
+        print(o_myCertificate.uploadJsonData(myJsonScriptData, args.uploadJsonData))
 
     if args.mongoDB:
         # Upload the data to the mongoDB, defined by mongo.cfg

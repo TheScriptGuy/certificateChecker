@@ -1,7 +1,7 @@
 import uuid
 import sys
-import os.path
 from os import path
+import os.path
 
 
 class systemData:
