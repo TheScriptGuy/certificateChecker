@@ -146,7 +146,6 @@ class certificateModule:
         """Check to see if certificate hasn't been revoked."""
         return True
 
-    @staticmethod
     def checkTimeValidity(self, __certificateObject):
         """
         Check to see if the certificate is valid:
