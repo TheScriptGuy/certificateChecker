@@ -7,6 +7,7 @@ import requests
 import json
 import socket
 
+
 class certData:
     """certData class"""
 

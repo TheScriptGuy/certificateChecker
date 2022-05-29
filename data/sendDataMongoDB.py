@@ -1,4 +1,4 @@
-# send data to <mongodb location>
+# Send data to destination based on mongo.cfg file.
 # Version 0.02
 
 import pymongo
@@ -6,6 +6,7 @@ from pymongo import MongoClient
 import iptools
 import json
 import sys
+
 
 class sendDataMongoDB:
     """sendDataMongoDB class"""
