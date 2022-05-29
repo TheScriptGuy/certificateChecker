@@ -148,7 +148,7 @@ class certificateModule:
         return True
 
     @staticmethod
-    def checkTimeValidity(self, __certificateObject):
+    def checkTimeValidity(__certificateObject):
         """
         Check to see if the certificate is valid:
             current date is after certificate start date

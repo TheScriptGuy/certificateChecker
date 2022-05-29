@@ -1,10 +1,10 @@
 # Certificate Data Handling
-# Version: 0.04
+# Version: 0.05
 
 import sys
 from os import path
 import requests
-
+import json
 
 class certData:
     """certData class"""
@@ -13,7 +13,8 @@ class certData:
     def writeResults(results, outputFile):
         """Send the json data to the outputFile variable."""
         with open(outputFile, "w", encoding="utf-8") as outputfile:
-            outputfile.write(json.dumps(results))
+            jsonOutput = json.dumps(results)
+            outputfile.write(jsonOutput)
 
     @staticmethod
     def getFileFromURL(fileURL):
@@ -67,7 +68,7 @@ class certData:
 
         # Check to see if queriesFile is a URL and if it is, attempt to download it.
         if queriesFile.startswith('http://') or queriesFile.startswith('https://'):
-            myQueries = self.getFileFromURL(queriesFile)
+            myQueries = getFileFromURL(queriesFile)
             for line in myQueries:
                 if ":" in line:
                     tmpLine = line.split(':')
