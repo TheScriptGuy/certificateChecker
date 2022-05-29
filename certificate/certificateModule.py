@@ -51,7 +51,6 @@ class certificateModule:
             print(connectHost + ' - OSError - ', e.strerror)
             return None
 
-
     @staticmethod
     def printSubject(__certificateObject):
         """Print the subject name of the certificate."""
