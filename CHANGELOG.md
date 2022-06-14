@@ -1,4 +1,8 @@
 # 2022/05/26
+## Version 0.17
+## Changes
+* Updated dataFormatVersion to 6. This is to address a new feature. The certResults field has changed to a list.
+
 ## Version 0.16
 ## Additions
 * Add ability for tagging a device with multiple tags. See README.md for to apply.

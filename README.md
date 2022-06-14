@@ -1,6 +1,6 @@
 # Certificate Checker
 
-Version: 0.16
+Version: 0.17
 
 Author: TheScriptGuy
 
@@ -158,67 +158,68 @@ $ python3 certCheck.py --hostname apple.com --displayScriptDataJSON
 The resulting output is:
 ```json
 {
-    "deviceUuid": "d6120e04-9e95-4510-a08b-ee9caf72cbec",
+    "deviceUuid": "a1089eb8-744d-4bca-9550-9b8642a8e2e5",
     "deviceTag":
     [
         "production"
     ],
-    "clientHostName": "PRODMON01",
+    "clientHostName": "calvin",
     "dataFormatVersion": 5,
     "certResults":
-    {
-        "hostname": "apple.com",
-        "port": 443,
-        "startTime": "2022/05/26 06:51:22.572464",
-        "endTime": "2022/05/26 06:51:22.620406",
-        "queryTime": "0.047942",
-        "certificateInfo":
+    [
         {
-            "subject":
+            "hostname": "apple.com",
+            "port": 443,
+            "startTime": "2022/06/14 16:11:55.995985",
+            "endTime": "2022/06/14 16:11:56.046513",
+            "queryTime": "0.050528",
+            "certificateInfo":
             {
-                "businessCategory": "Private Organization",
-                "jurisdictionCountryName": "US",
-                "jurisdictionStateOrProvinceName": "California",
-                "serialNumber": "C0806592",
-                "countryName": "US",
-                "stateOrProvinceName": "California",
-                "localityName": "Cupertino",
-                "organizationName": "Apple Inc.",
-                "organizationalUnitName": "management:idms.group.665035",
-                "commonName": "apple.com"
-            },
-            "certificateIssuer":
-            {
-                "countryName": "US",
-                "organizationName": "Apple Inc.",
-                "commonName": "Apple Public EV Server ECC CA 1 - G1"
-            },
-            "version": 3,
-            "serialNumber": "6A1D3FA84A43C329F1051060FF4698BA",
-            "notBefore": "Apr 26 21:58:37 2022 GMT",
-            "notAfter": "May 26 21:58:36 2023 GMT",
-            "timeLeft": "1 year, 15 hours, 7 minutes, 14 seconds",
-            "OCSP":
-            [
-                "http://ocsp.apple.com/ocsp03-apevsecc1g101"
-            ],
-            "crlDistributionPoints":
-            [
-                "http://crl.apple.com/apevsecc1g1.crl"
-            ],
-            "caIssuers":
-            [
-                "http://certs.apple.com/apevsecc1g1.der"
-            ],
-            "subjectAltName":
-            {
-                "DNS0": "apple.com"
-            },
-            "percentageUtilization": "7.44"
+                "subject":
+                {
+                    "businessCategory": "Private Organization",
+                    "jurisdictionCountryName": "US",
+                    "jurisdictionStateOrProvinceName": "California",
+                    "serialNumber": "C0806592",
+                    "countryName": "US",
+                    "stateOrProvinceName": "California",
+                    "localityName": "Cupertino",
+                    "organizationName": "Apple Inc.",
+                    "organizationalUnitName": "management:idms.group.665035",
+                    "commonName": "apple.com"
+                },
+                "certificateIssuer":
+                {
+                    "countryName": "US",
+                    "organizationName": "Apple Inc.",
+                    "commonName": "Apple Public EV Server ECC CA 1 - G1"
+                },
+                "version": 3,
+                "serialNumber": "6A1D3FA84A43C329F1051060FF4698BA",
+                "notBefore": "Apr 26 21:58:37 2022 GMT",
+                "notAfter": "May 26 21:58:36 2023 GMT",
+                "timeLeft": "11 months, 12 days, 5 hours, 46 minutes, 40 seconds",
+                "OCSP":
+                [
+                    "http://ocsp.apple.com/ocsp03-apevsecc1g101"
+                ],
+                "crlDistributionPoints":
+                [
+                    "http://crl.apple.com/apevsecc1g1.crl"
+                ],
+                "caIssuers":
+                [
+                    "http://certs.apple.com/apevsecc1g1.der"
+                ],
+                "subjectAltName":
+                {
+                    "DNS0": "apple.com"
+                },
+                "percentageUtilization": "12.34"
+            }
         }
-    }
+    ]
 }
-
 ```
 
 Features to add:

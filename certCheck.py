@@ -1,7 +1,7 @@
 # Program:        Certificate Checker
 # Author:         Nolan Rumble
-# Date:           2022/05/26
-# Version:        0.16
+# Date:           2022/06/14
+# Version:        0.17
 
 import argparse
 import datetime
@@ -13,7 +13,7 @@ from certificate import certificateModule
 from data import certData
 from data import sendDataMongoDB
 
-scriptVersion = "0.16"
+scriptVersion = "0.17"
 
 # Global Variables
 args = None
@@ -135,7 +135,7 @@ def gatherData(certResults):
         "deviceUuid": myInfo.uuid,
         "deviceTag": myInfo.deviceTag,
         "clientHostName": myInfo.hostname,
-        "dataFormatVersion": 5,
+        "dataFormatVersion": 6,
         "certResults": certResults
     }
 
@@ -236,7 +236,7 @@ def processHostname():
     jsonCertificateInfo = o_myCertificate.convertCertificateObject2Json(hostnameQuery["hostname"], hostnameQuery["port"], o_startTime, o_endTime, myCertificate)
 
     # Append system data to JSON certificate structure
-    jsonScriptData = gatherData(jsonCertificateInfo)
+    jsonScriptData = gatherData([jsonCertificateInfo])
 
     if args.displayCertificateJSON:
         # Display the certificate JSON structure
