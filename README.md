@@ -65,73 +65,9 @@ optional arguments:
                         a new UUID will be generated.
 ```
 
-## Example to upload to mongoDB
-First configure the `mongo.cfg` file with the connection details in json format.
+[Example to send an email](https://github.com/TheScriptGuy/certificateChecker/blob/main/README-email.md)
+[Example to upload to mongoDB](https://github.com/TheScriptGuy/certificateChecker/blob/main/README-mongoDB.md)
 
-Important things to note about the mongo.cfg file:
-* The fields `username`, `password`, `database`, `collection` are all optional.
-* Only `uri` is mandatory.
-
-* If `database` isn't specified then the field defaults to `certificateDataDB.`
-* If `collection` isn't specified then the field defaults to `certCollection`.
-
-```json
-{
-    "uri": "192.168.100.10",
-    "username": "mongoUsername",
-    "password": "m0ng0P4ssw0rd",
-    "database": "myCertDatabase"
-    "collection": "myCertCollection"
-}
-```
-
-To send the data to the MongoDB run the following command (for a single host):
-```bash
-$ python3 certCheck.py --hostname apple.com --mongoDB
-$
-```
-To upload the results from multiple queries:
-```bash
-$ python3 certCheck.py --queryFile myQueries --mongoDB
-$
-```
-
-## Example to send email
-If you'd like to be sent an email of the results of the queries, the mail.cfg file needs to be defined.
-
-Some important things to note in the mail.cfg file:
-* Right now only Authenticated SMTP STARTTLS is allowed. This means you need all the fields below in order to access except the verbose field.
-* If the verbose field is defined to True, then additional SMTP interactions will be displayed.
-* the bodyHtmlFile and bodyTextFile variables define where the HTML and TEXT versions of each file is. Make sure you add the MONITOREDHOSTS keyword into the HTML and TEXT files. This is used for inserting the results into the correct place.
-
-```json
-{
-    "hostname": "mail.mysmartdomain.com",
-    "port": 465,
-    "smtpuser": "certChecker@email.com",
-    "smtppass": "BlaPasswordBla1",
-    "startTLS": "true",
-    "from": "certChecker@email.com",
-    "to": "your_email_here@gmail.com",
-    "subject": "Certificate Checker",
-    "bodyHtmlFile": "bodyhtml.html",
-    "bodyTextFile": "bodytext.txt",
-    "verbose": "false"
-}
-```
-
-
-### Single host:
-```bash
-$ python3 certCheck.py --hostname apple.com --sendEmail
-$
-```
-
-### Multiple hosts:
-```bash
-$ python3 certCheck.py --queryFile queryfile --sendEmail
-$
-```
 
 ## Example of JSON structure for certificate specifically
 ```json
