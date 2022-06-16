@@ -65,7 +65,6 @@ class sendDataEmail:
             print("Exception - ruh roh")
             print(e)
 
-
     def setConfigDefaults(self):
         """Set the defaults for the variables/config options."""
         # mailConfiguration defaults
@@ -82,7 +81,6 @@ class sendDataEmail:
             "bodyHtmlFile": "",
             "verbose": False
         }
-
 
     def __init__(self, __bodyMessage, __mailConfigurationFile="mail.cfg"):
         """Initialize the sendDataEmail class"""

@@ -20,7 +20,6 @@ class emailConfigurationChecker:
                 print(f"hostname field is a mandatory field and must be defined in {self.mailConfigurationFile}.")
                 sys.exit(1)
 
-
     def checkConfigPort(self, __mailConfigJson):
         """Check what the port is configured as. If not defined, assume port 25."""
         # Check to see if port is defined. If not, default it to 25.
@@ -32,7 +31,6 @@ class emailConfigurationChecker:
         else:
             print(f"port configuration not found in {self.mailConfigurationFile}, assuming TCP 25")
             self.mailConfig["port"] = 25
-
 
     def checkConfigLogin(self, __mailConfigJson):
         """
@@ -48,7 +46,6 @@ class emailConfigurationChecker:
                     print(f"Please set password field (smtppass) for login in {self.mailConfigurationFile} configuration.")
                     sys.exit(1)
                 self.mailConfig["smtppass"] = __mailConfigJson["smtppass"]
-
 
     def checkConfigEmail(self, __mailConfigJson):
         """Checks the email address provided to make sure it's a valid email."""
@@ -66,7 +63,6 @@ class emailConfigurationChecker:
             print("Email address is not in a valid format")
             sys.exit(1)
 
-
     def checkConfigBodyTextFile(self, __mailConfigJson):
         """
         Check to see if the bodyTextFile variable exists.
@@ -81,7 +77,6 @@ class emailConfigurationChecker:
             except FileNotFoundError:
                 print(f"bodyTextFile defined in {self.mailConfigurationFile} but I cannot find the file.")
                 sys.exit(1)
-
 
     def checkConfigBodyHtmlFile(self, __mailConfigJson):
         """
@@ -98,7 +93,6 @@ class emailConfigurationChecker:
                 print(f"bodyHtmlMail defined in {self.mailConfigurationFile} but I cannot find the file.")
                 sys.exit(1)
 
-
     def checkConfigStartTLS(self, __mailConfigJson):
         """Check StartTLS configuration."""
         if "startTLS" in __mailConfigJson:
@@ -107,7 +101,6 @@ class emailConfigurationChecker:
         else:
             print(f"startTLS configuration not found in {self.mailConfigurationFile}, assuming False")
             self.mailConfig["startTLS"] = False
-
 
     def checkConfigurationValid(self, __mailConfigJson):
         """
@@ -125,10 +118,9 @@ class emailConfigurationChecker:
         # If we get to this point, then the configuration looks good.
         return True
 
-
     def printConfigurationFile(self):
+        """Print the mail configuration to stdout."""
         print(json.dumps(self.mailConfig))
-
 
     @staticmethod
     def loadConfigurationFile(__fileName):
@@ -150,12 +142,10 @@ class emailConfigurationChecker:
             sys.exit(1)
         return __mailConfigJson
 
-
     def validateConfiguration(self):
         """Validate configuration file. If all checks pass successfully, return the json object."""
         if self.checkConfigurationValid(self.mailConfig):
             return self.mailConfig
-
 
     def __init__(self, __mailConfigurationFile="mail.cfg"):
         """Initialize the email configuration checker class."""

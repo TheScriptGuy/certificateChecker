@@ -21,7 +21,6 @@ class emailTemplateBuilder:
 
         return emailContents
 
-
     def monitoredHostsText(self, __jsonData):
         """Builds out the text template for monitored hosts."""
         __newBodyText = ""
@@ -60,7 +59,6 @@ class emailTemplateBuilder:
 
         return __newBodyText
 
-
     def monitoredHostsHtml(self, __jsonData):
         """Builds out the html template for monitored hosts."""
         __newBodyHtml = ""
@@ -80,16 +78,13 @@ class emailTemplateBuilder:
 
         return __newBodyHtml
 
-
     def buildEmailFromTextTemplate(self, __jsonData):
         """Modifies a text file template based off the submitted hosts."""
         self.bodyMessage["text"] = self.bodyMessage["text"].replace("MONITOREDHOSTS", self.monitoredHostsText(__jsonData))
 
-
     def buildEmailFromHtmlTemplate(self, __jsonData):
         """Modifies a HTML template based off the submitted hosts."""
         self.bodyMessage["html"] = self.bodyMessage["html"].replace("MONITOREDHOSTS", self.monitoredHostsHtml(__jsonData))
-
 
     def setConfigDefaults(self):
         """Sets the defaults for the variables/config options."""
@@ -99,21 +94,17 @@ class emailTemplateBuilder:
             "html": "MONITOREDHOSTS"
         }
 
-
     def returnBodyMessage(self):
         """Returns the contents of the self.bodyMessage variable."""
         return self.bodyMessage
-
 
     def printBodyMessageText(self):
         """Print the text body message of the email."""
         print(self.bodyMessage["text"])
 
-
     def printBodyMessageHtml(self):
         """Print the html body message of the email."""
         print(self.bodyMessage["html"])
-
 
     def __init__(self, __jsonScriptData, __mailConfigurationFile="mail.cfg"):
         """Initialize the class."""
