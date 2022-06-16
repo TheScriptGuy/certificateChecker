@@ -79,6 +79,7 @@ def parseArguments():
 
     args = parser.parse_args()
 
+
 def defineInfoArguments(o_systemData, o_systemInfo):
     """This validates the arguments used for tag and uuid definitions."""
     # If setTag argument is set, create the new Tag.
@@ -113,6 +114,7 @@ def defineInfoArguments(o_systemData, o_systemInfo):
         o_systemData.createUuidIfNotExist()
         sys.exit(0)
 
+
 def gatherData(certResults):
     """
     This will collect all the data into a uniform data structure that can
@@ -144,6 +146,7 @@ def gatherData(certResults):
 
     return myData
 
+
 def checkArguments(__myCertificate, __jsonCertificateInfo):
     """This will see how the data needs to be displayed to stdout."""
     if args.displayCertificateJSON:
@@ -158,6 +161,7 @@ def checkArguments(__myCertificate, __jsonCertificateInfo):
             # Display the remaining time left on the certificate being queried.
             o_myCertificate.printSubject(__myCertificate)
             print(" ", o_myCertificate.howMuchTimeLeft(__myCertificate))
+
 
 def emailSendResults(__myJsonScriptData):
     """Email the results. Use the mail.cfg file for configuration data."""
@@ -176,6 +180,7 @@ def emailSendResults(__myJsonScriptData):
 
     # Send the email.
     myEmailObject = sendDataEmail.sendDataEmail(myEmailMessage, "mail.cfg")
+
 
 def processQueryFile():
     """
@@ -232,6 +237,7 @@ def processQueryFile():
     if args.sendEmail:
         # Send an email with the results.
         emailSendResults(myJsonScriptData)
+
 
 def processHostname():
     """This will attempt to connect to the hostname defined by the --hostname argument."""
@@ -291,6 +297,7 @@ def processHostname():
     if args.sendEmail:
         # Send an email with the results.
         emailSendResults(jsonScriptData)
+
 
 if __name__ == "__main__":
     # Get all the arguments sent through to the script
