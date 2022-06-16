@@ -290,7 +290,7 @@ def processHostname():
     
     if args.sendEmail:
         # Send an email with the results.
-        emailSendResults(myJsonScriptData)
+        emailSendResults(jsonScriptData)
 
 if __name__ == "__main__":
     # Get all the arguments sent through to the script
