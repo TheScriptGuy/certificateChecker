@@ -1,0 +1,8 @@
+Dear User,
+
+This is a visual reminder of all your monitored hosts.
+
+MONITOREDHOSTS
+
+Kind regards,
+Your Certificate Checker Team
