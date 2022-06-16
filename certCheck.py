@@ -1,7 +1,7 @@
 # Program:        Certificate Checker
 # Author:         Nolan Rumble
-# Date:           2022/06/14
-# Version:        0.17
+# Date:           2022/06/16
+# Version:        0.18
 
 import argparse
 import datetime
@@ -12,8 +12,10 @@ from systemInfo import systemInfo, systemData
 from certificate import certificateModule
 from data import certData
 from data import sendDataMongoDB
+from data import emailTemplateBuilder
+from data import sendDataEmail
 
-scriptVersion = "0.17"
+scriptVersion = "0.18"
 
 # Global Variables
 args = None
@@ -52,6 +54,9 @@ def parseArguments():
     parser.add_argument('--mongoDB', action='store_true',
                         help='Upload results to MongoDB. Connection details stored in mongo.cfg')
 
+    parser.add_argument('--sendEmail', action='store_true',
+                        help='Send an email with the results. SMTP connection details stored in mail.cfg')
+
     parser.add_argument('--setTag', default='',
                         help='Set the tag for the query results. Creates tag.cfg file with tag. Use commas to separate multiple tags.')
 
@@ -73,7 +78,6 @@ def parseArguments():
     global args
 
     args = parser.parse_args()
-
 
 def defineInfoArguments(o_systemData, o_systemInfo):
     """This validates the arguments used for tag and uuid definitions."""
@@ -109,7 +113,6 @@ def defineInfoArguments(o_systemData, o_systemInfo):
         o_systemData.createUuidIfNotExist()
         sys.exit(0)
 
-
 def gatherData(certResults):
     """
     This will collect all the data into a uniform data structure that can
@@ -141,7 +144,6 @@ def gatherData(certResults):
 
     return myData
 
-
 def checkArguments(__myCertificate, __jsonCertificateInfo):
     """This will see how the data needs to be displayed to stdout."""
     if args.displayCertificateJSON:
@@ -157,6 +159,23 @@ def checkArguments(__myCertificate, __jsonCertificateInfo):
             o_myCertificate.printSubject(__myCertificate)
             print(" ", o_myCertificate.howMuchTimeLeft(__myCertificate))
 
+def emailSendResults(__myJsonScriptData):
+    """Email the results. Use the mail.cfg file for configuration data."""
+    # Send an email message with the results from the query.
+    # First we define the emailTemplate object by using the emailTemplateBuilder class.
+    emailTemplate = emailTemplateBuilder.emailTemplateBuilder("mail.cfg")
+
+    # Build the text template from the results in myJsonScriptData
+    emailTemplate.buildEmailFromTextTemplate(__myJsonScriptData)
+
+    # Build the HTML template from the results in myJsonScriptData
+    emailTemplate.buildEmailFromHtmlTemplate(__myJsonScriptData)
+
+    # Return the contents of the body message (text/html) to the myEmailMessage object.
+    myEmailMessage = emailTemplate.returnBodyMessage()
+
+    # Send the email.
+    myEmailObject = sendDataEmail.sendDataEmail(myEmailMessage, "mail.cfg")
 
 def processQueryFile():
     """
@@ -207,9 +226,12 @@ def processQueryFile():
         # Upload the data to the mongoDB, defined by mongo.cfg
         # Define the sendDataMongoDB object
         sdMDB = sendDataMongoDB.sendDataMongoDB()
-        uploadResult = sdMDB.uploadDataToMongoDB(jsonScriptData)
+        uploadResult = sdMDB.uploadDataToMongoDB(myJsonScriptData)
         print(uploadResult)
 
+    if args.sendEmail:
+        # Send an email with the results.
+        emailSendResults(myJsonScriptData)
 
 def processHostname():
     """This will attempt to connect to the hostname defined by the --hostname argument."""
@@ -265,7 +287,10 @@ def processHostname():
         sdMDB = sendDataMongoDB.sendDataMongoDB()
         uploadResult = sdMDB.uploadDataToMongoDB(jsonScriptData)
         print(uploadResult)
-
+    
+    if args.sendEmail:
+        # Send an email with the results.
+        emailSendResults(myJsonScriptData)
 
 if __name__ == "__main__":
     # Get all the arguments sent through to the script

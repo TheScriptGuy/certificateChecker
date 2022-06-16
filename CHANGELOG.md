@@ -1,4 +1,9 @@
-# 2022/05/26
+# 2022/06/16
+## Version 0.18
+## Additions
+* NEW FEATURE - send an email notification of the monitored hosts. See README.md for more details.
+
+# 2022/06/14
 ## Version 0.17
 ## Changes
 * Updated dataFormatVersion to 6. This is to address a new feature. The certResults field has changed to a list.
