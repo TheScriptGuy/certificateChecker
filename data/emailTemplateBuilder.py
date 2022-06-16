@@ -4,6 +4,7 @@
 
 from .emailConfigurationChecker import emailConfigurationChecker
 
+
 class emailTemplateBuilder:
     """
     Email template builder class.

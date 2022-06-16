@@ -6,6 +6,7 @@ import sys
 import json
 import re
 
+
 class emailConfigurationChecker:
     """
     This class will validate the email configuration file is valid and working.
