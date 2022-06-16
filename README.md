@@ -66,6 +66,7 @@ optional arguments:
 ```
 
 [Example to send an email](https://github.com/TheScriptGuy/certificateChecker/blob/main/README-email.md)
+
 [Example to upload to mongoDB](https://github.com/TheScriptGuy/certificateChecker/blob/main/README-mongoDB.md)
 
 
