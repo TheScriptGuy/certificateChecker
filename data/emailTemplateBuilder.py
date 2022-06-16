@@ -93,7 +93,6 @@ class emailTemplateBuilder:
 
     def setConfigDefaults(self):
         """Sets the defaults for the variables/config options."""
-
         self.bodyMessage = {
             "text": "MONITOREDHOSTS",
             "html": "MONITOREDHOSTS"

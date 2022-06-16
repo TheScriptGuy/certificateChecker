@@ -13,6 +13,7 @@ class emailConfigurationChecker:
     If correctly defined, then it will return a True statement.
     If incorrectly defined, an error will be generated and the class will quit.
     """
+
     def checkConfigHostname(self, __mailConfigJson):
         """Check to see if the hostname field is defined"""
         # Check to see if hostname is defined. This is a mandatory field.
@@ -50,7 +51,6 @@ class emailConfigurationChecker:
 
     def checkConfigEmail(self, __mailConfigJson):
         """Checks the email address provided to make sure it's a valid email."""
-
         # Email regular expression. If this matches, email is valid.
         emailRegex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
 
