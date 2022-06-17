@@ -1,10 +1,9 @@
 # Send email class
-# Version: 0.02
-# Last modified: 2022-06-04
+# Version: 0.03
+# Last modified: 2022-06-16
 
 import smtplib
 import ssl
-import json
 import sys
 from os import path
 from email.mime.text import MIMEText
