@@ -36,7 +36,7 @@ class emailConfigurationChecker:
 
     def checkConfigLogin(self, __mailConfigJson):
         """
-        Check to see if login details are defined. 
+        Check to see if login details are defined.
         If username is defined, make sure password is also defined.
         """
         # Check to see if login details are defined.
@@ -59,7 +59,7 @@ class emailConfigurationChecker:
 
         # Check to see if the to and from fields are valid email addresses.
         emailValid = bool(re.fullmatch(emailRegex, __emailFrom) and re.fullmatch(emailRegex, __emailTo))
-        
+
         if not emailValid:
             print("Email address is not in a valid format")
             sys.exit(1)
@@ -115,7 +115,7 @@ class emailConfigurationChecker:
         self.checkConfigBodyTextFile(__mailConfigJson)
         self.checkConfigBodyHtmlFile(__mailConfigJson)
         self.checkConfigStartTLS(__mailConfigJson)
-        
+
         # If we get to this point, then the configuration looks good.
         return True
 

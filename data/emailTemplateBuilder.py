@@ -40,21 +40,21 @@ class emailTemplateBuilder:
 
         # The filler is the buffer between columns. In this case, a space character.
         filler = " "
-        
+
         # Create the headers for the text.
         bodyTextHeaders = f'{"Hostname":{filler}<{maxHostname}}{"Port":{filler}<6}{"Time Left":{filler}<{maxTimeLeft}}{"Utilization":{filler}<{maxPercentageUtilization}}\n'
         monitoredHostsFormattedText = ""
-        
+
         # Iterate through all the entries in __jsonData
         for entry in __jsonData["certResults"]:
             iHostname = entry["hostname"]
             iPort = entry["port"]
             iTimeLeft = entry["certificateInfo"]["timeLeft"]
             iPercentageUtilization = entry["certificateInfo"]["percentageUtilization"]
-            
+
             # Build the string from all of the components above with the correct formatting.
             monitoredHostsFormattedText += f"{iHostname:{filler}<{maxHostname}}{iPort:{filler}<6}{iTimeLeft:{filler}<{maxTimeLeft}}{iPercentageUtilization:{filler}<{maxPercentageUtilization}}" + "\n"
-        
+
         # Go through the body text message and replace the MONITOREDHOSTS field with the newly formatted hostnames and ports.
         __newBodyText = bodyTextHeaders + monitoredHostsFormattedText
 
@@ -120,8 +120,8 @@ class emailTemplateBuilder:
         self.setConfigDefaults()
 
         emailConfig = emailConfigurationChecker(__mailConfigurationFile)
-        
+
         self.mailConfig = emailConfig.validateConfiguration()
-        
+
         self.bodyMessage["text"] = self.getEmailTemplate(self.mailConfig["bodyTextFile"])
         self.bodyMessage["html"] = self.getEmailTemplate(self.mailConfig["bodyHtmlFile"])
