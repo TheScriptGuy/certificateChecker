@@ -1,4 +1,4 @@
-# Email Template builder class1
+# Email Template builder class
 # Version: 0.02
 # Author: Nolan Rumble
 

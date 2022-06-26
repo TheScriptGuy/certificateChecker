@@ -1,4 +1,4 @@
-# Certificate Checker1
+# Certificate Checker
 
 Version: 0.20
 

@@ -1,4 +1,4 @@
-# Program:        Certificate Checker1
+# Program:        Certificate Checker
 # Author:         Nolan Rumble
 # Date:           2022/06/26
 # Version:        0.20

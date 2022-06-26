@@ -1,4 +1,4 @@
-## Example to send email1
+## Example to send email
 If you'd like to be sent an email of the results of the queries, the mail.cfg file needs to be defined.
 
 Some important things to note in the mail.cfg file:

@@ -1,4 +1,4 @@
-# Send email class1
+# Send email class
 # Version: 0.03
 # Last modified: 2022-06-16
 

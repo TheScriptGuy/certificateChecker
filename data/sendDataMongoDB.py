@@ -1,4 +1,4 @@
-# Send data to destination based on mongo.cfg file.1
+# Send data to destination based on mongo.cfg file.
 # Version 0.02
 
 import pymongo

@@ -1,4 +1,4 @@
-# Certificate Data Handling1
+# Certificate Data Handling
 # Version: 0.06
 
 import sys
