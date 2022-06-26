@@ -12,7 +12,7 @@ class emailTemplateBuilder:
     This class is designed to take the results from all the queries and build resulting emails from the defined templates
     to send them out.
     """
-    
+
     def getEmailTemplate(self, __fileName):
         """Retrieves the email text template from the mail configuration file."""
         emailTemplateFileName = __fileName
