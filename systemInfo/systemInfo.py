@@ -4,6 +4,7 @@ import json
 import sys
 import uuid
 
+
 class systemInfo:
     """systemInfo class"""
     def generateUuid(self):
@@ -19,7 +20,7 @@ class systemInfo:
         __myConfigJson = self.myConfigJson
 
         with open(self.myConfigFile, 'w') as f_myConfig:
-                f_myConfig.write(json.dumps(__myConfigJson, indent=4))
+            f_myConfig.write(json.dumps(__myConfigJson, indent=4))
 
     def getDeviceId(self):
         """Get the uuid."""
@@ -142,7 +143,7 @@ class systemInfo:
         }
 
         with open(self.myConfigFile, 'w') as f_myConfig:
-            f_myConfig.write(json.dumps(__blankConfigurationJson,indent=4))
+            f_myConfig.write(json.dumps(__blankConfigurationJson, indent=4))
 
     def parseConfigFile(self):
         """Returns the json object from the configuration file."""
@@ -163,7 +164,7 @@ class systemInfo:
         """Gets the configuration file and loads it into memory."""
         self.myConfigJson = self.parseConfigFile()
 
-    def __init__(self,__myConfigFile="myConfig.json"):
+    def __init__(self, __myConfigFile="myConfig.json"):
         """Initialize the class."""
         # Define the class version.
         self.classVersion = "0.04"

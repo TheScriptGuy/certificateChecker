@@ -96,7 +96,6 @@ class sendDataEmail:
 
         emailConfigChecker = emailConfigurationChecker(__mailConfigurationFile)
 
-
         # Load the configuration file. By default, load mail.cfg
         self.mailConfig = emailConfigChecker.validateConfiguration()
 

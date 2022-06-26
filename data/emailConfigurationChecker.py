@@ -74,7 +74,6 @@ class emailConfigurationChecker:
             try:
                 with open(__bodyTextFile) as bodyTextMail:
                     __bodyTextMail = bodyTextMail.read()
-                #self.bodyMessage["text"] = __bodyTextMail
             except FileNotFoundError:
                 print(f"bodyTextFile defined in {self.mailConfigurationFile} but I cannot find the file.")
                 sys.exit(1)
@@ -89,7 +88,6 @@ class emailConfigurationChecker:
             try:
                 with open(__bodyHtmlFile) as bodyHtmlMail:
                     __bodyHtmlMail = bodyHtmlMail.read()
-                #self.bodyMessage["html"] = __bodyHtmlMail
             except FileNotFoundError:
                 print(f"bodyHtmlMail defined in {self.mailConfigurationFile} but I cannot find the file.")
                 sys.exit(1)
@@ -147,6 +145,8 @@ class emailConfigurationChecker:
         """Validate configuration file. If all checks pass successfully, return the json object."""
         if self.checkConfigurationValid(self.mailConfig):
             return self.mailConfig
+        else:
+            return None
 
     def __init__(self, __mailConfigurationFile="mail.cfg"):
         """Initialize the email configuration checker class."""
