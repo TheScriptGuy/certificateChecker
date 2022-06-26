@@ -1,4 +1,8 @@
 # 2022/06/26
+## Version 0.20
+## Changes
+* Changed dataFormatVersion to 8 to reflect queryTime change from seconds to milliseconds.
+
 ## Version 0.19
 ## Additions
 * Added the ability to create a tenantId as part of the configuration.

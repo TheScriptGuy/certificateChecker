@@ -5,7 +5,7 @@
     "port": 443,
     "startTime": "2022/06/16 16:14:19.793797",
     "endTime": "2022/06/16 16:14:19.863822",
-    "queryTime": "0.070025",
+    "queryTime": "70.025",
     "certificateInfo":
     {
         "subject":
@@ -64,7 +64,7 @@ The resulting output is:
     "deviceId": "2a44a3c9-3051-405f-b7ae-9c070d76c57d",
     "deviceTag": "",
     "clientHostName": "PRODMON01",
-    "dataFormatVersion": 7,
+    "dataFormatVersion": 8,
     "certResults":
     [
         {
@@ -72,7 +72,7 @@ The resulting output is:
             "port": 443,
             "startTime": "2022/06/26 12:23:11.737101",
             "endTime": "2022/06/26 12:23:11.782779",
-            "queryTime": "0.045678",
+            "queryTime": "45.678",
             "certificateInfo":
             {
                 "subject":
@@ -132,7 +132,7 @@ The resulting output is (take note of the invalid host data at the end of the ce
     "deviceId": "2a44a3c9-3051-405f-b7ae-9c070d76c57d",
     "deviceTag": "",
     "clientHostName": "PRODMON01",
-    "dataFormatVersion": 7,
+    "dataFormatVersion": 8,
     "certResults":
     [
         {
@@ -140,7 +140,7 @@ The resulting output is (take note of the invalid host data at the end of the ce
             "port": 443,
             "startTime": "2022/06/26 12:26:41.551958",
             "endTime": "2022/06/26 12:26:41.596061",
-            "queryTime": "0.044103",
+            "queryTime": "44.103",
             "certificateInfo":
             {
                 "subject":
@@ -191,7 +191,7 @@ The resulting output is (take note of the invalid host data at the end of the ce
             "port": 443,
             "startTime": "2022/06/26 12:26:41.597296",
             "endTime": "2022/06/26 12:26:41.676241",
-            "queryTime": "0.078945",
+            "queryTime": "78.945",
             "certificateInfo":
             {
                 "subject":
@@ -239,7 +239,7 @@ The resulting output is (take note of the invalid host data at the end of the ce
             "port": 443,
             "startTime": "2022/06/26 12:26:41.676561",
             "endTime": "2022/06/26 12:26:41.976589",
-            "queryTime": "0.300028",
+            "queryTime": "300.028",
             "certificateInfo":
             {
                 "subject":
@@ -270,82 +270,6 @@ The resulting output is (take note of the invalid host data at the end of the ce
                     "DNS0": "reuters.com"
                 },
                 "percentageUtilization": "22.20"
-            }
-        },
-        {
-            "hostname": "test.remotenode.org",
-            "port": 443,
-            "startTime": "2022/06/26 12:26:41.976978",
-            "endTime": "2022/06/26 12:26:42.358847",
-            "queryTime": "0.381869",
-            "certificateInfo":
-            {
-                "subject":
-                {
-                    "commonName": "test.remotenode.org"
-                },
-                "certificateIssuer":
-                {
-                    "countryName": "US",
-                    "organizationName": "Let's Encrypt",
-                    "commonName": "R3"
-                },
-                "version": 3,
-                "serialNumber": "03ADFAA00EBD8CB2E094969B470E94725ECD",
-                "notBefore": "May 23 19:59:46 2022 GMT",
-                "notAfter": "Aug 21 19:59:45 2022 GMT",
-                "timeLeft": "1 month, 26 days, 7 hours, 33 minutes, 3 seconds",
-                "OCSP":
-                [
-                    "http://r3.o.lencr.org"
-                ],
-                "caIssuers":
-                [
-                    "http://r3.i.lencr.org/"
-                ],
-                "subjectAltName":
-                {
-                    "DNS0": "test.remotenode.org"
-                },
-                "percentageUtilization": "37.43"
-            }
-        },
-        {
-            "hostname": "mail.remotenode.org",
-            "port": 465,
-            "startTime": "2022/06/26 12:26:42.359267",
-            "endTime": "2022/06/26 12:26:43.322787",
-            "queryTime": "0.96352",
-            "certificateInfo":
-            {
-                "subject":
-                {
-                    "commonName": "mail.remotenode.org"
-                },
-                "certificateIssuer":
-                {
-                    "countryName": "US",
-                    "organizationName": "Let's Encrypt",
-                    "commonName": "R3"
-                },
-                "version": 3,
-                "serialNumber": "048446B2E1AE9BC3A866A302418B20ECC48C",
-                "notBefore": "May  4 02:56:39 2022 GMT",
-                "notAfter": "Aug  2 02:56:38 2022 GMT",
-                "timeLeft": "1 month, 6 days, 14 hours, 29 minutes, 55 seconds",
-                "OCSP":
-                [
-                    "http://r3.o.lencr.org"
-                ],
-                "caIssuers":
-                [
-                    "http://r3.i.lencr.org/"
-                ],
-                "subjectAltName":
-                {
-                    "DNS0": "mail.remotenode.org"
-                },
-                "percentageUtilization": "59.33"
             }
         },
         {
