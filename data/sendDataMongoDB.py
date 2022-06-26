@@ -19,8 +19,12 @@ class sendDataMongoDB:
                 __mongoConfig = fileNameMongo.read()
             __mongoConfigJson = json.loads(__mongoConfig)
             return __mongoConfigJson
+        except FileNotFoundError:
+            print(f"Cannot find file {__fileName}.")
+            sys.exit(1)
+
         except Exception as e:
-            print(f"{e.message} - Error occured.")
+            print(f"{e} - Error occured.")
             sys.exit(1)
 
     @staticmethod
