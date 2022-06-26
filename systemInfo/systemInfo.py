@@ -20,7 +20,7 @@ class systemInfo:
 
         with open(self.myConfigFile, 'w') as f_myConfig:
                 f_myConfig.write(json.dumps(__myConfigJson, indent=4))
- 
+
     def getDeviceId(self):
         """Get the uuid."""
         __myDeviceId = ""
@@ -35,7 +35,7 @@ class systemInfo:
         # First check to see if the myTags element is in the myConfigJson variable.
         if "myTags" in self.myConfigJson:
             __myTags = self.myConfigJson["myTags"]
-        
+
         # Return the value of __myTags
         return __myTags
 
@@ -46,10 +46,10 @@ class systemInfo:
 
         # Remove any potential duplicate tags.
         __newTagName = list(dict.fromkeys(__newTagName))
-        
+
         # Update the class's myConfigJson variable.
         self.myConfigJson["myTags"] = __newTagName
-        
+
         # Update the configuration file.
         self.updateMyConfig()
 
@@ -140,7 +140,7 @@ class systemInfo:
             "myTags": "",
             "myDeviceId": self.generateUuid()
         }
-        
+
         with open(self.myConfigFile, 'w') as f_myConfig:
             f_myConfig.write(json.dumps(__blankConfigurationJson,indent=4))
 
@@ -149,16 +149,16 @@ class systemInfo:
         try:
             if not path.exists(self.myConfigFile):
                 self.createBlankConfigurationFile()
-            
+
             with open(self.myConfigFile, 'r') as f_myConfig:
                 __myConfigJson = json.loads(f_myConfig.read())
-            
+
             return __myConfigJson
 
         except json.decoder.JSONDecodeError as e:
             print(f"Syntax error in {__myConfigFile} file at line {e.lineno} and column {e.colno}.")
             sys.exit(1)
-       
+
     def refreshConfigFile(self):
         """Gets the configuration file and loads it into memory."""
         self.myConfigJson = self.parseConfigFile()
@@ -175,7 +175,7 @@ class systemInfo:
 
         # Assign the __myConfigFile value to the class's variable myConfigFile.
         self.myConfigFile = __myConfigFile
-        
+
         # Load the configuration file.
         self.refreshConfigFile()
 
