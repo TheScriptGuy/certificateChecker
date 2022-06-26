@@ -43,23 +43,29 @@ class sendDataEmail:
             # Sat, 04 Jun 2022 13:18:36 -0700 (PDT)
             mailMessage["Date"] = createTime.strftime("%a, %d %b %Y %H:%M:%S %z (%Z)")
 
-            if __verbose.lower() == "true": print("Creating MIMEText")
+            if __verbose.lower() == "true":
+                print("Creating MIMEText")
             textMessage = MIMEText(__bodyMessage["text"], "plain")
             htmlMessage = MIMEText(__bodyMessage["html"], "html")
 
-            if __verbose.lower() == "true": print("Attaching text and html parts")
+            if __verbose.lower() == "true":
+                print("Attaching text and html parts")
             mailMessage.attach(textMessage)
             mailMessage.attach(htmlMessage)
 
-            if __verbose.lower() == "true": print("Creating SSL default context")
+            if __verbose.lower() == "true":
+                print("Creating SSL default context")
             ssl_context = ssl.create_default_context()
 
             with smtplib.SMTP_SSL(__hostname, __port, context=ssl_context) as smtpSecureServer:
-                if __verbose.lower() == "true": print(f"Login to {__hostname}")
+                if __verbose.lower() == "true":
+                    print(f"Login to {__hostname}")
                 smtpSecureServer.login(__smtpuser, __smtppass)
-                if __verbose.lower() == "true": print("Sending email")
+                if __verbose.lower() == "true":
+                    print("Sending email")
                 smtpSecureServer.sendmail(__from, __to, mailMessage.as_string())
-                if __verbose.lower() == "true": print("Done")
+                if __verbose.lower() == "true":
+                    print("Done")
         except Exception as e:
             print("Exception - ruh roh")
             print(e)
