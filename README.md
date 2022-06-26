@@ -21,7 +21,7 @@ python3 certChecker.py --hostname example.com --displayScriptDataJSON
 
 Only display time left when querying a certificate
 ```bash
-python3 certChecker.py --hostname example.com
+python3 certChecker.py --hostname example.com --displayTimeLeft
 ```
 
 ## Help output
