@@ -1,4 +1,4 @@
-## Example to upload to mongoDB
+## Example to upload to mongoDB1
 First configure the `mongo.cfg` file with the connection details in json format.
 
 Important things to note about the mongo.cfg file:

@@ -1,4 +1,4 @@
-## Example of JSON structure for certificate specifically
+## Example of JSON structure for certificate specifically1
 ```json
 {
     "hostname": "apple.com",

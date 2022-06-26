@@ -1,6 +1,6 @@
-# Certificate Module
-# Version: 0.06
-# Last updated: 2022-05-29
+# Certificate Module1
+# Version: 0.07
+# Last updated: 2022-06-29
 # Author: TheScriptGuy
 
 import ssl

@@ -1,4 +1,4 @@
-# Email Configuration Checker
+# Email Configuration Checker1
 # Author: Nolan Rumble
 # Version: 0.01
 

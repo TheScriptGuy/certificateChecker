@@ -1,3 +1,4 @@
+# systemInfo class
 import socket
 from os import path
 import json

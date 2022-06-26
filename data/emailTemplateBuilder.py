@@ -1,5 +1,5 @@
-# Email Template builder class
-# Version: 0.01
+# Email Template builder class1
+# Version: 0.02
 # Author: Nolan Rumble
 
 from .emailConfigurationChecker import emailConfigurationChecker
