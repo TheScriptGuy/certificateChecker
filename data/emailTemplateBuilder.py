@@ -42,7 +42,7 @@ class emailTemplateBuilder:
         filler = " "
 
         # Create the headers for the text.
-        bodyTextHeaders = f'{"Hostname":{filler}<{maxHostname}}{"Port":{filler}<6}{"Time Left":{filler}<{maxTimeLeft}}{"Utilization":{filler}<{maxPercentageUtilization}}\n'
+        bodyTextHeaders = f'{"Hostname":{filler}<{maxHostname}}{"Port":{filler}<{maxPort}}{"Time Left":{filler}<{maxTimeLeft}}{"Utilization":{filler}<{maxPercentageUtilization}}\n'
         monitoredHostsFormattedText = ""
 
         # Iterate through all the entries in __jsonData
