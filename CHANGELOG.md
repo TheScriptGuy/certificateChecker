@@ -1,3 +1,27 @@
+# 2022/06/26
+## Version 0.19
+## Additions
+* Added the ability to create a tenantId as part of the configuration.
+* Added the --getTenantId, --setTenantId, --delTenantId arguments.
+
+## Changes
+* Changed the arguments:
+    * `--renewUuid`, now called `--renewDeviceId` 
+    * `--getUuid`, now called `--getDeviceId`
+    * `--deleteUuid`, now called `--deleteDeviceId`
+* Changed the existing `--setTag`, `--delTag`, `--getTag` arguments to use the new configuration file.
+* No longer using tag.cfg and uuid.cfg files. Combined the fields into a myConfig.json file.
+* Consolidated the systemData class definitions into the systemInfo class.
+* Updated dataFormatVersion to 7 to reflect new tenantId field.
+* Script will always create a default configuration (myConfig.json) with following fields:
+```json
+{
+    "myTenantId": "",
+    "myTags": "",
+    "myDeviceId": "unique-random-id"
+}
+```
+
 # 2022/06/16
 ## Version 0.18
 ## Additions
