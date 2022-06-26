@@ -140,7 +140,7 @@ def defineInfoArguments(o_systemInfo):
     if args.getTenantId:
         print(o_systemInfo.getTenantId())
         sys.exit(0)
-    
+
     # If delTenantId is set, remove the tenant Id from the configuration file.
     if args.delTenantId:
         o_systemInfo.deleteTenantId()
@@ -322,7 +322,7 @@ def processHostname():
         sdMDB = sendDataMongoDB.sendDataMongoDB()
         uploadResult = sdMDB.uploadDataToMongoDB(jsonScriptData)
         print(uploadResult)
-    
+
     if args.sendEmail:
         # Send an email with the results.
         emailSendResults(jsonScriptData)

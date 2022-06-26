@@ -15,7 +15,7 @@ from .emailConfigurationChecker import emailConfigurationChecker
 
 class sendDataEmail:
     """sendDataEmail class"""
-    
+
     def sendSecureEmail(self, __emailConfiguration, __bodyMessage):
         """
         Sends an email based off emailObject information
@@ -30,7 +30,7 @@ class sendDataEmail:
             __smtpuser = __emailConfiguration["smtpuser"]
             __smtppass = __emailConfiguration["smtppass"]
             __verbose = __emailConfiguration["verbose"]
-            
+
             # Get the current time to be inserted into the email headers.
             createTime = datetime.datetime.now()
 
@@ -85,7 +85,7 @@ class sendDataEmail:
         """Initialize the sendDataEmail class"""
         # Initalize the class
         self.initialized = True
-        
+
         self.setConfigDefaults()
 
         emailConfigChecker = emailConfigurationChecker(__mailConfigurationFile)
@@ -93,6 +93,6 @@ class sendDataEmail:
 
         # Load the configuration file. By default, load mail.cfg
         self.mailConfig = emailConfigChecker.validateConfiguration()
-        
+
         if self.mailConfig["startTLS"]:
             self.sendSecureEmail(self.mailConfig, __bodyMessage)
