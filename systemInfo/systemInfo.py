@@ -151,9 +151,9 @@ class systemInfo:
         try:
             if not path.exists(self.myConfigFile):
                 self.createBlankConfigurationFile()
-
+            
             with open(self.myConfigFile, 'r') as f_myConfig:
-                __myConfigJson = json.loads(f_myConfig.read())
+                __myConfigJson = json.load(f_myConfig)
 
             return __myConfigJson
 
