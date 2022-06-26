@@ -7,6 +7,7 @@ import uuid
 
 class systemInfo:
     """systemInfo class"""
+
     def generateUuid(self):
         """Generate a uuid."""
         return str(uuid.uuid4())
