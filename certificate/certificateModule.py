@@ -303,8 +303,6 @@ class certificateModule:
             myJsonCertificateInfo["certificateInfo"]["notBefore"] = __certificateObject['notBefore']
             myJsonCertificateInfo["certificateInfo"]["notAfter"] = __certificateObject['notAfter']
 
-            myJsonCertificateInfo["certificateInfo"]["timeLeft"] = self.howMuchTimeLeft(__certificateObject)
-
             # Certificate might not have OCSP defined
             if 'OCSP' in certKeys:
                 myJsonCertificateInfo["certificateInfo"]["OCSP"] = __certificateObject['OCSP']
@@ -324,8 +322,11 @@ class certificateModule:
                 myJsonCertificateInfo["certificateInfo"]["subjectAltName"].update({field + str(subjectAltNameCounter): value})
                 subjectAltNameCounter += 1
 
+            # Time left on certificate
+            myJsonCertificateInfo["timeLeft"] = self.howMuchTimeLeft(__certificateObject)
+            
             # Percentage Utilization of certificate
-            myJsonCertificateInfo["certificateInfo"]["percentageUtilization"] = self.calculateCertificateUtilization(__certificateObject['notBefore'], __certificateObject['notAfter'])
+            myJsonCertificateInfo["percentageUtilization"] = self.calculateCertificateUtilization(__certificateObject['notBefore'], __certificateObject['notAfter'])
 
             # Reset number of entries
             subjectAltNameCounter = 0
@@ -337,12 +338,12 @@ class certificateModule:
             myJsonCertificateInfo["certificateInfo"]["serialNumber"] = "0"
             myJsonCertificateInfo["certificateInfo"]["notBefore"] = "Jan 1 00:00:00 0000 GMT"
             myJsonCertificateInfo["certificateInfo"]["notAfter"] = "Jan 1 00:00:00 0000 GMT"
-            myJsonCertificateInfo["certificateInfo"]["timeLeft"] = "0 seconds"
             myJsonCertificateInfo["certificateInfo"]["OCSP"] = "None"
             myJsonCertificateInfo["certificateInfo"]["crlDistributionPoints"] = "None"
             myJsonCertificateInfo["certificateInfo"]["caIssuers"] = "None"
             myJsonCertificateInfo["certificateInfo"]["subjectAltName"] = {"None": "None"}
-            myJsonCertificateInfo["certificateInfo"]["percentageUtilization"] = "0.00"
+            myJsonCertificateInfo["percentageUtilization"] = "0.00"
+            myJsonCertificateInfo["timeLeft"] = "0 seconds"
 
         return myJsonCertificateInfo
 
