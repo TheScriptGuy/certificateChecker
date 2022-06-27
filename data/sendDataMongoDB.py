@@ -72,7 +72,8 @@ class sendDataMongoDB:
         if iptools.ipv4.validate_ip(__mongoUri):
             __srv = ""
         else:
-            __srv = "+srv"
+            #__srv = "+srv" # automatically enables TLS
+            __srv = ""
 
         if __mongoLoginCredentials == "":
             __mongoConnectionString = f"mongodb{__srv}://{__mongoUri}/"
