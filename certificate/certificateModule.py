@@ -278,7 +278,7 @@ class certificateModule:
         endTime = __endTime.strftime("%Y/%m/%d %H:%M:%S.%f")
 
         # Calculate queryTime between __endTime and __startTime in milliseconds
-        queryTime = str((__endTime - __startTime).total_seconds() * 1000)
+        queryTime = float((__endTime - __startTime).total_seconds() * 1000)
 
         myJsonCertificateInfo["hostname"] = __hostname
         myJsonCertificateInfo["port"] = int(__port)
@@ -361,7 +361,7 @@ class certificateModule:
     def __init__(self):
         """Initialize the class."""
         self.initialized = True
-        self.moduleVersion = "0.06"
+        self.moduleVersion = "0.07"
         self.certificate = {}
 
         # Certificate date/time format that is to be interpreted by datetime module.
