@@ -49,7 +49,7 @@
         }
     },
     "timeLeft": "11 months, 37 minutes, 53 seconds",
-    "percentageUtilization": "15.44"
+    "percentageUtilization": 15.44
 }
 ```
 
@@ -116,7 +116,7 @@ The resulting output is:
                 }
             },
             "timeLeft": "11 months, 33 minutes, 27 seconds",
-            "percentageUtilization": "15.44"
+            "percentageUtilization": 15.44
         }
     ]
 }
@@ -185,7 +185,7 @@ The resulting output is (take note of the invalid host data at the end of the ce
                 }
             },
             "timeLeft": "11 months, 31 minutes, 44 seconds",
-            "percentageUtilization": "15.44"
+            "percentageUtilization": 15.44
         },
         {
             "hostname": "news24.com",
@@ -233,7 +233,7 @@ The resulting output is (take note of the invalid host data at the end of the ce
                 }
             },
             "timeLeft": "10 months, 4 days, 2 hours, 33 minutes, 7 seconds",
-            "percentageUtilization": "15.82"
+            "percentageUtilization": 15.82
         },
         {
             "hostname": "reuters.com",
@@ -271,7 +271,7 @@ The resulting output is (take note of the invalid host data at the end of the ce
                 }
             },
             "timeLeft": "2 months, 8 days, 15 hours, 27 minutes, 13 seconds",
-            "percentageUtilization": "22.62"
+            "percentageUtilization": 22.62
         },
         {
             "hostname": "thisisaverybadhost.xyz",
@@ -301,7 +301,7 @@ The resulting output is (take note of the invalid host data at the end of the ce
                     "None": "None"
                 }
             },
-            "percentageUtilization": "0.00",
+            "percentageUtilization": 0.00,
             "timeLeft": "0 seconds"
         }
     ]

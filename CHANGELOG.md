@@ -1,3 +1,8 @@
+# 2022/06/28
+## Version 0.22
+### Changes
+* Changed dataFormatVersion to 10 to reflect minor change to percentageUtilization field from str() to float()
+
 # 2022/06/26
 ## Version 0.21
 ### Changes

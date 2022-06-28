@@ -1,6 +1,6 @@
 # Certificate Module1
-# Version: 0.07
-# Last updated: 2022-06-29
+# Version: 0.08
+# Last updated: 2022-06-28
 # Author: TheScriptGuy
 
 import ssl
@@ -268,7 +268,7 @@ class certificateModule:
         percentageUtilization = 100 - (rest / total * 100)
 
         # Return the percentage utilization as a string formatted to 2 places.
-        return f"{percentageUtilization:.2f}"
+        return float(f"{percentageUtilization:.2f}")
 
     def convertCertificateObject2Json(self, __hostname, __port, __startTime, __endTime, __certificateObject):
         """Convert the certificate object into JSON format."""
@@ -342,7 +342,7 @@ class certificateModule:
             myJsonCertificateInfo["certificateInfo"]["crlDistributionPoints"] = "None"
             myJsonCertificateInfo["certificateInfo"]["caIssuers"] = "None"
             myJsonCertificateInfo["certificateInfo"]["subjectAltName"] = {"None": "None"}
-            myJsonCertificateInfo["percentageUtilization"] = "0.00"
+            myJsonCertificateInfo["percentageUtilization"] = 0.00
             myJsonCertificateInfo["timeLeft"] = "0 seconds"
 
         return myJsonCertificateInfo
