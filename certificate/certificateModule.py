@@ -268,7 +268,7 @@ class certificateModule:
         percentageUtilization = 100 - (rest / total * 100)
 
         # Return the percentage utilization as a string formatted to 2 places.
-        return float(f"{percentageUtilization:.2f}"))
+        return float(f"{percentageUtilization:.2f}")
 
     def convertCertificateObject2Json(self, __hostname, __port, __startTime, __endTime, __certificateObject):
         """Convert the certificate object into JSON format."""
