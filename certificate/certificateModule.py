@@ -268,7 +268,7 @@ class certificateModule:
         percentageUtilization = 100 - (rest / total * 100)
 
         # Return the percentage utilization as a string formatted to 2 places.
-        return float(f"{percentageUtilization:.2f}")
+        return float(f"{percentageUtilization:.2f}"))
 
     def convertCertificateObject2Json(self, __hostname, __port, __startTime, __endTime, __certificateObject):
         """Convert the certificate object into JSON format."""
@@ -278,7 +278,7 @@ class certificateModule:
         endTime = __endTime.strftime("%Y/%m/%d %H:%M:%S.%f")
 
         # Calculate queryTime between __endTime and __startTime in milliseconds
-        queryTime = float((__endTime - __startTime).total_seconds() * 1000)
+        queryTime = round(float((__endTime - __startTime).total_seconds() * 1000),2)
 
         myJsonCertificateInfo["hostname"] = __hostname
         myJsonCertificateInfo["port"] = int(__port)
