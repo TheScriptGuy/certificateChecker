@@ -278,7 +278,7 @@ class certificateModule:
         endTime = __endTime.strftime("%Y/%m/%d %H:%M:%S.%f")
 
         # Calculate queryTime between __endTime and __startTime in milliseconds
-        queryTime = round(float((__endTime - __startTime).total_seconds() * 1000),2)
+        queryTime = round(float((__endTime - __startTime).total_seconds() * 1000), 2)
 
         myJsonCertificateInfo["hostname"] = __hostname
         myJsonCertificateInfo["port"] = int(__port)

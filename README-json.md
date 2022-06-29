@@ -5,7 +5,7 @@
     "port": 443,
     "startTime": "2022/06/26 21:20:43.092236",
     "endTime": "2022/06/26 21:20:43.141154",
-    "queryTime": 48.918000000000006,
+    "queryTime": 48.92,
     "certificateInfo":
     {
         "subject":
@@ -64,7 +64,7 @@ The resulting output is:
     "deviceId": "2a44a3c9-3413-405f-b7ae-9c070d76c57d",
     "deviceTag": "",
     "clientHostName": "PRODMON01",
-    "dataFormatVersion": 9,
+    "dataFormatVersion": 10,
     "certResults":
     [
         {
@@ -72,7 +72,7 @@ The resulting output is:
             "port": 443,
             "startTime": "2022/06/26 21:25:09.099267",
             "endTime": "2022/06/26 21:25:09.150244",
-            "queryTime": 50.977000000000004,
+            "queryTime": 50.98,
             "certificateInfo":
             {
                 "subject":
@@ -133,7 +133,7 @@ The resulting output is (take note of the invalid host data at the end of the ce
     "deviceId": "2a44a3c9-3051-405f-b7ae-9c070d76c57d",
     "deviceTag": "",
     "clientHostName": "PRODMON01",
-    "dataFormatVersion": 9,
+    "dataFormatVersion": 10,
     "certResults":
     [
         {
@@ -141,7 +141,7 @@ The resulting output is (take note of the invalid host data at the end of the ce
             "port": 443,
             "startTime": "2022/06/26 21:26:52.328284",
             "endTime": "2022/06/26 21:26:52.395797",
-            "queryTime": 67.513,
+            "queryTime": 67.51,
             "certificateInfo":
             {
                 "subject":
@@ -192,7 +192,7 @@ The resulting output is (take note of the invalid host data at the end of the ce
             "port": 443,
             "startTime": "2022/06/26 21:26:52.397289",
             "endTime": "2022/06/26 21:26:52.471062",
-            "queryTime": 73.77300000000001,
+            "queryTime": 73.77,
             "certificateInfo":
             {
                 "subject":
@@ -240,7 +240,7 @@ The resulting output is (take note of the invalid host data at the end of the ce
             "port": 443,
             "startTime": "2022/06/26 21:26:52.471413",
             "endTime": "2022/06/26 21:26:52.773433",
-            "queryTime": 302.02000000000004,
+            "queryTime": 302.02,
             "certificateInfo":
             {
                 "subject":
@@ -278,7 +278,7 @@ The resulting output is (take note of the invalid host data at the end of the ce
             "port": 443,
             "startTime": "2022/06/26 21:26:53.971556",
             "endTime": "2022/06/26 21:26:54.025939",
-            "queryTime": 54.383,
+            "queryTime": 54.38,
             "certificateInfo":
             {
                 "subject":
