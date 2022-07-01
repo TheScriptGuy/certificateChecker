@@ -1,3 +1,9 @@
+# 2022/07/01
+## Version 0.23
+### Changes
+* Changed dataFormatVersion to 11 to reflect date/time changes for startTime and endTime fields to comply with ISO8601 format.
+* Changed all references to now() to reference utcnow()
+
 # 2022/06/28
 ## Version 0.22
 ### Changes

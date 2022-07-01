@@ -1,7 +1,7 @@
 # Program:        Certificate Checker
 # Author:         Nolan Rumble
-# Date:           2022/06/28
-# Version:        0.22
+# Date:           2022/07/01
+# Version:        0.23
 
 import argparse
 import datetime
@@ -15,7 +15,7 @@ from data import sendDataMongoDB
 from data import emailTemplateBuilder
 from data import sendDataEmail
 
-scriptVersion = "0.22"
+scriptVersion = "0.23"
 
 # Global Variables
 args = None
@@ -169,7 +169,7 @@ def gatherData(certResults):
         "deviceId": myInfo.myConfigJson["myDeviceId"],
         "deviceTag": myInfo.myConfigJson["myTags"],
         "clientHostName": myInfo.hostname,
-        "dataFormatVersion": 10,
+        "dataFormatVersion": 11,
         "certResults": certResults
     }
 
@@ -231,13 +231,13 @@ def processQueryFile():
         o_myCertificate = certificateModule.certificateModule()
 
         # For SSL performance measurement - START
-        o_startTime = datetime.datetime.now()
+        o_startTime = datetime.datetime.utcnow()
 
         # Connect to the hostname from the queryFile argument and get the certificate associated with it.
         myCertificate = o_myCertificate.getCertificate(myHostname["hostname"], myHostname["port"])
 
         # For SSL performance measurement - END
-        o_endTime = datetime.datetime.now()
+        o_endTime = datetime.datetime.utcnow()
 
         # Convert the certificate object into JSON format.
         jsonCertificateInfo = o_myCertificate.convertCertificateObject2Json(myHostname["hostname"], myHostname["port"], o_startTime, o_endTime, myCertificate)
@@ -274,7 +274,7 @@ def processHostname():
     o_myCertificate = certificateModule.certificateModule()
 
     # For SSL performance measurement - START
-    o_startTime = datetime.datetime.now()
+    o_startTime = datetime.datetime.utcnow()
 
     # Connect to the hostname from the --hostname argument and get the certificate associated with it.
     if ":" in args.hostname:
@@ -287,7 +287,7 @@ def processHostname():
     myCertificate = o_myCertificate.getCertificate(hostnameQuery["hostname"], hostnameQuery["port"])
 
     # For SSL performance measurement - END
-    o_endTime = datetime.datetime.now()
+    o_endTime = datetime.datetime.utcnow()
 
     # Convert the certificate object into JSON format.
     jsonCertificateInfo = o_myCertificate.convertCertificateObject2Json(hostnameQuery["hostname"], hostnameQuery["port"], o_startTime, o_endTime, myCertificate)

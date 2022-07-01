@@ -1,6 +1,6 @@
 # Certificate Module1
-# Version: 0.08
-# Last updated: 2022-06-28
+# Version: 0.09
+# Last updated: 2022-07-01
 # Author: TheScriptGuy
 
 import ssl
@@ -108,7 +108,7 @@ class certificateModule:
     def howMuchTimeLeft(self, __certificateObject):
         """Return the remaining time left on the certificate."""
         if __certificateObject is not None:
-            timeNow = datetime.datetime.now().replace(microsecond=0)
+            timeNow = datetime.datetime.utcnow().replace(microsecond=0)
             certNotAfter = datetime.datetime.strptime(self.returnNotAfter(__certificateObject), self.certTimeFormat)
 
             __delta = relativedelta(certNotAfter, timeNow)
@@ -152,7 +152,7 @@ class certificateModule:
             current date is before certificate expiry date
         """
         if __certificateObject is not None:
-            timeNow = datetime.datetime.now().replace(microsecond=0).date()
+            timeNow = datetime.datetime.utcnow().replace(microsecond=0).date()
             certNotAfter = datetime.datetime.strptime(self.returnNotAfter(__certificateObject), self.certTimeFormat).date()
             certNotBefore = datetime.datetime.strptime(self.returnNotBefore(__certificateObject), self.certTimeFormat).date()
 
@@ -258,7 +258,7 @@ class certificateModule:
         notAfterTime = datetime.datetime.strptime(__notAfter, self.certTimeFormat)
 
         # Get the current time.
-        currentTime = datetime.datetime.now()
+        currentTime = datetime.datetime.utcnow()
 
         # Calculate the differences between currentTime, notAfterTime, and notBeforeTime
         rest = notAfterTime - currentTime
@@ -274,8 +274,8 @@ class certificateModule:
         """Convert the certificate object into JSON format."""
         myJsonCertificateInfo = {}
 
-        startTime = __startTime.strftime("%Y/%m/%d %H:%M:%S.%f")
-        endTime = __endTime.strftime("%Y/%m/%d %H:%M:%S.%f")
+        startTime = __startTime.isoformat()
+        endTime = __endTime.isoformat()
 
         # Calculate queryTime between __endTime and __startTime in milliseconds
         queryTime = round(float((__endTime - __startTime).total_seconds() * 1000), 2)
