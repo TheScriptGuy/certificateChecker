@@ -1,4 +1,8 @@
 # 2022/07/01
+## Version 0.24
+### Changes
+* Changed dataFormatVersion to 12 to reflect minor change to startTime and endTime formats to datetime objects for easier searching in Mongo.
+
 ## Version 0.23
 ### Changes
 * Changed dataFormatVersion to 11 to reflect date/time changes for startTime and endTime fields to comply with ISO8601 format.

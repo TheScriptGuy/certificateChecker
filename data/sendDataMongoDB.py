@@ -1,12 +1,12 @@
 # Send data to destination based on mongo.cfg file.
-# Version 0.02
+# Version 0.03
 
 import pymongo
 from pymongo import MongoClient
 import iptools
 import json
 import sys
-
+from datetime import datetime
 
 class sendDataMongoDB:
     """sendDataMongoDB class"""
@@ -117,6 +117,12 @@ class sendDataMongoDB:
         # Create the collection in the database.
         collection = self.createCollection(connection)
 
+        # Convert the startTime and endTime fields info ISODate format.
+        jsonScriptData = __jsonScriptData
+        for iResult in jsonScriptData["certResults"]:
+            iResult["startTime"] = datetime.fromisoformat(iResult["startTime"])
+            iResult["endTime"] = datetime.fromisoformat(iResult["endTime"])
+
         # Upload the results to the MongoDB
         # It's only at this point that the database/collection gets created
         # (if this is the first entry to be uploaded)
@@ -126,4 +132,4 @@ class sendDataMongoDB:
     def __init__(self):
         """Initialize the sendDataMongoDB class."""
         self.initialized = True
-        self.version = "0.02"
+        self.version = "0.03"
