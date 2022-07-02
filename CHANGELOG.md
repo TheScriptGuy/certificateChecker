@@ -1,3 +1,8 @@
+# 2022/07/02
+## Version 0.25
+### Changes
+* Changed dataFormatVersion to 13 to include script start and end times for improved data searchability.
+
 # 2022/07/01
 ## Version 0.24
 ### Changes

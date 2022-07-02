@@ -63,16 +63,18 @@ The resulting output is:
     "tenantId": "",
     "deviceId": "2a44a3c9-3051-405f-b7ae-9c070d76c57d",
     "deviceTag": "",
-    "clientHostName": "PRODMON1",
-    "dataFormatVersion": 11,
+    "clientHostName": "PRODMON01",
+    "dataFormatVersion": 13,
+    "scriptStartTime": "2022-07-02T21:09:44.230833",
+    "scriptEndTime": "2022-07-02T21:09:44.298634",
     "certResults":
     [
         {
             "hostname": "apple.com",
             "port": 443,
-            "startTime": "2022-07-01T23:01:29.698931",
-            "endTime": "2022-07-01T23:01:29.746382",
-            "queryTime": 47.45,
+            "startTime": "2022-07-02T21:09:44.230833",
+            "endTime": "2022-07-02T21:09:44.298634",
+            "queryTime": 67.8,
             "certificateInfo":
             {
                 "subject":
@@ -115,8 +117,8 @@ The resulting output is:
                     "DNS0": "apple.com"
                 }
             },
-            "timeLeft": "10 months, 24 days, 22 hours, 57 minutes, 7 seconds",
-            "percentageUtilization": 16.72
+            "timeLeft": "10 months, 24 days, 48 minutes, 52 seconds",
+            "percentageUtilization": 16.95
         }
     ]
 }
@@ -132,16 +134,18 @@ The resulting output is (take note of the invalid host data at the end of the ce
     "tenantId": "",
     "deviceId": "2a44a3c9-3051-405f-b7ae-9c070d76c57d",
     "deviceTag": "",
-    "clientHostName": "PRODMON1",
-    "dataFormatVersion": 11,
+    "clientHostName": "PRODMON01",
+    "dataFormatVersion": 13,
+    "scriptStartTime": "2022-07-02T21:11:05.674042",
+    "scriptEndTime": "2022-07-02T21:11:07.088359",
     "certResults":
     [
         {
             "hostname": "apple.com",
             "port": 443,
-            "startTime": "2022-07-01T23:04:28.104898",
-            "endTime": "2022-07-01T23:04:28.158011",
-            "queryTime": 53.11,
+            "startTime": "2022-07-02T21:11:05.674074",
+            "endTime": "2022-07-02T21:11:05.722065",
+            "queryTime": 47.99,
             "certificateInfo":
             {
                 "subject":
@@ -184,15 +188,15 @@ The resulting output is (take note of the invalid host data at the end of the ce
                     "DNS0": "apple.com"
                 }
             },
-            "timeLeft": "10 months, 24 days, 22 hours, 54 minutes, 8 seconds",
-            "percentageUtilization": 16.72
+            "timeLeft": "10 months, 24 days, 47 minutes, 31 seconds",
+            "percentageUtilization": 16.95
         },
         {
             "hostname": "news24.com",
             "port": 443,
-            "startTime": "2022-07-01T23:04:28.159228",
-            "endTime": "2022-07-01T23:04:28.247245",
-            "queryTime": 88.02,
+            "startTime": "2022-07-02T21:11:05.723418",
+            "endTime": "2022-07-02T21:11:05.806960",
+            "queryTime": 83.54,
             "certificateInfo":
             {
                 "subject":
@@ -232,15 +236,15 @@ The resulting output is (take note of the invalid host data at the end of the ce
                     "DNS1": "news24.com"
                 }
             },
-            "timeLeft": "9 months, 29 days, 55 minutes, 31 seconds",
-            "percentageUtilization": 17.2
+            "timeLeft": "9 months, 28 days, 2 hours, 48 minutes, 54 seconds",
+            "percentageUtilization": 17.45
         },
         {
             "hostname": "reuters.com",
             "port": 443,
-            "startTime": "2022-07-01T23:04:28.247566",
-            "endTime": "2022-07-01T23:04:28.563030",
-            "queryTime": 315.46,
+            "startTime": "2022-07-02T21:11:05.807343",
+            "endTime": "2022-07-02T21:11:06.115538",
+            "queryTime": 308.19,
             "certificateInfo":
             {
                 "subject":
@@ -270,15 +274,15 @@ The resulting output is (take note of the invalid host data at the end of the ce
                     "DNS0": "reuters.com"
                 }
             },
-            "timeLeft": "2 months, 2 days, 13 hours, 49 minutes, 37 seconds",
-            "percentageUtilization": 28.25
+            "timeLeft": "2 months, 1 day, 15 hours, 42 minutes, 59 seconds",
+            "percentageUtilization": 29.27
         },
         {
             "hostname": "thisisaverybadhost.xyz",
             "port": 443,
-            "startTime": "2022-07-01T23:04:29.770918",
-            "endTime": "2022-07-01T23:04:29.834563",
-            "queryTime": 63.64,
+            "startTime": "2022-07-02T21:11:07.080342",
+            "endTime": "2022-07-02T21:11:07.088307",
+            "queryTime": 7.96,
             "certificateInfo":
             {
                 "subject":

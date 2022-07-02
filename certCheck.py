@@ -1,7 +1,7 @@
 # Program:        Certificate Checker
 # Author:         Nolan Rumble
-# Date:           2022/07/01
-# Version:        0.24
+# Date:           2022/07/02
+# Version:        0.25
 
 import argparse
 import datetime
@@ -15,7 +15,7 @@ from data import sendDataMongoDB
 from data import emailTemplateBuilder
 from data import sendDataEmail
 
-scriptVersion = "0.24"
+scriptVersion = "0.25"
 
 # Global Variables
 args = None
@@ -147,7 +147,7 @@ def defineInfoArguments(o_systemInfo):
         sys.exit(0)
 
 
-def gatherData(certResults):
+def gatherData(__certResults, __scriptStartTime, __scriptEndTime):
     """
     This will collect all the data into a uniform data structure that can
     help with measuring results across multiple executions.
@@ -158,21 +158,27 @@ def gatherData(certResults):
     * myDeviceTag          - a tag for the device to help with aggregating data across.
                              multiple endpoints (for example all production, development, qa devices).
     * hostName             - the hostname of the device where script is executing.
-    * scriptUTCStartTime   - script start time (UTC format).
-    * scriptUTCEndTime     - script end time (UTC format).
+    * scriptStartTime   - script start time (UTC format).
+    * scriptEndTime     - script end time (UTC format).
     * queryResults         - The results of all queries that were performed against the nameservers.
     """
     myInfo = systemInfo.systemInfo()
+    
+    # Convert script start/end times into string isoformat
+    scriptStartTime = __scriptStartTime.isoformat()
+    scriptEndTime = __scriptEndTime.isoformat()
 
     myData = {
         "tenantId": myInfo.myConfigJson["myTenantId"],
         "deviceId": myInfo.myConfigJson["myDeviceId"],
         "deviceTag": myInfo.myConfigJson["myTags"],
         "clientHostName": myInfo.hostname,
-        "dataFormatVersion": 12,
-        "certResults": certResults
+        "dataFormatVersion": 13,
+        "scriptStartTime": scriptStartTime,
+        "scriptEndTime": scriptEndTime,
+        "certResults": __certResults
     }
-
+    
     return myData
 
 
@@ -226,6 +232,8 @@ def processQueryFile():
 
     jsonScriptData = []
 
+    scriptStartTime = datetime.datetime.utcnow()
+
     for myHostname in myCertData.loadQueriesFile(args.queryFile):
         # Define initial certificate object
         o_myCertificate = certificateModule.certificateModule()
@@ -246,7 +254,9 @@ def processQueryFile():
 
         checkArguments(myCertificate, jsonCertificateInfo)
 
-    myJsonScriptData = gatherData(jsonScriptData)
+    scriptEndTime = datetime.datetime.utcnow()
+
+    myJsonScriptData = gatherData(jsonScriptData, scriptStartTime, scriptEndTime)
 
     if args.displayScriptDataJSON:
         # Display the certificate and system JSON structure
@@ -292,8 +302,9 @@ def processHostname():
     # Convert the certificate object into JSON format.
     jsonCertificateInfo = o_myCertificate.convertCertificateObject2Json(hostnameQuery["hostname"], hostnameQuery["port"], o_startTime, o_endTime, myCertificate)
 
+    # 
     # Append system data to JSON certificate structure
-    jsonScriptData = gatherData([jsonCertificateInfo])
+    jsonScriptData = gatherData([jsonCertificateInfo], o_startTime, o_endTime)
 
     if args.displayCertificateJSON:
         # Display the certificate JSON structure

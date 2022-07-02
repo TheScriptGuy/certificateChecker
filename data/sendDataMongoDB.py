@@ -1,5 +1,5 @@
 # Send data to destination based on mongo.cfg file.
-# Version 0.03
+# Version 0.04
 
 import pymongo
 from pymongo import MongoClient
@@ -119,6 +119,10 @@ class sendDataMongoDB:
 
         # Convert the startTime and endTime fields info ISODate format.
         jsonScriptData = __jsonScriptData
+
+        jsonScriptData["scriptStartTime"] = datetime.fromisoformat(jsonScriptData["scriptStartTime"])
+        jsonScriptData["scriptEndTime"] = datetime.fromisoformat(jsonScriptData["scriptEndTime"])
+
         for iResult in jsonScriptData["certResults"]:
             iResult["startTime"] = datetime.fromisoformat(iResult["startTime"])
             iResult["endTime"] = datetime.fromisoformat(iResult["endTime"])
@@ -132,4 +136,4 @@ class sendDataMongoDB:
     def __init__(self):
         """Initialize the sendDataMongoDB class."""
         self.initialized = True
-        self.version = "0.03"
+        self.version = "0.04"
