@@ -1,7 +1,7 @@
 # Program:        Certificate Checker
 # Author:         Nolan Rumble
 # Date:           2022/07/02
-# Version:        0.25
+# Version:        0.26
 
 import argparse
 import datetime
@@ -15,7 +15,7 @@ from data import sendDataMongoDB
 from data import emailTemplateBuilder
 from data import sendDataEmail
 
-scriptVersion = "0.25"
+scriptVersion = "0.26"
 
 # Global Variables
 args = None
@@ -158,8 +158,9 @@ def gatherData(__certResults, __scriptStartTime, __scriptEndTime):
     * myDeviceTag          - a tag for the device to help with aggregating data across.
                              multiple endpoints (for example all production, development, qa devices).
     * hostName             - the hostname of the device where script is executing.
-    * scriptStartTime   - script start time (UTC format).
-    * scriptEndTime     - script end time (UTC format).
+    * scriptStartTime      - script start time (UTC format).
+    * scriptEndTime        - script end time (UTC format).
+    * scriptExecutionTime  - script query time (difference between scriptEndTime and scriptStartTime.
     * queryResults         - The results of all queries that were performed against the nameservers.
     """
     myInfo = systemInfo.systemInfo()
@@ -167,15 +168,17 @@ def gatherData(__certResults, __scriptStartTime, __scriptEndTime):
     # Convert script start/end times into string isoformat
     scriptStartTime = __scriptStartTime.isoformat()
     scriptEndTime = __scriptEndTime.isoformat()
+    scriptExecutionTime = round(float((__scriptEndTime - __scriptStartTime).total_seconds() * 1000), 2)
 
     myData = {
         "tenantId": myInfo.myConfigJson["myTenantId"],
         "deviceId": myInfo.myConfigJson["myDeviceId"],
         "deviceTag": myInfo.myConfigJson["myTags"],
         "clientHostName": myInfo.hostname,
-        "dataFormatVersion": 13,
+        "dataFormatVersion": 14,
         "scriptStartTime": scriptStartTime,
         "scriptEndTime": scriptEndTime,
+        "scriptExecutionTime": scriptExecutionTime,
         "certResults": __certResults
     }
     
