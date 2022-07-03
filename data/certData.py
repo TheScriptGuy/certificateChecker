@@ -12,13 +12,6 @@ class certData:
     """certData class"""
 
     @staticmethod
-    def writeResults(results, outputFile):
-        """Send the json data to the outputFile variable."""
-        with open(outputFile, "w", encoding="utf-8") as outputfile:
-            jsonOutput = json.dumps(results)
-            outputfile.write(jsonOutput)
-
-    @staticmethod
     def getFileFromURL(fileURL):
         """This function will download the contents of fileURL and return a list with the contents."""
         tmpData = []
