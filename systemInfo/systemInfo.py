@@ -159,7 +159,7 @@ class systemInfo:
             return __myConfigJson
 
         except json.decoder.JSONDecodeError as e:
-            print(f"Syntax error in {__myConfigFile} file at line {e.lineno} and column {e.colno}.")
+            print(f"Syntax error in {self.myConfigFile} file at line {e.lineno} and column {e.colno}.")
             sys.exit(1)
 
     def refreshConfigFile(self):
