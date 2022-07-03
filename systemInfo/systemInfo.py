@@ -9,11 +9,13 @@ import uuid
 class systemInfo:
     """systemInfo class"""
 
+    @staticmethod
     def generateUuid(self):
         """Generate a uuid."""
         return str(uuid.uuid4())
 
-    def getHostname(self):
+    @staticmethod
+    def getHostname():
         """Get the hostname of the device performing the checks."""
         return socket.gethostname()
 
