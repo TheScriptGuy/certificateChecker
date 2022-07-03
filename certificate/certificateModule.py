@@ -324,7 +324,7 @@ class certificateModule:
 
             # Time left on certificate
             myJsonCertificateInfo["timeLeft"] = self.howMuchTimeLeft(__certificateObject)
- 
+
             # Percentage Utilization of certificate
             myJsonCertificateInfo["percentageUtilization"] = self.calculateCertificateUtilization(__certificateObject['notBefore'], __certificateObject['notAfter'])
 

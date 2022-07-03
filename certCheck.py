@@ -181,7 +181,7 @@ def gatherData(__certResults, __scriptStartTime, __scriptEndTime):
         "scriptExecutionTime": scriptExecutionTime,
         "certResults": __certResults
     }
- 
+
     return myData
 
 
