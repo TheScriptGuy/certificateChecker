@@ -10,7 +10,7 @@ class systemInfo:
     """systemInfo class"""
 
     @staticmethod
-    def generateUuid(self):
+    def generateUuid():
         """Generate a uuid."""
         return str(uuid.uuid4())
 
