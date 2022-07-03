@@ -164,7 +164,7 @@ def gatherData(__certResults, __scriptStartTime, __scriptEndTime):
     * queryResults         - The results of all queries that were performed against the nameservers.
     """
     myInfo = systemInfo.systemInfo()
-    
+
     # Convert script start/end times into string isoformat
     scriptStartTime = __scriptStartTime.isoformat()
     scriptEndTime = __scriptEndTime.isoformat()
@@ -181,7 +181,7 @@ def gatherData(__certResults, __scriptStartTime, __scriptEndTime):
         "scriptExecutionTime": scriptExecutionTime,
         "certResults": __certResults
     }
-    
+ 
     return myData
 
 

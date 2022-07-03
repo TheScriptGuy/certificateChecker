@@ -83,11 +83,9 @@ class emailTemplateBuilder:
         """Modifies a text file template based off the submitted hosts."""
         self.bodyMessage["text"] = self.bodyMessage["text"].replace("MONITOREDHOSTS", self.monitoredHostsText(__jsonData))
 
-
     def buildEmailFromHtmlTemplate(self, __jsonData):
         """Modifies a HTML template based off the submitted hosts."""
         self.bodyMessage["html"] = self.bodyMessage["html"].replace("MONITOREDHOSTS", self.monitoredHostsHtml(__jsonData))
-
 
     def setConfigDefaults(self):
         """Sets the defaults for the variables/config options."""

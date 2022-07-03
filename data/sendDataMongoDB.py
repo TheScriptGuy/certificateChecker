@@ -8,6 +8,7 @@ import json
 import sys
 from datetime import datetime
 
+
 class sendDataMongoDB:
     """sendDataMongoDB class"""
 
