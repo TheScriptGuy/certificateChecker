@@ -136,8 +136,6 @@ class systemInfo:
         Creates a blank configuration file with an updated myDeviceId field.
         This will overwrite any existing configuration.
         """
-        __newDeviceId = self.generateDeviceId()
-
         __blankConfigurationJson = {
             "myTenantId": "",
             "myTags": "",

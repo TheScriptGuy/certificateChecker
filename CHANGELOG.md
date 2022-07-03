@@ -3,6 +3,9 @@
 ### Changes
 * Changed dataFormatVersion to 14 to include script execution time. 
 
+### Fixes
+* Fixed a bug with the creation of the the --createConfigurationFile option.
+
 ## Version 0.25
 ### Changes
 * Changed dataFormatVersion to 13 to include script start and end times for improved data searchability.
@@ -35,6 +38,7 @@
 ### Additions
 * Added the ability to create a tenantId as part of the configuration.
 * Added the --getTenantId, --setTenantId, --delTenantId arguments.
+* Added the --createBlankConfiguration option to create a new configuration file.
 
 ### Changes
 * Changed the arguments:
