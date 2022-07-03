@@ -4,7 +4,6 @@
 import sys
 from os import path
 import requests
-import json
 import socket
 
 
