@@ -1,3 +1,7 @@
+# 2022/07/04
+## Version 0.26
+* Fixed minor bug with sendDataMongoDB.py to reference collectionNames from mongo.cfg correctly.
+
 # 2022/07/02
 ## Version 0.26
 ### Changes

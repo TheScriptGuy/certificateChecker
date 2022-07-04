@@ -103,20 +103,29 @@ class sendDataMongoDB:
 
         return __mongoClient[__mongoDatabase]
 
-    def createCollection(self, __mongoConnection, __collectionName="certCollection"):
+    def createCollection(self, __mongoConnection, __mongoConfiguration):
         """create a collection within the DB."""
+
+        # First check to see see if collectionName is defined in mongo.cfg
+        if "collectionName" in __mongoConfiguration:
+            # Retrieve the collectionName value from the dict __mongoConfiguration
+            __collectionName = __mongoConfiguration["collectionName"]
+        else:
+            # Set it to certCollection if there is nothing defined.
+            __collectionName = "certCollection"
+
         return __mongoConnection[__collectionName]
 
     def uploadDataToMongoDB(self, __jsonScriptData):
         """Upload the data to MongoDB"""
         # Load the configuration file (mongo.cfg)
-        mongoConnect = self.loadConfigurationFile()
+        mongoConnectJson = self.loadConfigurationFile()
 
         # Create the connection request.
-        connection = self.createDB(mongoConnect)
+        connection = self.createDB(mongoConnectJson)
 
         # Create the collection in the database.
-        collection = self.createCollection(connection)
+        collection = self.createCollection(connection, mongoConnectJson)
 
         # Convert the startTime and endTime fields info ISODate format.
         jsonScriptData = __jsonScriptData
@@ -137,4 +146,4 @@ class sendDataMongoDB:
     def __init__(self):
         """Initialize the sendDataMongoDB class."""
         self.initialized = True
-        self.version = "0.04"
+        self.version = "0.05"
