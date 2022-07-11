@@ -171,7 +171,7 @@ def gatherData(__certResults, __scriptStartTime, __scriptEndTime):
     scriptStartTime = __scriptStartTime.isoformat()
     scriptEndTime = __scriptEndTime.isoformat()
     scriptExecutionTime = round(float((__scriptEndTime - __scriptStartTime).total_seconds() * 1000), 2)
-    
+ 
     # Calculate the average utilization and query time across all tests.
     avgUtilization = float(0)
     avgQueryTime = float(0)
@@ -326,7 +326,6 @@ def processHostname():
     # Convert the certificate object into JSON format.
     jsonCertificateInfo = o_myCertificate.convertCertificateObject2Json(hostnameQuery["hostname"], hostnameQuery["port"], o_startTime, o_endTime, myCertificate)
 
-    # 
     # Append system data to JSON certificate structure
     jsonScriptData = gatherData([jsonCertificateInfo], o_startTime, o_endTime)
 
