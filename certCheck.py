@@ -1,7 +1,7 @@
 # Program:        Certificate Checker
 # Author:         Nolan Rumble
-# Date:           2022/07/02
-# Version:        0.26
+# Date:           2022/07/10
+# Version:        0.27
 
 import argparse
 import datetime
@@ -15,7 +15,7 @@ from data import sendDataMongoDB
 from data import emailTemplateBuilder
 from data import sendDataEmail
 
-scriptVersion = "0.26"
+scriptVersion = "0.27"
 
 # Global Variables
 args = None
@@ -153,15 +153,17 @@ def gatherData(__certResults, __scriptStartTime, __scriptEndTime):
     help with measuring results across multiple executions.
 
     Data that is included is:
-    * myTenantId           - a unique tenant identifier.
-    * myDeviceId           - a unique device identifier.
-    * myDeviceTag          - a tag for the device to help with aggregating data across.
-                             multiple endpoints (for example all production, development, qa devices).
-    * hostName             - the hostname of the device where script is executing.
-    * scriptStartTime      - script start time (UTC format).
-    * scriptEndTime        - script end time (UTC format).
-    * scriptExecutionTime  - script query time (difference between scriptEndTime and scriptStartTime.
-    * queryResults         - The results of all queries that were performed against the nameservers.
+    * myTenantId                     - a unique tenant identifier.
+    * myDeviceId                     - a unique device identifier.
+    * myDeviceTag                    - a tag for the device to help with aggregating data across.
+                                       multiple endpoints (for example all production, development, qa devices).
+    * hostName                       - the hostname of the device where script is executing.
+    * scriptStartTime                - script start time (UTC format).
+    * scriptEndTime                  - script end time (UTC format).
+    * scriptExecutionTime            - script query time (difference between scriptEndTime and scriptStartTime.
+    * averageQueryTime               - The average query time across all the tests.
+    * averageCertificateUtilization  - Average certificate utilization across all the tests.
+    * queryResults                   - The results of all queries that were performed against the nameservers.
     """
     myInfo = systemInfo.systemInfo()
 
@@ -169,16 +171,35 @@ def gatherData(__certResults, __scriptStartTime, __scriptEndTime):
     scriptStartTime = __scriptStartTime.isoformat()
     scriptEndTime = __scriptEndTime.isoformat()
     scriptExecutionTime = round(float((__scriptEndTime - __scriptStartTime).total_seconds() * 1000), 2)
+    
+    # Calculate the average utilization and query time across all tests.
+    avgUtilization = float(0)
+    avgQueryTime = float(0)
+    avgCounter = 0
 
+    for item in __certResults:
+        if item["certificateInfo"]["version"] != 0:
+            avgUtilization += item["percentageUtilization"]
+            avgQueryTime += item["queryTime"]
+            avgCounter += 1
+
+    # Round the values to 2 decimal places.
+    if avgCounter > 0:
+        avgUtilization = round(avgUtilization / avgCounter, 2)
+        avgQueryTime = round(avgQueryTime / avgCounter, 2)
+
+    # Create the json script structure with all the meta data.
     myData = {
         "tenantId": myInfo.myConfigJson["myTenantId"],
         "deviceId": myInfo.myConfigJson["myDeviceId"],
         "deviceTag": myInfo.myConfigJson["myTags"],
         "clientHostName": myInfo.hostname,
-        "dataFormatVersion": 14,
+        "dataFormatVersion": 15,
         "scriptStartTime": scriptStartTime,
         "scriptEndTime": scriptEndTime,
         "scriptExecutionTime": scriptExecutionTime,
+        "averageQueryTime": avgQueryTime,
+        "averageCertificateUtilization": avgUtilization,
         "certResults": __certResults
     }
 

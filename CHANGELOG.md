@@ -1,3 +1,7 @@
+# 2022/07/10
+## Version 0.27
+* Updated dataFormatVersion to 15 to reflect 2 new fields for average utilization of certificates (`averageCertificateUtilization`) and average query time (`averageQueryTime`). 
+
 # 2022/07/04
 ## Version 0.26
 * Fixed minor bug with sendDataMongoDB.py to reference collectionNames from mongo.cfg correctly.
@@ -17,26 +21,26 @@
 # 2022/07/01
 ## Version 0.24
 ### Changes
-* Changed dataFormatVersion to 12 to reflect minor change to startTime and endTime formats to datetime objects for easier searching in Mongo.
+* Changed dataFormatVersion to 12 to reflect minor change to `startTime` and `endTime` formats to datetime objects for easier searching in Mongo.
 
 ## Version 0.23
 ### Changes
-* Changed dataFormatVersion to 11 to reflect date/time changes for startTime and endTime fields to comply with ISO8601 format.
-* Changed all references to now() to reference utcnow()
+* Changed dataFormatVersion to 11 to reflect date/time changes for `startTime` and `endTime` fields to comply with `ISO8601 format`.
+* Changed all references to `now()` to reference `utcnow()`
 
 # 2022/06/28
 ## Version 0.22
 ### Changes
-* Changed dataFormatVersion to 10 to reflect minor change to percentageUtilization and queryTime field from str() to float() and rounded float value to 2 decimal places.
+* Changed dataFormatVersion to 10 to reflect minor change to `percentageUtilization` and `queryTime` field from str() to float() and rounded float value to 2 decimal places.
 
 # 2022/06/26
 ## Version 0.21
 ### Changes
-* Changed dataFormatVersion to 9 to reflect new data format. The percentageUtilization and timeLeft fields have moved up one level in the data structure.
+* Changed dataFormatVersion to 9 to reflect new data format. The `percentageUtilization` and `timeLeft` fields have moved up one level in the data structure.
 
 ## Version 0.20
 ### Changes
-* Changed dataFormatVersion to 8 to reflect queryTime change from seconds to milliseconds.
+* Changed dataFormatVersion to 8 to reflect `queryTime` change from seconds to milliseconds.
 
 ## Version 0.19
 ### Additions
@@ -88,7 +92,7 @@
 * Added a percentage utilization of the certificate time frame.
 
 ### Changes
-* Updated the dataFormatVersion to reflect the new version format with the new percentageUtilization field.
+* Updated the dataFormatVersion to reflect the new version format with the new `percentageUtilization` field.
 
 # 2022/05/24
 ## Version 0.14
@@ -126,7 +130,7 @@
 ### Changes
 * Added queryFile option. Allows the querying of multiple hostnames in a single file on filesystem or downloading it from a HTTP/HTTPS link.
 * Updated JSON format to reflect new data version due to multiple certificates that can now appear in structure.
-* Updated the display output of howMuchTimeLeft function to also show the commonName of the certificate.
+* Updated the display output of `howMuchTimeLeft` function to also show the commonName of the certificate.
 
 # 2022/04/10
 ### Changes

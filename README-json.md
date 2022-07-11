@@ -1,11 +1,17 @@
 ## Example of JSON structure for certificate specifically
+```bash
+$ python3 certCheck.py --hostname apple.com --displayCertificateJSON
+```
+
+
+The result outputis
 ```json
 {
     "hostname": "apple.com",
     "port": 443,
-    "startTime": "2022-07-01T15:53:31.509182",
-    "endTime": "2022-07-01T15:53:31.560310",
-    "queryTime": 51.13,
+    "startTime": "2022-07-11T00:14:23.164247",
+    "endTime": "2022-07-11T00:14:23.215742",
+    "queryTime": 51.49,
     "certificateInfo":
     {
         "subject":
@@ -48,34 +54,39 @@
             "DNS0": "apple.com"
         }
     },
-    "timeLeft": "10 months, 25 days, 6 hours, 5 minutes, 5 seconds",
-    "percentageUtilization": 16.64
+    "timeLeft": "10 months, 15 days, 21 hours, 44 minutes, 13 seconds",
+    "percentageUtilization": 19.01
 }
 ```
+
 
 An example of the JSON structure which includes the hostname information as well:
 ```bash
 $ python3 certCheck.py --hostname apple.com --displayScriptDataJSON
 ```
+
+
 The resulting output is:
 ```json
 {
     "tenantId": "",
-    "deviceId": "2a44a3c9-3051-405f-b7ae-9c070d76c57d",
+    "deviceId": "2a44a3c9-9103-abed-b7ae-9c070d76c57d",
     "deviceTag": "",
     "clientHostName": "PRODMON01",
-    "dataFormatVersion": 14,
-    "scriptStartTime": "2022-07-02T21:21:25.803929",
-    "scriptEndTime": "2022-07-02T21:21:25.859357",
-    "scriptQueryTime": 55.43,
+    "dataFormatVersion": 15,
+    "scriptStartTime": "2022-07-11T00:06:15.941091",
+    "scriptEndTime": "2022-07-11T00:06:16.007972",
+    "scriptExecutionTime": 66.88,
+    "averageQueryTime": 66.88,
+    "averageCertificateUtilization": 19.01,
     "certResults":
     [
         {
             "hostname": "apple.com",
             "port": 443,
-            "startTime": "2022-07-02T21:21:25.803929",
-            "endTime": "2022-07-02T21:21:25.859357",
-            "queryTime": 55.43,
+            "startTime": "2022-07-11T00:06:15.941091",
+            "endTime": "2022-07-11T00:06:16.007972",
+            "queryTime": 66.88,
             "certificateInfo":
             {
                 "subject":
@@ -118,8 +129,8 @@ The resulting output is:
                     "DNS0": "apple.com"
                 }
             },
-            "timeLeft": "10 months, 24 days, 37 minutes, 11 seconds",
-            "percentageUtilization": 16.96
+            "timeLeft": "10 months, 15 days, 21 hours, 52 minutes, 20 seconds",
+            "percentageUtilization": 19.01
         }
     ]
 }
@@ -133,21 +144,23 @@ The resulting output is (take note of the invalid host data at the end of the ce
 ```json
 {
     "tenantId": "",
-    "deviceId": "2a44a3c9-3051-405f-b7ae-9c070d76c57d",
+    "deviceId": "2a44a3c9-ac31-99ab-b7ae-9c070d76c57d",
     "deviceTag": "",
     "clientHostName": "PRODMON01",
-    "dataFormatVersion": 14,
-    "scriptStartTime": "2022-07-02T21:19:02.495375",
-    "scriptEndTime": "2022-07-02T21:19:03.928107",
-    "scriptQueryTime": 1432.73,
+    "dataFormatVersion": 15,
+    "scriptStartTime": "2022-07-11T00:12:09.721404",
+    "scriptEndTime": "2022-07-11T00:12:10.121976",
+    "scriptExecutionTime": 400.57,
+    "averageQueryTime": 130.77,
+    "averageCertificateUtilization": 25.66,
     "certResults":
     [
         {
             "hostname": "apple.com",
             "port": 443,
-            "startTime": "2022-07-02T21:19:02.495407",
-            "endTime": "2022-07-02T21:19:02.547379",
-            "queryTime": 51.97,
+            "startTime": "2022-07-11T00:12:09.721442",
+            "endTime": "2022-07-11T00:12:09.771026",
+            "queryTime": 49.58,
             "certificateInfo":
             {
                 "subject":
@@ -190,15 +203,15 @@ The resulting output is (take note of the invalid host data at the end of the ce
                     "DNS0": "apple.com"
                 }
             },
-            "timeLeft": "10 months, 24 days, 39 minutes, 34 seconds",
-            "percentageUtilization": 16.96
+            "timeLeft": "10 months, 15 days, 21 hours, 46 minutes, 27 seconds",
+            "percentageUtilization": 19.01
         },
         {
             "hostname": "news24.com",
             "port": 443,
-            "startTime": "2022-07-02T21:19:02.549329",
-            "endTime": "2022-07-02T21:19:02.602949",
-            "queryTime": 53.62,
+            "startTime": "2022-07-11T00:12:09.772670",
+            "endTime": "2022-07-11T00:12:09.822719",
+            "queryTime": 50.05,
             "certificateInfo":
             {
                 "subject":
@@ -238,15 +251,15 @@ The resulting output is (take note of the invalid host data at the end of the ce
                     "DNS1": "news24.com"
                 }
             },
-            "timeLeft": "9 months, 28 days, 2 hours, 40 minutes, 57 seconds",
-            "percentageUtilization": 17.46
+            "timeLeft": "9 months, 19 days, 23 hours, 47 minutes, 50 seconds",
+            "percentageUtilization": 19.67
         },
         {
             "hostname": "reuters.com",
             "port": 443,
-            "startTime": "2022-07-02T21:19:02.603078",
-            "endTime": "2022-07-02T21:19:02.899738",
-            "queryTime": 296.66,
+            "startTime": "2022-07-11T00:12:09.823028",
+            "endTime": "2022-07-11T00:12:10.115710",
+            "queryTime": 292.68,
             "certificateInfo":
             {
                 "subject":
@@ -276,15 +289,15 @@ The resulting output is (take note of the invalid host data at the end of the ce
                     "DNS0": "reuters.com"
                 }
             },
-            "timeLeft": "2 months, 1 day, 15 hours, 35 minutes, 3 seconds",
-            "percentageUtilization": 29.28
+            "timeLeft": "1 month, 24 days, 12 hours, 41 minutes, 55 seconds",
+            "percentageUtilization": 38.3
         },
         {
             "hostname": "thisisaverybadhost.xyz",
             "port": 443,
-            "startTime": "2022-07-02T21:19:03.919881",
-            "endTime": "2022-07-02T21:19:03.928059",
-            "queryTime": 8.18,
+            "startTime": "2022-07-11T00:12:10.116052",
+            "endTime": "2022-07-11T00:12:10.121943",
+            "queryTime": 5.89,
             "certificateInfo":
             {
                 "subject":
