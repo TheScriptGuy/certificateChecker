@@ -1,4 +1,8 @@
 # 2022/07/16
+## Version 0.29
+### Changes
+* Updated dataFormatVersion to 17 to reflect the time delta in seconds between the notBefore and notAfter times.
+
 ## Version 0.28
 ### Changes
 * Updated dataFormatVersion to 16 to reflect 1 new field for cipher suites used in connection.

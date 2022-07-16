@@ -1,7 +1,7 @@
 # Program:        Certificate Checker
 # Author:         Nolan Rumble
 # Date:           2022/07/11
-# Version:        0.28
+# Version:        0.29
 
 import argparse
 import datetime
@@ -15,7 +15,7 @@ from data import sendDataMongoDB
 from data import emailTemplateBuilder
 from data import sendDataEmail
 
-scriptVersion = "0.28"
+scriptVersion = "0.29"
 
 # Global Variables
 args = None
@@ -194,7 +194,7 @@ def gatherData(__certResults, __scriptStartTime, __scriptEndTime):
         "deviceId": myInfo.myConfigJson["myDeviceId"],
         "deviceTag": myInfo.myConfigJson["myTags"],
         "clientHostName": myInfo.hostname,
-        "dataFormatVersion": 16,
+        "dataFormatVersion": 17,
         "scriptStartTime": scriptStartTime,
         "scriptEndTime": scriptEndTime,
         "scriptExecutionTime": scriptExecutionTime,

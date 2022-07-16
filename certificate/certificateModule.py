@@ -1,5 +1,5 @@
 # Certificate Module1
-# Version: 0.10
+# Version: 0.11
 # Last updated: 2022-07-16
 # Author: TheScriptGuy
 
@@ -23,7 +23,7 @@ class certificateModule:
         # Initialize the __hostnameData object.
         __hostnameData = {
             "certificateMetaData": None,
-            "connectionCipher": None
+            "connectionCipher": None,
         }
 
         try:
@@ -275,6 +275,21 @@ class certificateModule:
         # Return the percentage utilization as a string formatted to 2 places.
         return float(f"{percentageUtilization:.2f}")
 
+    def calculateCertificateTemplateTime(self, __notBefore, __notAfter):
+        """Calculate the number of seconds between __notBefore and __notAfter."""
+        # Convert __notBefore to datetime object
+        notBeforeTime = datetime.datetime.strptime(__notBefore, self.certTimeFormat)
+        # Convert __notAfter to datetime object
+        notAfterTime = datetime.datetime.strptime(__notAfter, self.certTimeFormat)
+
+        # Calcualte the difference
+        timeDifference = notAfterTime - notBeforeTime
+
+        # Get the number of seconds from the calculation above
+        timeDifferenceInSeconds = int(timeDifference.total_seconds())
+
+        return timeDifferenceInSeconds
+
     def convertCertificateObject2Json(self, __hostname, __port, __startTime, __endTime, __certificateObject):
         """Convert the certificate object into JSON format."""
         myJsonCertificateInfo = {}
@@ -336,6 +351,10 @@ class certificateModule:
             # Percentage Utilization of certificate
             myJsonCertificateInfo["percentageUtilization"] = self.calculateCertificateUtilization(__certificateObject["certificateMetaData"]["notBefore"], __certificateObject["certificateMetaData"]["notAfter"])
 
+            # Certificate template time validity
+            # Work out the time that certificates are issued for
+            myJsonCertificateInfo["certificateTemplateTime"] = self.calculateCertificateTemplateTime(__certificateObject["certificateMetaData"]["notBefore"], __certificateObject["certificateMetaData"]["notAfter"])
+            
             # Reset number of entries
             subjectAltNameCounter = 0
 
@@ -352,6 +371,7 @@ class certificateModule:
             myJsonCertificateInfo["certificateInfo"]["subjectAltName"] = {"None": "None"}
             myJsonCertificateInfo["percentageUtilization"] = 0.00
             myJsonCertificateInfo["timeLeft"] = "0 seconds"
+            myJsonCertificateInfo["certificateTemplateTime"] = 0
             myJsonCertificateInfo["connectionCipher"] = []
 
         return myJsonCertificateInfo
@@ -370,7 +390,7 @@ class certificateModule:
     def __init__(self):
         """Initialize the class."""
         self.initialized = True
-        self.moduleVersion = "0.07"
+        self.moduleVersion = "0.11"
         self.certificate = {}
 
         # Certificate date/time format that is to be interpreted by datetime module.

@@ -9,9 +9,15 @@ The result outputis
 {
     "hostname": "apple.com",
     "port": 443,
-    "startTime": "2022-07-16T21:57:07.587858",
-    "endTime": "2022-07-16T21:57:07.628875",
-    "queryTime": 41.02,
+    "startTime": "2022-07-16T22:37:17.272867",
+    "endTime": "2022-07-16T22:37:17.319674",
+    "queryTime": 46.81,
+    "connectionCipher":
+    [
+        "TLS_AES_128_GCM_SHA256",
+        "TLSv1.3",
+        128
+    ],
     "certificateInfo":
     {
         "certificateIssuer":
@@ -33,14 +39,9 @@ The result outputis
             "DNS0": "apple.com"
         }
     },
-    "connectionCipher":
-    [
-        "TLS_AES_128_GCM_SHA256",
-        "TLSv1.3",
-        128
-    ],
-    "timeLeft": "10 months, 10 days, 1 minute, 29 seconds",
-    "percentageUtilization": 20.51
+    "timeLeft": "10 months, 9 days, 23 hours, 21 minutes, 19 seconds",
+    "percentageUtilization": 20.51,
+    "certificateTemplateTime": 34127999
 }
 ```
 
@@ -55,23 +56,29 @@ The resulting output is:
 ```json
 {
     "tenantId": "",
-    "deviceId": "2a44a3c9-3461-6161-b7ae-9c070d76c57d",
+    "deviceId": "2a44a3c9-3051-405f-b7ae-9c070d76c57d",
     "deviceTag": "",
     "clientHostName": "PRODMON01",
-    "dataFormatVersion": 16,
-    "scriptStartTime": "2022-07-16T21:58:14.750980",
-    "scriptEndTime": "2022-07-16T21:58:14.789993",
-    "scriptExecutionTime": 39.01,
-    "averageQueryTime": 39.01,
+    "dataFormatVersion": 17,
+    "scriptStartTime": "2022-07-16T22:36:25.012074",
+    "scriptEndTime": "2022-07-16T22:36:25.078410",
+    "scriptExecutionTime": 66.34,
+    "averageQueryTime": 66.34,
     "averageCertificateUtilization": 20.51,
     "certResults":
     [
         {
             "hostname": "apple.com",
             "port": 443,
-            "startTime": "2022-07-16T21:58:14.750980",
-            "endTime": "2022-07-16T21:58:14.789993",
-            "queryTime": 39.01,
+            "startTime": "2022-07-16T22:36:25.012074",
+            "endTime": "2022-07-16T22:36:25.078410",
+            "queryTime": 66.34,
+            "connectionCipher":
+            [
+                "TLS_AES_128_GCM_SHA256",
+                "TLSv1.3",
+                128
+            ],
             "certificateInfo":
             {
                 "certificateIssuer":
@@ -93,14 +100,9 @@ The resulting output is:
                     "DNS0": "apple.com"
                 }
             },
-            "connectionCipher":
-            [
-                "TLS_AES_128_GCM_SHA256",
-                "TLSv1.3",
-                128
-            ],
-            "timeLeft": "10 months, 10 days, 22 seconds",
-            "percentageUtilization": 20.51
+            "timeLeft": "10 months, 9 days, 23 hours, 22 minutes, 11 seconds",
+            "percentageUtilization": 20.51,
+            "certificateTemplateTime": 34127999
         }
     ]
 }
@@ -114,23 +116,23 @@ The resulting output is (take note of the invalid host data at the end of the ce
 ```json
 {
     "tenantId": "",
-    "deviceId": "2a44a3c9-1235-6011-b7ae-9c070d76c57d",
+    "deviceId": "2a44a3c9-db11-4301-b7ae-9c070d76c57d",
     "deviceTag": "",
     "clientHostName": "PRODMON01",
-    "dataFormatVersion": 16,
-    "scriptStartTime": "2022-07-16T22:11:03.898656",
-    "scriptEndTime": "2022-07-16T22:11:05.233176",
-    "scriptExecutionTime": 1334.52,
-    "averageQueryTime": 265.93,
-    "averageCertificateUtilization": 32.37,
+    "dataFormatVersion": 17,
+    "scriptStartTime": "2022-07-16T22:28:52.233703",
+    "scriptEndTime": "2022-07-16T22:28:53.650857",
+    "scriptExecutionTime": 1417.15,
+    "averageQueryTime": 282.41,
+    "averageCertificateUtilization": 32.39,
     "certResults":
     [
         {
             "hostname": "apple.com",
             "port": 443,
-            "startTime": "2022-07-16T22:11:03.898688",
-            "endTime": "2022-07-16T22:11:03.945809",
-            "queryTime": 47.12,
+            "startTime": "2022-07-16T22:28:52.233739",
+            "endTime": "2022-07-16T22:28:52.281488",
+            "queryTime": 47.75,
             "connectionCipher":
             [
                 "TLS_AES_128_GCM_SHA256",
@@ -158,15 +160,16 @@ The resulting output is (take note of the invalid host data at the end of the ce
                     "DNS0": "apple.com"
                 }
             },
-            "timeLeft": "10 months, 9 days, 23 hours, 47 minutes, 33 seconds",
-            "percentageUtilization": 20.51
+            "timeLeft": "10 months, 9 days, 23 hours, 29 minutes, 44 seconds",
+            "percentageUtilization": 20.51,
+            "certificateTemplateTime": 34127999
         },
         {
             "hostname": "news24.com",
             "port": 443,
-            "startTime": "2022-07-16T22:11:03.947064",
-            "endTime": "2022-07-16T22:11:03.995779",
-            "queryTime": 48.72,
+            "startTime": "2022-07-16T22:28:52.282717",
+            "endTime": "2022-07-16T22:28:52.341212",
+            "queryTime": 58.49,
             "connectionCipher":
             [
                 "TLS_AES_256_GCM_SHA384",
@@ -195,15 +198,16 @@ The resulting output is (take note of the invalid host data at the end of the ce
                     "DNS1": "news24.com"
                 }
             },
-            "timeLeft": "9 months, 14 days, 1 hour, 48 minutes, 56 seconds",
-            "percentageUtilization": 21.29
+            "timeLeft": "9 months, 14 days, 1 hour, 31 minutes, 7 seconds",
+            "percentageUtilization": 21.29,
+            "certificateTemplateTime": 31622399
         },
         {
             "hostname": "reuters.com",
             "port": 443,
-            "startTime": "2022-07-16T22:11:03.995894",
-            "endTime": "2022-07-16T22:11:04.288112",
-            "queryTime": 292.22,
+            "startTime": "2022-07-16T22:28:52.341364",
+            "endTime": "2022-07-16T22:28:52.633270",
+            "queryTime": 291.91,
             "connectionCipher":
             [
                 "ECDHE-RSA-AES256-GCM-SHA384",
@@ -231,15 +235,16 @@ The resulting output is (take note of the invalid host data at the end of the ce
                     "DNS0": "reuters.com"
                 }
             },
-            "timeLeft": "1 month, 18 days, 14 hours, 43 minutes, 1 second",
-            "percentageUtilization": 44.87
+            "timeLeft": "1 month, 18 days, 14 hours, 25 minutes, 13 seconds",
+            "percentageUtilization": 44.89,
+            "certificateTemplateTime": 7775999
         },
         {
             "hostname": "thisisaverybadhost.xyz",
             "port": 443,
-            "startTime": "2022-07-16T22:11:05.230848",
-            "endTime": "2022-07-16T22:11:05.233140",
-            "queryTime": 2.29,
+            "startTime": "2022-07-16T22:28:53.648471",
+            "endTime": "2022-07-16T22:28:53.650821",
+            "queryTime": 2.35,
             "certificateInfo":
             {
                 "subject":
@@ -264,6 +269,7 @@ The resulting output is (take note of the invalid host data at the end of the ce
             },
             "percentageUtilization": 0.0,
             "timeLeft": "0 seconds",
+            "certificateTemplateTime": 0,
             "connectionCipher":
             []
         }
