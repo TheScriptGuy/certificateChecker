@@ -1,6 +1,6 @@
 # Certificate Checker
 
-Version: 0.27
+Version: 0.28
 
 Author: TheScriptGuy
 
@@ -29,7 +29,7 @@ python3 certChecker.py --hostname example.com --displayTimeLeft
 usage: certCheck.py [-h] [--hostname HOSTNAME] [--displayCertificate] [--displayCertificateJSON] [--displayScriptDataJSON] [--displayTimeLeft] [--queryFile QUERYFILE] [--uploadJsonData UPLOADJSONDATA] [--mongoDB] [--sendEmail] [--setTag SETTAG]
                     [--delTag] [--getTag] [--renewDeviceId] [--getDeviceId] [--deleteDeviceId] [--setTenantId SETTENANTID] [--getTenantId] [--delTenantId] [--createBlankConfiguration]
 
-Certificate Checker v0.27
+Certificate Checker v0.28
 
 optional arguments:
   -h, --help            show this help message and exit
