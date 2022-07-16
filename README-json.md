@@ -9,24 +9,11 @@ The result outputis
 {
     "hostname": "apple.com",
     "port": 443,
-    "startTime": "2022-07-11T00:14:23.164247",
-    "endTime": "2022-07-11T00:14:23.215742",
-    "queryTime": 51.49,
+    "startTime": "2022-07-16T21:57:07.587858",
+    "endTime": "2022-07-16T21:57:07.628875",
+    "queryTime": 41.02,
     "certificateInfo":
     {
-        "subject":
-        {
-            "businessCategory": "Private Organization",
-            "jurisdictionCountryName": "US",
-            "jurisdictionStateOrProvinceName": "California",
-            "serialNumber": "C0806592",
-            "countryName": "US",
-            "stateOrProvinceName": "California",
-            "localityName": "Cupertino",
-            "organizationName": "Apple Inc.",
-            "organizationalUnitName": "management:idms.group.665035",
-            "commonName": "apple.com"
-        },
         "certificateIssuer":
         {
             "countryName": "US",
@@ -37,14 +24,6 @@ The result outputis
         "serialNumber": "6A1D3FA84A43C329F1051060FF4698BA",
         "notBefore": "Apr 26 21:58:37 2022 GMT",
         "notAfter": "May 26 21:58:36 2023 GMT",
-        "OCSP":
-        [
-            "http://ocsp.apple.com/ocsp03-apevsecc1g101"
-        ],
-        "crlDistributionPoints":
-        [
-            "http://crl.apple.com/apevsecc1g1.crl"
-        ],
         "caIssuers":
         [
             "http://certs.apple.com/apevsecc1g1.der"
@@ -54,8 +33,14 @@ The result outputis
             "DNS0": "apple.com"
         }
     },
-    "timeLeft": "10 months, 15 days, 21 hours, 44 minutes, 13 seconds",
-    "percentageUtilization": 19.01
+    "connectionCipher":
+    [
+        "TLS_AES_128_GCM_SHA256",
+        "TLSv1.3",
+        128
+    ],
+    "timeLeft": "10 months, 10 days, 1 minute, 29 seconds",
+    "percentageUtilization": 20.51
 }
 ```
 
@@ -70,38 +55,25 @@ The resulting output is:
 ```json
 {
     "tenantId": "",
-    "deviceId": "2a44a3c9-9103-abed-b7ae-9c070d76c57d",
+    "deviceId": "2a44a3c9-3461-6161-b7ae-9c070d76c57d",
     "deviceTag": "",
     "clientHostName": "PRODMON01",
-    "dataFormatVersion": 15,
-    "scriptStartTime": "2022-07-11T00:06:15.941091",
-    "scriptEndTime": "2022-07-11T00:06:16.007972",
-    "scriptExecutionTime": 66.88,
-    "averageQueryTime": 66.88,
-    "averageCertificateUtilization": 19.01,
+    "dataFormatVersion": 16,
+    "scriptStartTime": "2022-07-16T21:58:14.750980",
+    "scriptEndTime": "2022-07-16T21:58:14.789993",
+    "scriptExecutionTime": 39.01,
+    "averageQueryTime": 39.01,
+    "averageCertificateUtilization": 20.51,
     "certResults":
     [
         {
             "hostname": "apple.com",
             "port": 443,
-            "startTime": "2022-07-11T00:06:15.941091",
-            "endTime": "2022-07-11T00:06:16.007972",
-            "queryTime": 66.88,
+            "startTime": "2022-07-16T21:58:14.750980",
+            "endTime": "2022-07-16T21:58:14.789993",
+            "queryTime": 39.01,
             "certificateInfo":
             {
-                "subject":
-                {
-                    "businessCategory": "Private Organization",
-                    "jurisdictionCountryName": "US",
-                    "jurisdictionStateOrProvinceName": "California",
-                    "serialNumber": "C0806592",
-                    "countryName": "US",
-                    "stateOrProvinceName": "California",
-                    "localityName": "Cupertino",
-                    "organizationName": "Apple Inc.",
-                    "organizationalUnitName": "management:idms.group.665035",
-                    "commonName": "apple.com"
-                },
                 "certificateIssuer":
                 {
                     "countryName": "US",
@@ -112,14 +84,6 @@ The resulting output is:
                 "serialNumber": "6A1D3FA84A43C329F1051060FF4698BA",
                 "notBefore": "Apr 26 21:58:37 2022 GMT",
                 "notAfter": "May 26 21:58:36 2023 GMT",
-                "OCSP":
-                [
-                    "http://ocsp.apple.com/ocsp03-apevsecc1g101"
-                ],
-                "crlDistributionPoints":
-                [
-                    "http://crl.apple.com/apevsecc1g1.crl"
-                ],
                 "caIssuers":
                 [
                     "http://certs.apple.com/apevsecc1g1.der"
@@ -129,8 +93,14 @@ The resulting output is:
                     "DNS0": "apple.com"
                 }
             },
-            "timeLeft": "10 months, 15 days, 21 hours, 52 minutes, 20 seconds",
-            "percentageUtilization": 19.01
+            "connectionCipher":
+            [
+                "TLS_AES_128_GCM_SHA256",
+                "TLSv1.3",
+                128
+            ],
+            "timeLeft": "10 months, 10 days, 22 seconds",
+            "percentageUtilization": 20.51
         }
     ]
 }
@@ -144,38 +114,31 @@ The resulting output is (take note of the invalid host data at the end of the ce
 ```json
 {
     "tenantId": "",
-    "deviceId": "2a44a3c9-ac31-99ab-b7ae-9c070d76c57d",
+    "deviceId": "2a44a3c9-1235-6011-b7ae-9c070d76c57d",
     "deviceTag": "",
     "clientHostName": "PRODMON01",
-    "dataFormatVersion": 15,
-    "scriptStartTime": "2022-07-11T00:12:09.721404",
-    "scriptEndTime": "2022-07-11T00:12:10.121976",
-    "scriptExecutionTime": 400.57,
-    "averageQueryTime": 130.77,
-    "averageCertificateUtilization": 25.66,
+    "dataFormatVersion": 16,
+    "scriptStartTime": "2022-07-16T22:11:03.898656",
+    "scriptEndTime": "2022-07-16T22:11:05.233176",
+    "scriptExecutionTime": 1334.52,
+    "averageQueryTime": 265.93,
+    "averageCertificateUtilization": 32.37,
     "certResults":
     [
         {
             "hostname": "apple.com",
             "port": 443,
-            "startTime": "2022-07-11T00:12:09.721442",
-            "endTime": "2022-07-11T00:12:09.771026",
-            "queryTime": 49.58,
+            "startTime": "2022-07-16T22:11:03.898688",
+            "endTime": "2022-07-16T22:11:03.945809",
+            "queryTime": 47.12,
+            "connectionCipher":
+            [
+                "TLS_AES_128_GCM_SHA256",
+                "TLSv1.3",
+                128
+            ],
             "certificateInfo":
             {
-                "subject":
-                {
-                    "businessCategory": "Private Organization",
-                    "jurisdictionCountryName": "US",
-                    "jurisdictionStateOrProvinceName": "California",
-                    "serialNumber": "C0806592",
-                    "countryName": "US",
-                    "stateOrProvinceName": "California",
-                    "localityName": "Cupertino",
-                    "organizationName": "Apple Inc.",
-                    "organizationalUnitName": "management:idms.group.665035",
-                    "commonName": "apple.com"
-                },
                 "certificateIssuer":
                 {
                     "countryName": "US",
@@ -186,14 +149,6 @@ The resulting output is (take note of the invalid host data at the end of the ce
                 "serialNumber": "6A1D3FA84A43C329F1051060FF4698BA",
                 "notBefore": "Apr 26 21:58:37 2022 GMT",
                 "notAfter": "May 26 21:58:36 2023 GMT",
-                "OCSP":
-                [
-                    "http://ocsp.apple.com/ocsp03-apevsecc1g101"
-                ],
-                "crlDistributionPoints":
-                [
-                    "http://crl.apple.com/apevsecc1g1.crl"
-                ],
                 "caIssuers":
                 [
                     "http://certs.apple.com/apevsecc1g1.der"
@@ -203,25 +158,23 @@ The resulting output is (take note of the invalid host data at the end of the ce
                     "DNS0": "apple.com"
                 }
             },
-            "timeLeft": "10 months, 15 days, 21 hours, 46 minutes, 27 seconds",
-            "percentageUtilization": 19.01
+            "timeLeft": "10 months, 9 days, 23 hours, 47 minutes, 33 seconds",
+            "percentageUtilization": 20.51
         },
         {
             "hostname": "news24.com",
             "port": 443,
-            "startTime": "2022-07-11T00:12:09.772670",
-            "endTime": "2022-07-11T00:12:09.822719",
-            "queryTime": 50.05,
+            "startTime": "2022-07-16T22:11:03.947064",
+            "endTime": "2022-07-16T22:11:03.995779",
+            "queryTime": 48.72,
+            "connectionCipher":
+            [
+                "TLS_AES_256_GCM_SHA384",
+                "TLSv1.3",
+                256
+            ],
             "certificateInfo":
             {
-                "subject":
-                {
-                    "countryName": "US",
-                    "stateOrProvinceName": "California",
-                    "localityName": "San Francisco",
-                    "organizationName": "Cloudflare, Inc.",
-                    "commonName": "news24.com"
-                },
                 "certificateIssuer":
                 {
                     "countryName": "US",
@@ -232,15 +185,6 @@ The resulting output is (take note of the invalid host data at the end of the ce
                 "serialNumber": "0A3FFDC35976BA08FD0F9C1DD8F83731",
                 "notBefore": "Apr 30 00:00:00 2022 GMT",
                 "notAfter": "Apr 30 23:59:59 2023 GMT",
-                "OCSP":
-                [
-                    "http://ocsp.digicert.com"
-                ],
-                "crlDistributionPoints":
-                [
-                    "http://crl3.digicert.com/CloudflareIncECCCA-3.crl",
-                    "http://crl4.digicert.com/CloudflareIncECCCA-3.crl"
-                ],
                 "caIssuers":
                 [
                     "http://cacerts.digicert.com/CloudflareIncECCCA-3.crt"
@@ -251,21 +195,23 @@ The resulting output is (take note of the invalid host data at the end of the ce
                     "DNS1": "news24.com"
                 }
             },
-            "timeLeft": "9 months, 19 days, 23 hours, 47 minutes, 50 seconds",
-            "percentageUtilization": 19.67
+            "timeLeft": "9 months, 14 days, 1 hour, 48 minutes, 56 seconds",
+            "percentageUtilization": 21.29
         },
         {
             "hostname": "reuters.com",
             "port": 443,
-            "startTime": "2022-07-11T00:12:09.823028",
-            "endTime": "2022-07-11T00:12:10.115710",
-            "queryTime": 292.68,
+            "startTime": "2022-07-16T22:11:03.995894",
+            "endTime": "2022-07-16T22:11:04.288112",
+            "queryTime": 292.22,
+            "connectionCipher":
+            [
+                "ECDHE-RSA-AES256-GCM-SHA384",
+                "TLSv1.2",
+                256
+            ],
             "certificateInfo":
             {
-                "subject":
-                {
-                    "commonName": "reuters.com"
-                },
                 "certificateIssuer":
                 {
                     "countryName": "US",
@@ -276,10 +222,6 @@ The resulting output is (take note of the invalid host data at the end of the ce
                 "serialNumber": "04203F2F15F8194772481DABC1061E213EAB",
                 "notBefore": "Jun  6 12:54:06 2022 GMT",
                 "notAfter": "Sep  4 12:54:05 2022 GMT",
-                "OCSP":
-                [
-                    "http://r3.o.lencr.org"
-                ],
                 "caIssuers":
                 [
                     "http://r3.i.lencr.org/"
@@ -289,15 +231,15 @@ The resulting output is (take note of the invalid host data at the end of the ce
                     "DNS0": "reuters.com"
                 }
             },
-            "timeLeft": "1 month, 24 days, 12 hours, 41 minutes, 55 seconds",
-            "percentageUtilization": 38.3
+            "timeLeft": "1 month, 18 days, 14 hours, 43 minutes, 1 second",
+            "percentageUtilization": 44.87
         },
         {
             "hostname": "thisisaverybadhost.xyz",
             "port": 443,
-            "startTime": "2022-07-11T00:12:10.116052",
-            "endTime": "2022-07-11T00:12:10.121943",
-            "queryTime": 5.89,
+            "startTime": "2022-07-16T22:11:05.230848",
+            "endTime": "2022-07-16T22:11:05.233140",
+            "queryTime": 2.29,
             "certificateInfo":
             {
                 "subject":
@@ -321,7 +263,9 @@ The resulting output is (take note of the invalid host data at the end of the ce
                 }
             },
             "percentageUtilization": 0.0,
-            "timeLeft": "0 seconds"
+            "timeLeft": "0 seconds",
+            "connectionCipher":
+            []
         }
     ]
 }

@@ -1,6 +1,6 @@
 # Certificate Module1
-# Version: 0.09
-# Last updated: 2022-07-01
+# Version: 0.10
+# Last updated: 2022-07-16
 # Author: TheScriptGuy
 
 import ssl
@@ -20,36 +20,41 @@ class certificateModule:
         """Connect to the host and get the certificate."""
         __ctx = ssl.create_default_context()
 
+        # Initialize the __hostnameData object.
+        __hostnameData = {
+            "certificateMetaData": None,
+            "connectionCipher": None
+        }
+
         try:
             with __ctx.wrap_socket(socket.socket(), server_hostname=__hostname) as s:
                 s.connect((__hostname, __port))
-                cert = s.getpeercert()
-                return cert
+                __certificate = s.getpeercert()
+                __cipher = s.cipher()
+                __hostnameData["certificateMetaData"] = __certificate
+                __hostnameData["connectionCipher"] = __cipher
 
         except ssl.SSLCertVerificationError as e:
             connectHost = __hostname + ":" + str(__port)
             print(connectHost + ' - Certificate error - ', e.verify_message)
-            return None
 
         except socket.gaierror as e:
             connectHost = __hostname + ":" + str(__port)
             print(connectHost + ' - Socket error - ', e.strerror)
-            return None
 
         except FileNotFoundError as e:
             connectHost = __hostname + ":" + str(__port)
             print(connectHost + ' - File not found - ', e.strerror)
-            return None
 
         except TimeoutError as e:
             connectHost = __hostname + ":" + str(__port)
             print(connectHost + ' - Timeout error - ', e.strerror)
-            return None
 
         except OSError as e:
             connectHost = __hostname + ":" + str(__port)
             print(connectHost + ' - OSError - ', e.strerror)
-            return None
+        
+        return __hostnameData
 
     @staticmethod
     def printSubject(__certificateObject):
@@ -109,7 +114,7 @@ class certificateModule:
         """Return the remaining time left on the certificate."""
         if __certificateObject is not None:
             timeNow = datetime.datetime.utcnow().replace(microsecond=0)
-            certNotAfter = datetime.datetime.strptime(self.returnNotAfter(__certificateObject), self.certTimeFormat)
+            certNotAfter = datetime.datetime.strptime(self.returnNotAfter(__certificateObject["certificateMetaData"]), self.certTimeFormat)
 
             __delta = relativedelta(certNotAfter, timeNow)
 
@@ -285,40 +290,43 @@ class certificateModule:
         myJsonCertificateInfo["startTime"] = startTime
         myJsonCertificateInfo["endTime"] = endTime
         myJsonCertificateInfo["queryTime"] = queryTime
+        
+        if __certificateObject["connectionCipher"] is not None:
+            myJsonCertificateInfo["connectionCipher"] = __certificateObject["connectionCipher"]
 
         myJsonCertificateInfo["certificateInfo"] = {}
-
-        if __certificateObject is not None:
+        
+        if __certificateObject["certificateMetaData"] is not None:
 
             certKeys = __certificateObject.keys()
 
             # Certificate might not have subject defined.
             if 'subject' in certKeys:
-                myJsonCertificateInfo["certificateInfo"]["subject"] = dict(x[0] for x in __certificateObject['subject'])
+                myJsonCertificateInfo["certificateInfo"]["subject"] = dict(x[0] for x in __certificateObject["certificateMetaData"]["subject"])
 
-            myJsonCertificateInfo["certificateInfo"]["certificateIssuer"] = dict(x[0] for x in __certificateObject['issuer'])
+            myJsonCertificateInfo["certificateInfo"]["certificateIssuer"] = dict(x[0] for x in __certificateObject["certificateMetaData"]["issuer"])
 
-            myJsonCertificateInfo["certificateInfo"]["version"] = __certificateObject['version']
-            myJsonCertificateInfo["certificateInfo"]["serialNumber"] = __certificateObject['serialNumber']
-            myJsonCertificateInfo["certificateInfo"]["notBefore"] = __certificateObject['notBefore']
-            myJsonCertificateInfo["certificateInfo"]["notAfter"] = __certificateObject['notAfter']
+            myJsonCertificateInfo["certificateInfo"]["version"] = __certificateObject["certificateMetaData"]["version"]
+            myJsonCertificateInfo["certificateInfo"]["serialNumber"] = __certificateObject["certificateMetaData"]["serialNumber"]
+            myJsonCertificateInfo["certificateInfo"]["notBefore"] = __certificateObject["certificateMetaData"]["notBefore"]
+            myJsonCertificateInfo["certificateInfo"]["notAfter"] = __certificateObject["certificateMetaData"]["notAfter"]
 
             # Certificate might not have OCSP defined
-            if 'OCSP' in certKeys:
-                myJsonCertificateInfo["certificateInfo"]["OCSP"] = __certificateObject['OCSP']
+            if "OCSP" in certKeys:
+                myJsonCertificateInfo["certificateInfo"]["OCSP"] = __certificateObject["certificateMetaData"]["OCSP"]
 
             # Certificate might not have CRL defined
-            if 'crlDistributionPoints' in certKeys:
-                myJsonCertificateInfo["certificateInfo"]["crlDistributionPoints"] = __certificateObject['crlDistributionPoints']
+            if "crlDistributionPoints" in certKeys:
+                myJsonCertificateInfo["certificateInfo"]["crlDistributionPoints"] = __certificateObject["certificateMetaData"]["crlDistributionPoints"]
 
-            myJsonCertificateInfo["certificateInfo"]["caIssuers"] = __certificateObject['caIssuers']
+            myJsonCertificateInfo["certificateInfo"]["caIssuers"] = __certificateObject["certificateMetaData"]["caIssuers"]
 
             # Initialize subjectAltName
             myJsonCertificateInfo["certificateInfo"]["subjectAltName"] = {}
             # Keep track of how many entries there are
             subjectAltNameCounter = 0
 
-            for field, value in __certificateObject['subjectAltName']:
+            for field, value in __certificateObject["certificateMetaData"]["subjectAltName"]:
                 myJsonCertificateInfo["certificateInfo"]["subjectAltName"].update({field + str(subjectAltNameCounter): value})
                 subjectAltNameCounter += 1
 
@@ -326,7 +334,7 @@ class certificateModule:
             myJsonCertificateInfo["timeLeft"] = self.howMuchTimeLeft(__certificateObject)
 
             # Percentage Utilization of certificate
-            myJsonCertificateInfo["percentageUtilization"] = self.calculateCertificateUtilization(__certificateObject['notBefore'], __certificateObject['notAfter'])
+            myJsonCertificateInfo["percentageUtilization"] = self.calculateCertificateUtilization(__certificateObject["certificateMetaData"]["notBefore"], __certificateObject["certificateMetaData"]["notAfter"])
 
             # Reset number of entries
             subjectAltNameCounter = 0
@@ -344,6 +352,7 @@ class certificateModule:
             myJsonCertificateInfo["certificateInfo"]["subjectAltName"] = {"None": "None"}
             myJsonCertificateInfo["percentageUtilization"] = 0.00
             myJsonCertificateInfo["timeLeft"] = "0 seconds"
+            myJsonCertificateInfo["connectionCipher"] = []
 
         return myJsonCertificateInfo
 

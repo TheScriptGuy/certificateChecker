@@ -1,9 +1,16 @@
+# 2022/07/16
+## Version 0.28
+### Changes
+* Updated dataFormatVersion to 16 to reflect 1 new field for cipher suites used in connection.
+
 # 2022/07/10
 ## Version 0.27
+### Changes
 * Updated dataFormatVersion to 15 to reflect 2 new fields for average utilization of certificates (`averageCertificateUtilization`) and average query time (`averageQueryTime`). 
 
 # 2022/07/04
 ## Version 0.26
+### Fixes
 * Fixed minor bug with sendDataMongoDB.py to reference collectionNames from mongo.cfg correctly.
 
 # 2022/07/02
