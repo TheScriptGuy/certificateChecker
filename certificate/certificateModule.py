@@ -53,7 +53,7 @@ class certificateModule:
         except OSError as e:
             connectHost = __hostname + ":" + str(__port)
             print(connectHost + ' - OSError - ', e.strerror)
-        
+
         return __hostnameData
 
     @staticmethod
@@ -305,12 +305,12 @@ class certificateModule:
         myJsonCertificateInfo["startTime"] = startTime
         myJsonCertificateInfo["endTime"] = endTime
         myJsonCertificateInfo["queryTime"] = queryTime
-        
+
         if __certificateObject["connectionCipher"] is not None:
             myJsonCertificateInfo["connectionCipher"] = __certificateObject["connectionCipher"]
 
         myJsonCertificateInfo["certificateInfo"] = {}
-        
+
         if __certificateObject["certificateMetaData"] is not None:
 
             certKeys = __certificateObject.keys()
@@ -354,7 +354,7 @@ class certificateModule:
             # Certificate template time validity
             # Work out the time that certificates are issued for
             myJsonCertificateInfo["certificateTemplateTime"] = self.calculateCertificateTemplateTime(__certificateObject["certificateMetaData"]["notBefore"], __certificateObject["certificateMetaData"]["notAfter"])
-            
+
             # Reset number of entries
             subjectAltNameCounter = 0
 
