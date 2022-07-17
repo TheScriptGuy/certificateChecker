@@ -1,5 +1,8 @@
-# Send data to destination based on mongo.cfg file.
-# Version 0.04
+# Class:            sendDataMongoDB
+# Last updated:     2022/07/17
+# Author:           TheScriptGuy (https://github.com/TheScriptGuy
+# Version:          0.06
+# Description:      Send json list to mongoDB based on configuration in mongo.cfg
 
 import pymongo
 from pymongo import MongoClient
@@ -129,8 +132,8 @@ class sendDataMongoDB:
         # Convert the startTime and endTime fields info ISODate format.
         jsonScriptData = __jsonScriptData
 
-        jsonScriptData["scriptStartTime"] = datetime.fromisoformat(jsonScriptData["scriptStartTime"])
-        jsonScriptData["scriptEndTime"] = datetime.fromisoformat(jsonScriptData["scriptEndTime"])
+        jsonScriptData["queryStatistics"]["scriptStartTime"] = datetime.fromisoformat(jsonScriptData["queryStatistics"]["scriptStartTime"])
+        jsonScriptData["queryStatistics"]["scriptEndTime"] = datetime.fromisoformat(jsonScriptData["queryStatistics"]["scriptEndTime"])
 
         for iResult in jsonScriptData["certResults"]:
             iResult["startTime"] = datetime.fromisoformat(iResult["startTime"])
@@ -145,4 +148,4 @@ class sendDataMongoDB:
     def __init__(self):
         """Initialize the sendDataMongoDB class."""
         self.initialized = True
-        self.version = "0.05"
+        self.version = "0.06"
