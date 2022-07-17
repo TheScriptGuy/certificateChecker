@@ -87,7 +87,7 @@ class calculateStats:
         return combinedStatistics
 
     def combineData(self, __certResults, __mySystemInfo, __scriptStartTime, __scriptEndTime):
-        """"Combines all the data into structured data."""
+        """Combines all the data into structured data."""
         # Convert script start/end times into string isoformat
         scriptStartTime = __scriptStartTime.isoformat()
         scriptEndTime = __scriptEndTime.isoformat()
