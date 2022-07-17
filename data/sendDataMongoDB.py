@@ -105,7 +105,6 @@ class sendDataMongoDB:
 
     def createCollection(self, __mongoConnection, __mongoConfiguration):
         """create a collection within the DB."""
-
         # First check to see see if collectionName is defined in mongo.cfg
         if "collectionName" in __mongoConfiguration:
             # Retrieve the collectionName value from the dict __mongoConfiguration
