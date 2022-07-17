@@ -12,19 +12,19 @@ from dateutil.relativedelta import relativedelta
 
 class calculateStats:
     """This calculates statistics off the data provided."""
-    
+
     @staticmethod
     def convertTimeIntoHumanReadable(__seconds):
         """Return the remaining time left on the certificate."""
         # Get date/time since epoch based off seconds
         myDateTime = datetime.datetime.fromtimestamp(__seconds)
-        
+
         # Create epoch time datetime object.
         beginDate = datetime.date(1970, 1, 1)
-        
+
         # Calculate the difference between the 2 dates myDateTime and beginDate
         myDateTimeObject = relativedelta(myDateTime, beginDate)
-        
+
         myDateTime = {
             'years': myDateTimeObject.years,
             'months': myDateTimeObject.months,
@@ -33,7 +33,7 @@ class calculateStats:
             'minutes': myDateTimeObject.minutes,
             'seconds': myDateTimeObject.seconds,
         }
-        
+
         timeYMDHMS = []
 
         # Iterate through the myDateTime dict and formulate a list of the values.
@@ -45,7 +45,7 @@ class calculateStats:
                 if myDateTime[field] == 1:
                     timeYMDHMS.append("%d %s" % (myDateTime[field], field[:-1]))
         myDateTimeString = ', '.join(timeYMDHMS)
-        
+
         # Return the human readable form string.
         return myDateTimeString
 
@@ -88,7 +88,7 @@ class calculateStats:
 
     def combineData(self, __certResults, __mySystemInfo, __scriptStartTime, __scriptEndTime):
         """"Combines all the data into structured data."""
-        
+
         # Convert script start/end times into string isoformat
         scriptStartTime = __scriptStartTime.isoformat()
         scriptEndTime = __scriptEndTime.isoformat()
