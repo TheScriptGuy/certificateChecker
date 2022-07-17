@@ -1,6 +1,6 @@
 # Certificate Checker
 
-Version: 0.29
+Version: 0.30
 
 Author: TheScriptGuy
 
@@ -29,7 +29,7 @@ python3 certChecker.py --hostname example.com --displayTimeLeft
 usage: certCheck.py [-h] [--hostname HOSTNAME] [--displayCertificate] [--displayCertificateJSON] [--displayScriptDataJSON] [--displayTimeLeft] [--queryFile QUERYFILE] [--uploadJsonData UPLOADJSONDATA] [--mongoDB] [--sendEmail] [--setTag SETTAG]
                     [--delTag] [--getTag] [--renewDeviceId] [--getDeviceId] [--deleteDeviceId] [--setTenantId SETTENANTID] [--getTenantId] [--delTenantId] [--createBlankConfiguration]
 
-Certificate Checker v0.29
+Certificate Checker v0.30
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -66,5 +66,3 @@ optional arguments:
 
 [Example of JSON structures](https://github.com/TheScriptGuy/certificateChecker/blob/main/README-json.md)
 
-Features to add:
-* Supply own CA certificate repository

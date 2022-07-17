@@ -1,3 +1,29 @@
+# 2022/07/17
+## Version 0.30
+### Changes
+* Updated dataFormatVersion to 19: 
+    * to reflect a new structure for the statistics (`queryStatistics`) from all the test results,
+    * moved the `scriptStartTime`, `scriptEndTime`, `scriptExecutionTime`, `averageQueryTime`, `averageCertificateTemplateTime` under the `queryStatistics` field,
+    * created a new dict `numberOfTests` which mentions the number of `success` and `failed` tests for the time the script was executed.
+* Example new json structure (to see more, please see [here](https://github.com/TheScriptGuy/certificateChecker/blob/main/README-json.md)):
+```json
+"queryStatistics":
+{
+    "scriptStartTime": "2022-07-17T22:07:46.284438",
+    "scriptEndTime": "2022-07-17T22:07:46.652491",
+    "scriptExecutionTime": 368.05,
+    "averageQueryTime": 121.33,
+    "averageCertificateUtilization": 29.43,
+    "averageTemplateTime": 24508799.0,
+    "averageTemplateTimeHumanReadable": "9 months, 10 days, 8 hours, 59 minutes, 59 seconds",
+    "numberofTests":
+    {
+        "success": 3,
+        "failed": 1
+    }
+}
+```
+
 # 2022/07/16
 ## Version 0.29
 ### Changes

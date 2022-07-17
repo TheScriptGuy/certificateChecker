@@ -1,7 +1,7 @@
 # Program:        Certificate Checker
 # Author:         Nolan Rumble
-# Date:           2022/07/11
-# Version:        0.29
+# Date:           2022/07/17
+# Version:        0.30
 
 import argparse
 import datetime
@@ -10,12 +10,13 @@ import json
 
 from systemInfo import systemInfo
 from certificate import certificateModule
+from data import calculateStats
 from data import certData
 from data import sendDataMongoDB
 from data import emailTemplateBuilder
 from data import sendDataEmail
 
-scriptVersion = "0.29"
+scriptVersion = "0.30"
 
 # Global Variables
 args = None
@@ -163,45 +164,14 @@ def gatherData(__certResults, __scriptStartTime, __scriptEndTime):
     * scriptExecutionTime            - script query time (difference between scriptEndTime and scriptStartTime.
     * averageQueryTime               - The average query time across all the tests.
     * averageCertificateUtilization  - Average certificate utilization across all the tests.
+    * averageTemplateTime            - Average template time being used across all the tests.
     * queryResults                   - The results of all queries that were performed against the nameservers.
     """
-    myInfo = systemInfo.systemInfo()
-
-    # Convert script start/end times into string isoformat
-    scriptStartTime = __scriptStartTime.isoformat()
-    scriptEndTime = __scriptEndTime.isoformat()
-    scriptExecutionTime = round(float((__scriptEndTime - __scriptStartTime).total_seconds() * 1000), 2)
- 
-    # Calculate the average utilization and query time across all tests.
-    avgUtilization = float(0)
-    avgQueryTime = float(0)
-    avgCounter = 0
-
-    for item in __certResults:
-        if item["certificateInfo"]["version"] != 0:
-            avgUtilization += item["percentageUtilization"]
-            avgQueryTime += item["queryTime"]
-            avgCounter += 1
-
-    # Round the values to 2 decimal places.
-    if avgCounter > 0:
-        avgUtilization = round(avgUtilization / avgCounter, 2)
-        avgQueryTime = round(avgQueryTime / avgCounter, 2)
+    mySystemInfo = systemInfo.systemInfo()
+    myDetails = calculateStats.calculateStats()
 
     # Create the json script structure with all the meta data.
-    myData = {
-        "tenantId": myInfo.myConfigJson["myTenantId"],
-        "deviceId": myInfo.myConfigJson["myDeviceId"],
-        "deviceTag": myInfo.myConfigJson["myTags"],
-        "clientHostName": myInfo.hostname,
-        "dataFormatVersion": 17,
-        "scriptStartTime": scriptStartTime,
-        "scriptEndTime": scriptEndTime,
-        "scriptExecutionTime": scriptExecutionTime,
-        "averageQueryTime": avgQueryTime,
-        "averageCertificateUtilization": avgUtilization,
-        "certResults": __certResults
-    }
+    myData = myDetails.combineData(__certResults, mySystemInfo, __scriptStartTime, __scriptEndTime)
 
     return myData
 
