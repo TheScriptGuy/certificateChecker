@@ -1,7 +1,7 @@
 # Class:            sendDataMongoDB
-# Last updated:     2022/07/17
+# Last updated:     2022/07/22
 # Author:           TheScriptGuy (https://github.com/TheScriptGuy
-# Version:          0.06
+# Version:          0.07
 # Description:      Send json list to mongoDB based on configuration in mongo.cfg
 
 import pymongo
@@ -26,7 +26,9 @@ class sendDataMongoDB:
         except FileNotFoundError:
             print(f"Cannot find file {__fileName}.")
             sys.exit(1)
-
+        except json.decoder.JSONDecodeError:
+            print(f"Error with mongo.cfg config file - {e}")
+            sys.exit(1)
         except Exception as e:
             print(f"{e} - Error occured.")
             sys.exit(1)
@@ -38,6 +40,9 @@ class sendDataMongoDB:
             __uploadResult = __destCollection.insert_one(__results)
         except pymongo.errors.ServerSelectionTimeoutError:
             print("Server connection timeout error when uploading data.")
+            sys.exit(1)
+        except pymongo.errors.OperationFailure as e:
+            print(f"Mongo operation error - {e}")
             sys.exit(1)
 
         return __uploadResult
@@ -73,16 +78,25 @@ class sendDataMongoDB:
                 __mongoLoginCredentials = f"{__mongoUsername}:{__mongoPassword}"
 
         # Check to see if __mongoUri is an IP address or not.
-        if iptools.ipv4.validate_ip(__mongoUri):
-            __srv = ""
+        if "cluster" in __destination and __destination["cluster"] == True:
+            __srv = "+srv"
         else:
-            #__srv = "+srv" # automatically enables TLS
             __srv = ""
+        
+        # Check to see if TLS is defined for secure connection.
+        if "tls" in __destination and __destination["tls"] == True:
+            __tls = "&tls=true"
+
+        # Get the collection name. If it's empty, use the default.
+        if "collectionName" in __destination and __destination["collectionName"] != "":
+            __collectionName = __destination["collectionName"]
+        else:
+            __collectionName = "certdataGlobal"
 
         if __mongoLoginCredentials == "":
-            __mongoConnectionString = f"mongodb{__srv}://{__mongoUri}/"
+            __mongoConnectionString = f"mongodb{__srv}://{__mongoUri}/{__tls}"
         else:
-            __mongoConnectionString = f"mongodb{__srv}://{__mongoLoginCredentials}@{__mongoUri}/"
+            __mongoConnectionString = f"mongodb{__srv}://{__mongoLoginCredentials}@{__mongoUri}/{__collectionName}{__tls}"
         return __mongoConnectionString
 
     def createDB(self, __destination):
@@ -97,8 +111,8 @@ class sendDataMongoDB:
 
         try:
             __mongoClient = MongoClient(__mongoConnectionString)
-        except pymongo.errors.ConfigurationError:
-            print("mongo.cfg configuration error.")
+        except pymongo.errors.ConfigurationError as e:
+            print(f"mongo.cfg configuration error. {e}")
             sys.exit(1)
         except pymongo.errors.ServerSelectionTimeoutError:
             print("Server connection timeout error.")
@@ -148,4 +162,4 @@ class sendDataMongoDB:
     def __init__(self):
         """Initialize the sendDataMongoDB class."""
         self.initialized = True
-        self.version = "0.06"
+        self.version = "0.07"
