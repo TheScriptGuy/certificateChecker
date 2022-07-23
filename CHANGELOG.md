@@ -1,3 +1,9 @@
+# 2022/07/22
+## Version 0.30
+### Changes
+* improved MongoDB connection string handling.
+* improved MongoDB error handling.
+
 # 2022/07/17
 ## Version 0.30
 ### Changes
