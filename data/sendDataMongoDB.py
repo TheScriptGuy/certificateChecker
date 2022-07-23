@@ -6,7 +6,6 @@
 
 import pymongo
 from pymongo import MongoClient
-import iptools
 import json
 import sys
 from datetime import datetime
@@ -26,7 +25,7 @@ class sendDataMongoDB:
         except FileNotFoundError:
             print(f"Cannot find file {__fileName}.")
             sys.exit(1)
-        except json.decoder.JSONDecodeError:
+        except json.decoder.JSONDecodeError as e:
             print(f"Error with mongo.cfg config file - {e}")
             sys.exit(1)
         except Exception as e:
@@ -78,13 +77,13 @@ class sendDataMongoDB:
                 __mongoLoginCredentials = f"{__mongoUsername}:{__mongoPassword}"
 
         # Check to see if __mongoUri is an IP address or not.
-        if "cluster" in __destination and __destination["cluster"] == True:
+        if "cluster" in __destination and __destination["cluster"] is True:
             __srv = "+srv"
         else:
             __srv = ""
-        
+
         # Check to see if TLS is defined for secure connection.
-        if "tls" in __destination and __destination["tls"] == True:
+        if "tls" in __destination and __destination["tls"] is True:
             __tls = "&tls=true"
 
         # Get the collection name. If it's empty, use the default.
