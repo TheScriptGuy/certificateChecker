@@ -1,7 +1,7 @@
 # Class:          calculateStats
 # Author:         Nolan Rumble
-# Date:           2022/07/17
-# Version:        0.01
+# Date:           2022/10/23
+# Version:        0.02
 
 import argparse
 import datetime
@@ -55,16 +55,63 @@ class calculateStats:
         avgUtilization = float(0)
         avgQueryTime = float(0)
         avgTemplateTimeSeconds = float(0)
+
+        lowestCertificateTemplateTime = 9999999999999
+        highestCertificateTemplateTime = 0
+
         successfulTests = 0
         failedTests = 0
+
+        commonCAIssuers = {}
+
+        commonCipherInfoCount = {
+            "bits": {},
+            "cipher": {},
+            "version": {}
+        }
 
         for item in __certResults:
             if item["certificateInfo"]["version"] != 0:
                 avgUtilization += item["percentageUtilization"]
                 avgQueryTime += item["queryTime"]
                 avgTemplateTimeSeconds += item["certificateTemplateTime"]
+                
+                # Calculate lowest certificate template time.
+                if lowestCertificateTemplateTime > item["certificateTemplateTime"]:
+                    lowestCertificateTemplateTime = item["certificateTemplateTime"]
+                
+                # Calculate highest certificate template time.
+                if highestCertificateTemplateTime < item["certificateTemplateTime"]:
+                    highestCertificateTemplateTime = item["certificateTemplateTime"]
+                
+                caIssuerCommonName = item["certificateInfo"]["certificateIssuer"]["commonName"]
+
+                # Calculate common Certificate Authority Issuers
+                if caIssuerCommonName in commonCAIssuers:
+                    commonCAIssuers[caIssuerCommonName] += 1
+                else:
+                    commonCAIssuers[caIssuerCommonName] = 1
+
+                # Calculate common cipher connection details
+                if item["connectionCipher"][0] in commonCipherInfoCount["cipher"]:
+                    commonCipherInfoCount["cipher"][item["connectionCipher"][0]] += 1
+                else:
+                    commonCipherInfoCount["cipher"][item["connectionCipher"][0]] = 1
+
+                if item["connectionCipher"][1] in commonCipherInfoCount["version"]:
+                    commonCipherInfoCount["version"][item["connectionCipher"][1]] += 1
+                else:
+                    commonCipherInfoCount["version"][item["connectionCipher"][1]] = 1
+                
+                if item["connectionCipher"][2] in commonCipherInfoCount["bits"]:
+                    commonCipherInfoCount["bits"][item["connectionCipher"][2]] += 1
+                else:
+                    commonCipherInfoCount["bits"][item["connectionCipher"][2]] = 1
+
+                # Increment number of successful tests
                 successfulTests += 1
             else:
+                # Incrememt number of failed tests
                 failedTests += 1
 
         # Round the values to 2 decimal places.
@@ -81,7 +128,13 @@ class calculateStats:
             "averageCertificateUtilization": avgUtilization,
             "averageQueryTime": avgQueryTime,
             "averageTemplateTimeSeconds": avgTemplateTimeSeconds,
-            "averageTemplateTimeHumanReadable": self.convertTimeIntoHumanReadable(avgTemplateTimeSeconds)
+            "averageTemplateTimeHumanReadable": self.convertTimeIntoHumanReadable(avgTemplateTimeSeconds),
+            "lowestCertificateTemplateTime": lowestCertificateTemplateTime,
+            "lowestCertificateTemplateTimeHumanReadable": self.convertTimeIntoHumanReadable(lowestCertificateTemplateTime),
+            "highestCertificateTemplateTime": highestCertificateTemplateTime,
+            "highestCertificateTemplateTimeHumanReadable": self.convertTimeIntoHumanReadable(highestCertificateTemplateTime),
+            "commonCAIssuersCount": commonCAIssuers,
+            "commonCipherInfoCount": commonCipherInfoCount
         }
 
         return combinedStatistics
@@ -111,6 +164,12 @@ class calculateStats:
                 "averageCertificateUtilization": statistics["averageCertificateUtilization"],
                 "averageTemplateTime": statistics["averageTemplateTimeSeconds"],
                 "averageTemplateTimeHumanReadable": statistics["averageTemplateTimeHumanReadable"],
+                "lowestCertificateTemplateTime": statistics["lowestCertificateTemplateTime"],
+                "lowestCertificateTemplateTimeHumanReadable": statistics["lowestCertificateTemplateTimeHumanReadable"],
+                "highestCertificateTemplateTime": statistics["highestCertificateTemplateTime"],
+                "highestCertificateTemplateTimeHumanReadable": statistics["highestCertificateTemplateTimeHumanReadable"],
+                "commonCAIssuersCount": statistics["commonCAIssuersCount"],
+                "commonCipherInfoCount": statistics["commonCipherInfoCount"],
                 "numberofTests": statistics["numberOfTests"]
             },
             "certResults": __certResults
@@ -121,6 +180,6 @@ class calculateStats:
     def __init__(self):
         """Initialize the sendDataMongoDB class."""
         self.initialized = True
-        self.version = "0.01"
-        self.dataFormatVersion = 19
+        self.version = "0.02"
+        self.dataFormatVersion = 20
 
