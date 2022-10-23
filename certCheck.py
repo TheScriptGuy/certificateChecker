@@ -1,7 +1,7 @@
 # Program:        Certificate Checker
 # Author:         Nolan Rumble
-# Date:           2022/07/17
-# Version:        0.30
+# Date:           2022/10/23
+# Version:        0.31
 
 import argparse
 import datetime
@@ -16,7 +16,7 @@ from data import sendDataMongoDB
 from data import emailTemplateBuilder
 from data import sendDataEmail
 
-scriptVersion = "0.30"
+scriptVersion = "0.31"
 
 # Global Variables
 args = None

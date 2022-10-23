@@ -1,3 +1,59 @@
+# 2022/10/23
+## Version 0.31
+### Changes
+* updated dataFormatVersion to 20:
+    * added new fields - `lowestTemplateTime`, `lowestTemplateTimeHumanReadable`, `highestTemplateTime`, `highestTemplateTimeHumanReadable`
+    * added Certificate Authority Common Name count field - `commonCAIssuersCount`
+    * added Common Cipher Information Connection Count - `commonCipherInfoCount`
+* Example new json structure (to see more, please see [here](https://github.com/TheScriptGuy/certificateChecker/blob/main/README-json.md)):
+```json
+"queryStatistics":
+{
+    "scriptStartTime": "2022-10-23T22:50:12.830321",
+    "scriptEndTime": "2022-10-23T22:50:14.251425",
+    "scriptExecutionTime": 1421.1,
+    "averageQueryTime": 282.82,
+    "averageCertificateUtilization": 38.05,
+    "averageTemplateTime": 22584959,
+    "averageTemplateTimeHumanReadable": "8 months, 18 days, 2 hours, 35 minutes, 59 seconds",
+    "lowestCertificateTemplateTime": 7775999,
+    "lowestCertificateTemplateTimeHumanReadable": "2 months, 30 days, 15 hours, 59 minutes, 59 seconds",
+    "highestCertificateTemplateTime": 34127999,
+    "highestCertificateTemplateTimeHumanReadable": "1 year, 29 days, 15 hours, 59 minutes, 59 seconds",
+    "commonCAIssuersCount":
+    {
+        "Apple Public EV Server ECC CA 1 - G1": 1,
+        "Cloudflare Inc ECC CA-3": 1,
+        "COMODO RSA Organization Validation Secure Server CA": 1,
+        "R3": 2
+    },
+    "commonCipherInfoCount":
+    {
+        "bits":
+        {
+            "128": 2,
+            "256": 3
+        },
+        "cipher":
+        {
+            "TLS_AES_128_GCM_SHA256": 1,
+            "TLS_AES_256_GCM_SHA384": 3,
+            "ECDHE-RSA-AES128-GCM-SHA256": 1
+        },
+        "version":
+        {
+            "TLSv1.3": 4,
+            "TLSv1.2": 1
+        }
+    },
+    "numberofTests":
+    {
+        "success": 5,
+        "failed": 1
+    }
+}
+```
+
 # 2022/07/22
 ## Version 0.30
 ### Changes
