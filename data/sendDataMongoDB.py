@@ -1,7 +1,7 @@
 # Class:            sendDataMongoDB
-# Last updated:     2022/07/22
+# Last updated:     2022/10/26
 # Author:           TheScriptGuy (https://github.com/TheScriptGuy
-# Version:          0.07
+# Version:          0.08
 # Description:      Send json list to mongoDB based on configuration in mongo.cfg
 
 import pymongo
