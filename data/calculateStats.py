@@ -93,20 +93,23 @@ class calculateStats:
                     commonCAIssuers[caIssuerCommonName] = 1
 
                 # Calculate common cipher connection details
-                if item["connectionCipher"][0] in commonCipherInfoCount["cipher"]:
-                    commonCipherInfoCount["cipher"][item["connectionCipher"][0]] += 1
+                if str(item["connectionCipher"][0]) in commonCipherInfoCount["cipher"]:
+                    commonCipherInfoCount["cipher"][str(item["connectionCipher"][0])] += 1
                 else:
-                    commonCipherInfoCount["cipher"][item["connectionCipher"][0]] = 1
-
-                if item["connectionCipher"][1] in commonCipherInfoCount["version"]:
-                    commonCipherInfoCount["version"][item["connectionCipher"][1]] += 1
-                else:
-                    commonCipherInfoCount["version"][item["connectionCipher"][1]] = 1
+                    commonCipherInfoCount["cipher"][str(item["connectionCipher"][0])] = 1
                 
-                if item["connectionCipher"][2] in commonCipherInfoCount["bits"]:
-                    commonCipherInfoCount["bits"][item["connectionCipher"][2]] += 1
+                connectionCipherVersion = str(item["connectionCipher"][1]).replace(".","")
+
+                if connectionCipherVersion in commonCipherInfoCount["version"]:
+                    commonCipherInfoCount["version"][connectionCipherVersion] += 1
                 else:
-                    commonCipherInfoCount["bits"][item["connectionCipher"][2]] = 1
+                    commonCipherInfoCount["version"][connectionCipherVersion] = 1
+
+                connectionCipherBits = str(item["connectionCipher"][2])
+                if connectionCipherBits in commonCipherInfoCount["bits"]:
+                    commonCipherInfoCount["bits"][connectionCipherBits] += 1
+                else:
+                    commonCipherInfoCount["bits"][connectionCipherBits] = 1
 
                 # Increment number of successful tests
                 successfulTests += 1

@@ -1,3 +1,8 @@
+# 2022/10/26
+## Version 0.32
+### Fixes
+* Resolving [issue](https://github.com/TheScriptGuy/certificateChecker/issues/6)
+
 # 2022/10/23
 ## Version 0.31
 ### Changes
@@ -42,8 +47,8 @@
         },
         "version":
         {
-            "TLSv1.3": 4,
-            "TLSv1.2": 1
+            "TLSv13": 4,
+            "TLSv12": 1
         }
     },
     "numberofTests":

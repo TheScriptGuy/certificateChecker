@@ -89,7 +89,7 @@ The resulting output is:
             },
             "version":
             {
-                "TLSv1.3": 1
+                "TLSv13": 1
             }
         },
         "numberofTests":
@@ -188,8 +188,8 @@ The resulting output is (take note of the invalid host data at the end of the ce
             },
             "version":
             {
-                "TLSv1.3": 4,
-                "TLSv1.2": 1
+                "TLSv13": 4,
+                "TLSv12": 1
             }
         },
         "numberofTests":
