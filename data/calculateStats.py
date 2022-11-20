@@ -1,7 +1,7 @@
 # Class:          calculateStats
 # Author:         Nolan Rumble
-# Date:           2022/10/23
-# Version:        0.02
+# Date:           2022/11/20
+# Version:        0.03
 
 import argparse
 import datetime
@@ -41,10 +41,12 @@ class calculateStats:
         # If the delimeter field is 0, don't include it in final result
         for field in myDateTime:
             if myDateTime[field] > 1:
-                timeYMDHMS.append("%d %s" % (myDateTime[field], field))
+                humanReadable = f"{myDateTime[field]} {field}"
+                timeYMDHMS.append(humanReadable)
             else:
                 if myDateTime[field] == 1:
-                    timeYMDHMS.append("%d %s" % (myDateTime[field], field[:-1]))
+                    humanReadable = f"{myDateTime[field]} {field[:-1]}"
+                    timeYMDHMS.append(humanReadable)
         myDateTimeString = ', '.join(timeYMDHMS)
 
         # Return the human readable form string.
@@ -184,6 +186,6 @@ class calculateStats:
     def __init__(self):
         """Initialize the sendDataMongoDB class."""
         self.initialized = True
-        self.version = "0.02"
+        self.version = "0.03"
         self.dataFormatVersion = 20
 

@@ -1,6 +1,6 @@
 # Certificate Module1
-# Version: 0.11
-# Last updated: 2022-07-16
+# Version: 0.12
+# Last updated: 2022-11-20
 # Author: TheScriptGuy
 
 import ssl
@@ -130,10 +130,10 @@ class certificateModule:
 
             for field in myDeltaDate:
                 if myDeltaDate[field] > 1:
-                    timeLeft.append("%d %s" % (myDeltaDate[field], field))
+                    timeLeft.append(f"{myDeltaDate[field]} {field}")
                 else:
                     if myDeltaDate[field] == 1:
-                        timeLeft.append("%d %s" % (myDeltaDate[field], field[:-1]))
+                        timeLeft.append(f"{myDeltaDate[field]} {field[:-1]}")
 
             certResult = ', '.join(timeLeft)
         else:
@@ -390,7 +390,7 @@ class certificateModule:
     def __init__(self):
         """Initialize the class."""
         self.initialized = True
-        self.moduleVersion = "0.11"
+        self.moduleVersion = "0.12"
         self.certificate = {}
 
         # Certificate date/time format that is to be interpreted by datetime module.
