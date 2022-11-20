@@ -10,6 +10,7 @@ import time
 
 from dateutil.relativedelta import relativedelta
 
+
 class calculateStats:
     """This calculates statistics off the data provided."""
 
@@ -75,15 +76,15 @@ class calculateStats:
                 avgUtilization += item["percentageUtilization"]
                 avgQueryTime += item["queryTime"]
                 avgTemplateTimeSeconds += item["certificateTemplateTime"]
-                
+
                 # Calculate lowest certificate template time.
                 if lowestCertificateTemplateTime > item["certificateTemplateTime"]:
                     lowestCertificateTemplateTime = item["certificateTemplateTime"]
-                
+
                 # Calculate highest certificate template time.
                 if highestCertificateTemplateTime < item["certificateTemplateTime"]:
                     highestCertificateTemplateTime = item["certificateTemplateTime"]
-                
+
                 caIssuerCommonName = item["certificateInfo"]["certificateIssuer"]["commonName"]
 
                 # Calculate common Certificate Authority Issuers
@@ -97,8 +98,8 @@ class calculateStats:
                     commonCipherInfoCount["cipher"][str(item["connectionCipher"][0])] += 1
                 else:
                     commonCipherInfoCount["cipher"][str(item["connectionCipher"][0])] = 1
-                
-                connectionCipherVersion = str(item["connectionCipher"][1]).replace(".","")
+
+                connectionCipherVersion = str(item["connectionCipher"][1]).replace(".", "")
 
                 if connectionCipherVersion in commonCipherInfoCount["version"]:
                     commonCipherInfoCount["version"][connectionCipherVersion] += 1

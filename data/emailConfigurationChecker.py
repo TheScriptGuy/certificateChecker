@@ -145,8 +145,7 @@ class emailConfigurationChecker:
         """Validate configuration file. If all checks pass successfully, return the json object."""
         if self.checkConfigurationValid(self.mailConfig):
             return self.mailConfig
-        else:
-            return None
+        return None
 
     def __init__(self, __mailConfigurationFile="mail.cfg"):
         """Initialize the email configuration checker class."""
