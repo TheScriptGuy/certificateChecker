@@ -1,4 +1,8 @@
 # 2022/10/26
+## Version 0.33
+### Changes
+* When using --mongoDB argument, the output will include the timestamp of the result being uploaded.
+
 ## Version 0.32
 ### Fixes
 * Resolving [issue](https://github.com/TheScriptGuy/certificateChecker/issues/6)
