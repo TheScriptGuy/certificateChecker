@@ -1,6 +1,6 @@
 # Certificate Checker
 
-Version: 0.33
+Version: 0.34
 
 Author: TheScriptGuy
 
@@ -26,10 +26,11 @@ python3 certChecker.py --hostname example.com --displayTimeLeft
 
 ## Help output
 ```bash
-usage: certCheck.py [-h] [--hostname HOSTNAME] [--displayCertificate] [--displayCertificateJSON] [--displayScriptDataJSON] [--displayTimeLeft] [--queryFile QUERYFILE] [--uploadJsonData UPLOADJSONDATA] [--mongoDB] [--sendEmail] [--setTag SETTAG]
-                    [--delTag] [--getTag] [--renewDeviceId] [--getDeviceId] [--deleteDeviceId] [--setTenantId SETTENANTID] [--getTenantId] [--delTenantId] [--createBlankConfiguration]
+usage: certCheck.py [-h] [--hostname HOSTNAME] [--displayCertificate] [--displayCertificateJSON] [--displayScriptDataJSON] [--displayTimeLeft] [--queryFile QUERYFILE] [--uploadJsonData UPLOADJSONDATA] [--mongoDB]
+                    [--sendEmail] [--retryAmount RETRYAMOUNT] [--timeBetweenRetries TIMEBETWEENRETRIES] [--setTag SETTAG] [--delTag] [--getTag] [--renewDeviceId] [--getDeviceId] [--deleteDeviceId]
+                    [--setTenantId SETTENANTID] [--getTenantId] [--delTenantId] [--createBlankConfiguration]
 
-Certificate Checker v0.32
+Certificate Checker v0.34
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -46,6 +47,10 @@ optional arguments:
                         Upload JSON data to HTTP URL via HTTP POST method.
   --mongoDB             Upload results to MongoDB. Connection details stored in mongo.cfg
   --sendEmail           Send an email with the results. SMTP connection details stored in mail.cfg
+  --retryAmount RETRYAMOUNT
+                        Attempt to retry the connection if any error occured. Defaults to 1 attempt.
+  --timeBetweenRetries TIMEBETWEENRETRIES
+                        The number of seconds between each retry attempt if the connection fails. Defaults to 1 second.
   --setTag SETTAG       Set the tag for the query results. Use commas to separate multiple tags.
   --delTag              Removes the tags from the configuration file.
   --getTag              Get tags from the configuration file.

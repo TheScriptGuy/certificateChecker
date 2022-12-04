@@ -73,6 +73,22 @@ class calculateStats:
             "version": {}
         }
 
+        combinedStatistics = {
+            "numberOfTests": {
+                "success": 0,
+                "failed": 0
+            },
+            "averageCertificateUtilization": 0.0,
+            "averageQueryTime": 0.0,
+            "averageTemplateTimeSeconds": 0,
+            "averageTemplateTimeHumanReadable": 0,
+            "lowestCertificateTemplateTime": 0,
+            "lowestCertificateTemplateTimeHumanReadable": "0 seconds",
+            "highestCertificateTemplateTime": 0,
+            "highestCertificateTemplateTimeHumanReadable": "0 seconds",
+            "commonCAIssuersCount": commonCAIssuers,
+            "commonCipherInfoCount": commonCipherInfoCount
+        }
         for item in __certResults:
             if item["certificateInfo"]["version"] != 0:
                 avgUtilization += item["percentageUtilization"]
@@ -126,22 +142,24 @@ class calculateStats:
             avgQueryTime = round(avgQueryTime / successfulTests, 2)
             avgTemplateTimeSeconds = int(round(avgTemplateTimeSeconds / successfulTests, 2))
 
-        combinedStatistics = {
-            "numberOfTests": {
-                "success": successfulTests,
-                "failed": failedTests
-            },
-            "averageCertificateUtilization": avgUtilization,
-            "averageQueryTime": avgQueryTime,
-            "averageTemplateTimeSeconds": avgTemplateTimeSeconds,
-            "averageTemplateTimeHumanReadable": self.convertTimeIntoHumanReadable(avgTemplateTimeSeconds),
-            "lowestCertificateTemplateTime": lowestCertificateTemplateTime,
-            "lowestCertificateTemplateTimeHumanReadable": self.convertTimeIntoHumanReadable(lowestCertificateTemplateTime),
-            "highestCertificateTemplateTime": highestCertificateTemplateTime,
-            "highestCertificateTemplateTimeHumanReadable": self.convertTimeIntoHumanReadable(highestCertificateTemplateTime),
-            "commonCAIssuersCount": commonCAIssuers,
-            "commonCipherInfoCount": commonCipherInfoCount
-        }
+            combinedStatistics = {
+                "numberOfTests": {
+                    "success": successfulTests,
+                    "failed": failedTests
+                },
+                "averageCertificateUtilization": avgUtilization,
+                "averageQueryTime": avgQueryTime,
+                "averageTemplateTimeSeconds": avgTemplateTimeSeconds,
+                "averageTemplateTimeHumanReadable": self.convertTimeIntoHumanReadable(avgTemplateTimeSeconds),
+                "lowestCertificateTemplateTime": lowestCertificateTemplateTime,
+                "lowestCertificateTemplateTimeHumanReadable": self.convertTimeIntoHumanReadable(lowestCertificateTemplateTime),
+                "highestCertificateTemplateTime": highestCertificateTemplateTime,
+                "highestCertificateTemplateTimeHumanReadable": self.convertTimeIntoHumanReadable(highestCertificateTemplateTime),
+                "commonCAIssuersCount": commonCAIssuers,
+                "commonCipherInfoCount": commonCipherInfoCount
+            }   
+        else:
+            combinedStatistics["numberOfTests"]["failed"] = failedTests
 
         return combinedStatistics
 
