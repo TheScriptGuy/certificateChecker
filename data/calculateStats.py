@@ -1,7 +1,7 @@
 # Class:          calculateStats
 # Author:         Nolan Rumble
-# Date:           2022/11/20
-# Version:        0.03
+# Date:           2022/12/04
+# Version:        0.04
 
 import argparse
 import datetime
@@ -204,6 +204,5 @@ class calculateStats:
     def __init__(self):
         """Initialize the sendDataMongoDB class."""
         self.initialized = True
-        self.version = "0.03"
+        self.version = "0.04"
         self.dataFormatVersion = 20
-
