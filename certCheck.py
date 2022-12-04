@@ -1,12 +1,13 @@
 # Program:        Certificate Checker
 # Author:         Nolan Rumble
-# Date:           2022/11/20
-# Version:        0.33
+# Date:           2022/12/04
+# Version:        0.34
 
 import argparse
 import datetime
 import sys
 import json
+import time
 
 from systemInfo import systemInfo
 from certificate import certificateModule
@@ -16,7 +17,7 @@ from data import sendDataMongoDB
 from data import emailTemplateBuilder
 from data import sendDataEmail
 
-scriptVersion = "0.33"
+scriptVersion = "0.34"
 
 # Global Variables
 args = None
@@ -57,6 +58,12 @@ def parseArguments():
 
     parser.add_argument('--sendEmail', action='store_true',
                         help='Send an email with the results. SMTP connection details stored in mail.cfg')
+
+    parser.add_argument('--retryAmount', default=1,
+                        help='Attempt to retry the connection if any error occured. Defaults to 1 attempt.')
+
+    parser.add_argument('--timeBetweenRetries', default=1,
+                        help='The number of seconds between each retry attempt if the connection fails. Defaults to 1 second.')
 
     parser.add_argument('--setTag', default='',
                         help='Set the tag for the query results. Use commas to separate multiple tags.')
@@ -235,8 +242,17 @@ def processQueryFile():
         # For SSL performance measurement - START
         o_startTime = datetime.datetime.utcnow()
 
-        # Connect to the hostname from the queryFile argument and get the certificate associated with it.
-        myCertificate = o_myCertificate.getCertificate(myHostname["hostname"], myHostname["port"])
+        # Iterate through number of retryAmount
+        for counter in range(int(args.retryAmount)):
+            # Connect to the hostname from the queryFile argument and get the certificate associated with it.
+            myCertificate = o_myCertificate.getCertificate(myHostname["hostname"], myHostname["port"])
+
+            if myCertificate["certificateMetaData"] is not None:
+                break
+            else:
+                # If unable to connect to host for whatever reason, pause for a second then try again.
+                time.sleep(int(args.timeBetweenRetries)) 
+ 
 
         # For SSL performance measurement - END
         o_endTime = datetime.datetime.utcnow()
@@ -289,14 +305,21 @@ def processHostname():
     else:
         hostnameQuery = {"hostname": args.hostname, "port": 443}
 
-    myCertificate = o_myCertificate.getCertificate(hostnameQuery["hostname"], hostnameQuery["port"])
+    # Iterate through number of retryAmount
+    for counter in range(int(args.retryAmount)):
+        # Connect to the hostname from the queryFile argument and get the certificate associated with it.
+        myCertificate = o_myCertificate.getCertificate(hostnameQuery["hostname"], hostnameQuery["port"])
+        if myCertificate["certificateMetaData"] is not None:
+            break
+        else:
+            # If unable to connect to host for whatever reason, pause for a second then try again.
+            time.sleep(int(args.timeBetweenRetries))
 
     # For SSL performance measurement - END
     o_endTime = datetime.datetime.utcnow()
 
     # Convert the certificate object into JSON format.
     jsonCertificateInfo = o_myCertificate.convertCertificateObject2Json(hostnameQuery["hostname"], hostnameQuery["port"], o_startTime, o_endTime, myCertificate)
-
     # Append system data to JSON certificate structure
     jsonScriptData = gatherData([jsonCertificateInfo], o_startTime, o_endTime)
 

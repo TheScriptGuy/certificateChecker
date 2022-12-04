@@ -1,3 +1,13 @@
+# 2022/12/04
+## Version 0.34
+### Additions
+* Added the ability to retry attempts if a connection fails.
+    * `--retryAttempts x`, where x is the number of attempts. Defaults to 1 attempt.
+    * `--timeBetweenRetries y` where y is the number of seconds between attempts. Defaults to 1 second.
+
+### Fixes
+* Fixed an error when calculating statistics for a single host that didn't exist.
+
 # 2022/10/26
 ## Version 0.33
 ### Changes
