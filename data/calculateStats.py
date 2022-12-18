@@ -154,7 +154,7 @@ class calculateStats:
                 "highestCertificateTemplateTimeHumanReadable": self.convertTimeIntoHumanReadable(highestCertificateTemplateTime),
                 "commonCAIssuersCount": commonCAIssuers,
                 "commonCipherInfoCount": commonCipherInfoCount
-            }   
+            }
         else:
             combinedStatistics["numberOfTests"]["failed"] = failedTests
 

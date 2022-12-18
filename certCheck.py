@@ -251,7 +251,7 @@ def processQueryFile():
                 break
             else:
                 # If unable to connect to host for whatever reason, pause for a second then try again.
-                time.sleep(int(args.timeBetweenRetries)) 
+                time.sleep(int(args.timeBetweenRetries))
 
         # For SSL performance measurement - END
         o_endTime = datetime.datetime.utcnow()
