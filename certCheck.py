@@ -368,7 +368,7 @@ if __name__ == "__main__":
 
     # initialize jsonCertificateInfo
     jsonCertificateInfo = {}
-    jsonScriptData = {}
+    jsonScriptData = []
 
     if args.queryFile:
         processQueryFile()
