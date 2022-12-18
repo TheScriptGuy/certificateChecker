@@ -17,10 +17,9 @@ class emailConfigurationChecker:
     def checkConfigHostname(self, __mailConfigJson):
         """Check to see if the hostname field is defined"""
         # Check to see if hostname is defined. This is a mandatory field.
-        if "hostname" in __mailConfigJson:
-            if __mailConfigJson["hostname"] == "":
-                print(f"hostname field is a mandatory field and must be defined in {self.mailConfigurationFile}.")
-                sys.exit(1)
+        if "hostname" in __mailConfigJson and __mailConfigJson["hostname"] == "":
+            print(f"hostname field is a mandatory field and must be defined in {self.mailConfigurationFile}.")
+            sys.exit(1)
 
     def checkConfigPort(self, __mailConfigJson):
         """Check what the port is configured as. If not defined, assume port 25."""

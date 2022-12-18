@@ -1,12 +1,9 @@
 # Class:          calculateStats
 # Author:         Nolan Rumble
-# Date:           2022/12/04
-# Version:        0.04
+# Date:           2022/12/18
+# Version:        0.05
 
-import argparse
 import datetime
-import sys
-import time
 
 from dateutil.relativedelta import relativedelta
 
@@ -202,7 +199,7 @@ class calculateStats:
         return myData
 
     def __init__(self):
-        """Initialize the sendDataMongoDB class."""
+        """Initialize the calculateStats class."""
         self.initialized = True
-        self.version = "0.04"
+        self.version = "0.05"
         self.dataFormatVersion = 20
