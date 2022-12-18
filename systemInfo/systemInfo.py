@@ -89,9 +89,8 @@ class systemInfo:
         Returns False if it is not
         """
         result = False
-        if "myTenantId" in __myConfigJson:
-            if __myConfigJson["myTenantId"] != "":
-                return True
+        if "myTenantId" in __myConfigJson and __myConfigJson["myTenantId"] != "":
+            result = True
         return result
 
     @staticmethod
@@ -112,9 +111,8 @@ class systemInfo:
         Returns False if is not.
         """
         result = False
-        if "myDeviceId" in __myConfigJson:
-            if __myConfigJson["myDeviceId"] != "":
-                result = True
+        if "myDeviceId" in __myConfigJson and __myConfigJson["myDeviceId"] != "":
+            result = True
         return result
 
     def checkIfTenantIdExists(self, __myConfigJson):
