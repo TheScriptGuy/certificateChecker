@@ -348,12 +348,16 @@ class certificateModule:
             # Time left on certificate
             myJsonCertificateInfo["timeLeft"] = self.howMuchTimeLeft(__certificateObject)
 
+            # Get the notBefore and notAfter dates.
+            certBeforeDate = __certificateObject["certificateMetaData"]["notBefore"]
+            certAfterDate = __certificateObject["certificateMetaData"]["notAfter"]
+
             # Percentage Utilization of certificate
-            myJsonCertificateInfo["percentageUtilization"] = self.calculateCertificateUtilization(__certificateObject["certificateMetaData"]["notBefore"], __certificateObject["certificateMetaData"]["notAfter"])
+            myJsonCertificateInfo["percentageUtilization"] = self.calculateCertificateUtilization(certBeforeDate, certAfterDate)
 
             # Certificate template time validity
             # Work out the time that certificates are issued for
-            myJsonCertificateInfo["certificateTemplateTime"] = self.calculateCertificateTemplateTime(__certificateObject["certificateMetaData"]["notBefore"], __certificateObject["certificateMetaData"]["notAfter"])
+            myJsonCertificateInfo["certificateTemplateTime"] = self.calculateCertificateTemplateTime(certBeforeDate, certAfterDate)
 
             # Reset number of entries
             subjectAltNameCounter = 0
