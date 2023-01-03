@@ -7,4 +7,4 @@ By downloading this code:
 * All liabilities, responsibilities, and actions fall onto whomever/whatever runs this code.
 * No warranty provided.
 
-Custom license agreements available on request.
+Custom software license agreements available on request.
