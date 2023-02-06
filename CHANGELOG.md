@@ -1,3 +1,8 @@
+# 2023/02/05
+## Version 0.35
+### Feature additions
+* Added the ability to load the context flags from contextVariables.json file.
+
 # 2022/12/04
 ## Version 0.34
 ### Additions
