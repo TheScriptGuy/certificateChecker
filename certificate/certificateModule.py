@@ -1,6 +1,6 @@
 # Certificate Module1
-# Version: 0.12
-# Last updated: 2022-11-20
+# Version: 0.13
+# Last updated: 2023-02-05
 # Author: TheScriptGuy
 
 import ssl
@@ -15,10 +15,29 @@ from dateutil.relativedelta import relativedelta
 class certificateModule:
     """certificateModule class"""
 
-    @staticmethod
-    def getCertificate(__hostname, __port):
+    def getContextVariables(self):
+        """Get the variables from the contextVariables.json"""
+        try:
+            # Assume contextVariables is empty.
+            contextVariables = None
+
+            # Attempt to load the contextVariables.json file.
+            with open('contextVariables.json') as fContextVariables:
+                contextVariables = json.load(fContextVariables)
+            
+            return contextVariables
+        except FileNotFoundError:
+            print('I could not find contextVariables.json')
+
+            
+    def getCertificate(self, __hostname, __port):
         """Connect to the host and get the certificate."""
         __ctx = ssl.create_default_context()
+        
+        if self.contextVariables is not None:
+            if self.contextVariables["securityLevel"] == 1:
+                # Lower the default security level
+                __ctx.set_ciphers('DEFAULT@SECLEVEL=1')
 
         # Initialize the __hostnameData object.
         __hostnameData = {
@@ -391,11 +410,13 @@ class certificateModule:
         x = requests.post(__httpUrl, json=__certificateJsonData)
         return x.headers
 
-    def __init__(self):
+    def __init__(self, __contextVariables=0):
         """Initialize the class."""
         self.initialized = True
-        self.moduleVersion = "0.12"
+        self.moduleVersion = "0.13"
         self.certificate = {}
+        if __contextVariables == 1:
+            self.contextVariables = self.getContextVariables()
 
         # Certificate date/time format that is to be interpreted by datetime module.
         self.certTimeFormat = "%b %d %H:%M:%S %Y %Z"

@@ -1,7 +1,7 @@
 # Program:        Certificate Checker
 # Author:         Nolan Rumble
-# Date:           2022/12/04
-# Version:        0.34
+# Date:           2023/02/05
+# Version:        0.35
 
 import argparse
 import datetime
@@ -17,7 +17,7 @@ from data import sendDataMongoDB
 from data import emailTemplateBuilder
 from data import sendDataEmail
 
-scriptVersion = "0.34"
+scriptVersion = "0.35"
 
 # Global Variables
 args = None
@@ -64,6 +64,9 @@ def parseArguments():
 
     parser.add_argument('--timeBetweenRetries', default=1,
                         help='The number of seconds between each retry attempt if the connection fails. Defaults to 1 second.')
+
+    parser.add_argument('--contextVariables', action='store_true',
+                        help='Read the context variables from contextVariables.json')
 
     parser.add_argument('--setTag', default='',
                         help='Set the tag for the query results. Use commas to separate multiple tags.')
@@ -236,8 +239,14 @@ def processQueryFile():
     scriptStartTime = datetime.datetime.utcnow()
 
     for myHostname in myCertData.loadQueriesFile(args.queryFile):
+        
+        contextVariables = 0
+        
+        if args.contextVariables:
+            contextVariables = 1
+
         # Define initial certificate object
-        o_myCertificate = certificateModule.certificateModule()
+        o_myCertificate = certificateModule.certificateModule(contextVariables)
 
         # For SSL performance measurement - START
         o_startTime = datetime.datetime.utcnow()
@@ -291,7 +300,12 @@ def processQueryFile():
 def processHostname():
     """This will attempt to connect to the hostname defined by the --hostname argument."""
     # Define initial certificate object
-    o_myCertificate = certificateModule.certificateModule()
+    
+    if args.contextVariables:
+        contextVariables = 1
+        o_myCertificate = certificateModule.certificateModule(contextVariables)
+    else:
+        o_myCertificate = certificateModule.certificateModule()
 
     # For SSL performance measurement - START
     o_startTime = datetime.datetime.utcnow()
@@ -308,6 +322,7 @@ def processHostname():
     for counter in range(int(args.retryAmount)):
         # Connect to the hostname from the queryFile argument and get the certificate associated with it.
         myCertificate = o_myCertificate.getCertificate(hostnameQuery["hostname"], hostnameQuery["port"])
+        
         if myCertificate["certificateMetaData"] is not None:
             break
         else:
