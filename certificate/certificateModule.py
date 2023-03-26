@@ -417,6 +417,8 @@ class certificateModule:
         self.certificate = {}
         if __contextVariables == 1:
             self.contextVariables = self.getContextVariables()
+        else:
+            self.contextVariables = None
 
         # Certificate date/time format that is to be interpreted by datetime module.
         self.certTimeFormat = "%b %d %H:%M:%S %Y %Z"

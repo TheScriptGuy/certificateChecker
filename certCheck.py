@@ -1,7 +1,7 @@
 # Program:        Certificate Checker
 # Author:         Nolan Rumble
-# Date:           2023/02/05
-# Version:        0.35
+# Date:           2023/03/25
+# Version:        0.36
 
 import argparse
 import datetime
@@ -17,7 +17,7 @@ from data import sendDataMongoDB
 from data import emailTemplateBuilder
 from data import sendDataEmail
 
-scriptVersion = "0.35"
+scriptVersion = "0.36"
 
 # Global Variables
 args = None
@@ -303,10 +303,11 @@ def processHostname():
     
     if args.contextVariables:
         contextVariables = 1
-        o_myCertificate = certificateModule.certificateModule(contextVariables)
     else:
-        o_myCertificate = certificateModule.certificateModule()
+        contextVariables = 0 
 
+    o_myCertificate = certificateModule.certificateModule(contextVariables)
+    
     # For SSL performance measurement - START
     o_startTime = datetime.datetime.utcnow()
 

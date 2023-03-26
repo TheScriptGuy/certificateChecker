@@ -1,14 +1,16 @@
 # Class:            sendDataMongoDB
-# Last updated:     2022/10/26
+# Last updated:     2023/03/25
 # Author:           TheScriptGuy (https://github.com/TheScriptGuy
-# Version:          0.08
+# Version:          0.09
 # Description:      Send json list to mongoDB based on configuration in mongo.cfg
 
 import pymongo
 from pymongo import MongoClient
 import json
 import sys
+import os
 from datetime import datetime
+from bson.objectid import ObjectId
 
 
 class sendDataMongoDB:
@@ -33,18 +35,89 @@ class sendDataMongoDB:
             sys.exit(1)
 
     @staticmethod
-    def sendResults(__results, __destCollection):
+    def sendJsonScriptDataToFile(__fileName, __jsonScriptData):
+        """Send script data to __filename."""
+        with open(__fileName, "a") as fileJsonScriptData:
+            while len(__jsonScriptData) > 0:
+                jsonScriptDataItem = __jsonScriptData.pop(0)
+                jsonScriptDataItem["queryStatistics"]["scriptStartTime"] = jsonScriptDataItem["queryStatistics"]["scriptStartTime"].strftime('%Y-%m-%dT%H:%M:%S.%f')
+                jsonScriptDataItem["queryStatistics"]["scriptEndTime"] = jsonScriptDataItem["queryStatistics"]["scriptEndTime"].strftime('%Y-%m-%dT%H:%M:%S.%f')
+
+                for iResult in jsonScriptDataItem["certResults"]:
+                    iResult["startTime"] = iResult["startTime"].strftime('%Y-%m-%dT%H:%M:%S.%f')
+                    iResult["endTime"] = iResult["endTime"].strftime('%Y-%m-%dT%H:%M:%S.%f')
+                
+                if "_id" in jsonScriptDataItem:
+                    jsonScriptDataItem["_id"] = str(jsonScriptDataItem["_id"])
+
+                fileJsonScriptData.write(json.dumps(jsonScriptDataItem) + "\n")
+
+    @staticmethod
+    def getJsonScriptDataFromFile(__fileName):
+        """Load the contents of __filename into a list."""
+        jsonLinesFile = []
+        # Check to see if there's a certificateData.json file. If yes, upload its data first.
+        try:
+            with open("certificateData.json", "r") as fileJsonScriptData:
+                while True:
+                    fileLine = fileJsonScriptData.readline().replace("\n","")
+                    if not fileLine:
+                        break
+
+                    jsonLine = json.loads(fileLine)
+                    jsonLine["queryStatistics"]["scriptStartTime"] = datetime.fromisoformat(jsonLine["queryStatistics"]["scriptStartTime"])
+                    jsonLine["queryStatistics"]["scriptEndTime"] = datetime.fromisoformat(jsonLine["queryStatistics"]["scriptEndTime"])
+
+                    for iResult in jsonLine["certResults"]:
+                        iResult["startTime"] = datetime.fromisoformat(iResult["startTime"])
+                        iResult["endTime"] = datetime.fromisoformat(iResult["endTime"])
+
+                    if "_id" in jsonLine:
+                        jsonLine["_id"] = ObjectId(jsonLine["_id"])
+                    
+                    jsonLinesFile.append(jsonLine)
+
+        except FileNotFoundError:
+            # File not found error - just ignore.
+            pass
+
+        return jsonLinesFile
+
+    def sendResults(self, __results, __destCollection):
         """upload the __results to __destCollection mongodb object."""
         try:
-            __uploadResult = __destCollection.insert_one(__results)
+            # First check to see if we need to attempt to upload previous data that was not uploaded.
+            previousJsonScriptData = self.getJsonScriptDataFromFile("certificateData.json")
+            previousUploadResult = []
+            __uploadResult = []
+
+            while len(previousJsonScriptData) > 0:
+                jsonScriptDataItem = previousJsonScriptData.pop(0)
+                previousUploadResultItem = __destCollection.insert_one(jsonScriptDataItem)
+                previousUploadResult.append(previousUploadResultItem)
+           
+            if os.path.isfile("certificateData.json"):
+                os.remove("certificateData.json")
+
+            if len(previousJsonScriptData) > 0:
+                # Didn't finish uploading all the data. Save it to file.
+                self.sendJsonScriptDataToFile("certificateData.json", previousJsonScriptData)
+                previousJsonScriptData = []
+            
+            __mongoResult = __destCollection.insert_one(__results)
+            __uploadResult.append(__mongoResult)
         except pymongo.errors.ServerSelectionTimeoutError:
             print("Server connection timeout error when uploading data.")
+            print("Saving to certificateData.json")
+            self.sendJsonScriptDataToFile("certificateData.json", [__results])
             sys.exit(1)
         except pymongo.errors.OperationFailure as e:
             print(f"Mongo operation error - {e}")
+            print("Saving to certificateData.json")
+            self.sendJsonScriptDataToFile("certificateData.json", [__results])
             sys.exit(1)
 
-        return __uploadResult
+        return previousUploadResult + __uploadResult
 
     @staticmethod
     def connectionString(__destination):
@@ -85,6 +158,8 @@ class sendDataMongoDB:
         # Check to see if TLS is defined for secure connection.
         if "tls" in __destination and __destination["tls"] is True:
             __tls = "&tls=true"
+        else:
+            __tls = ""
 
         # Get the collection name. If it's empty, use the default.
         if "collectionName" in __destination and __destination["collectionName"] != "":
@@ -144,7 +219,6 @@ class sendDataMongoDB:
 
         # Convert the startTime and endTime fields info ISODate format.
         jsonScriptData = __jsonScriptData
-
         jsonScriptData["queryStatistics"]["scriptStartTime"] = datetime.fromisoformat(jsonScriptData["queryStatistics"]["scriptStartTime"])
         jsonScriptData["queryStatistics"]["scriptEndTime"] = datetime.fromisoformat(jsonScriptData["queryStatistics"]["scriptEndTime"])
 
@@ -152,13 +226,11 @@ class sendDataMongoDB:
             iResult["startTime"] = datetime.fromisoformat(iResult["startTime"])
             iResult["endTime"] = datetime.fromisoformat(iResult["endTime"])
 
-        # Upload the results to the MongoDB
-        # It's only at this point that the database/collection gets created
-        # (if this is the first entry to be uploaded)
         uploadResult = self.sendResults(__jsonScriptData, collection)
+
         return uploadResult
 
     def __init__(self):
         """Initialize the sendDataMongoDB class."""
         self.initialized = True
-        self.version = "0.07"
+        self.version = "0.09"
