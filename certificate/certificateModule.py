@@ -24,16 +24,16 @@ class certificateModule:
             # Attempt to load the contextVariables.json file.
             with open('contextVariables.json') as fContextVariables:
                 contextVariables = json.load(fContextVariables)
-            
+
             return contextVariables
         except FileNotFoundError:
             print('I could not find contextVariables.json')
 
-            
+
     def getCertificate(self, __hostname, __port):
         """Connect to the host and get the certificate."""
         __ctx = ssl.create_default_context()
-        
+
         if self.contextVariables is not None:
             if self.contextVariables["securityLevel"] == 1:
                 # Lower the default security level
