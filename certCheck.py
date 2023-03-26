@@ -239,9 +239,9 @@ def processQueryFile():
     scriptStartTime = datetime.datetime.utcnow()
 
     for myHostname in myCertData.loadQueriesFile(args.queryFile):
-        
+
         contextVariables = 0
-        
+
         if args.contextVariables:
             contextVariables = 1
 
@@ -300,14 +300,14 @@ def processQueryFile():
 def processHostname():
     """This will attempt to connect to the hostname defined by the --hostname argument."""
     # Define initial certificate object
-    
+
     if args.contextVariables:
         contextVariables = 1
     else:
         contextVariables = 0 
 
     o_myCertificate = certificateModule.certificateModule(contextVariables)
-    
+
     # For SSL performance measurement - START
     o_startTime = datetime.datetime.utcnow()
 
@@ -323,7 +323,7 @@ def processHostname():
     for counter in range(int(args.retryAmount)):
         # Connect to the hostname from the queryFile argument and get the certificate associated with it.
         myCertificate = o_myCertificate.getCertificate(hostnameQuery["hostname"], hostnameQuery["port"])
-        
+
         if myCertificate["certificateMetaData"] is not None:
             break
         else:

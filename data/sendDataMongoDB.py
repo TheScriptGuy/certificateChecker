@@ -46,7 +46,7 @@ class sendDataMongoDB:
                 for iResult in jsonScriptDataItem["certResults"]:
                     iResult["startTime"] = iResult["startTime"].strftime('%Y-%m-%dT%H:%M:%S.%f')
                     iResult["endTime"] = iResult["endTime"].strftime('%Y-%m-%dT%H:%M:%S.%f')
-                
+
                 if "_id" in jsonScriptDataItem:
                     jsonScriptDataItem["_id"] = str(jsonScriptDataItem["_id"])
 
@@ -74,7 +74,7 @@ class sendDataMongoDB:
 
                     if "_id" in jsonLine:
                         jsonLine["_id"] = ObjectId(jsonLine["_id"])
-                    
+
                     jsonLinesFile.append(jsonLine)
 
         except FileNotFoundError:
@@ -95,7 +95,7 @@ class sendDataMongoDB:
                 jsonScriptDataItem = previousJsonScriptData.pop(0)
                 previousUploadResultItem = __destCollection.insert_one(jsonScriptDataItem)
                 previousUploadResult.append(previousUploadResultItem)
-           
+
             if os.path.isfile("certificateData.json"):
                 os.remove("certificateData.json")
 
@@ -103,7 +103,7 @@ class sendDataMongoDB:
                 # Didn't finish uploading all the data. Save it to file.
                 self.sendJsonScriptDataToFile("certificateData.json", previousJsonScriptData)
                 previousJsonScriptData = []
-            
+
             __mongoResult = __destCollection.insert_one(__results)
             __uploadResult.append(__mongoResult)
         except pymongo.errors.ServerSelectionTimeoutError:
