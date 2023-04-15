@@ -60,7 +60,7 @@ class sendDataMongoDB:
         try:
             with open("certificateData.json", "r") as fileJsonScriptData:
                 while True:
-                    fileLine = fileJsonScriptData.readline().replace("\n","")
+                    fileLine = fileJsonScriptData.readline().replace("\n", "")
                     if not fileLine:
                         break
 
