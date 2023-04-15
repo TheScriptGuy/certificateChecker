@@ -267,7 +267,7 @@ def processQueryFile():
         o_startTime = datetime.datetime.utcnow()
 
         # Iterate through number of retryAmount
-        for counter in range(int(args.retryAmount)):
+        for _ in range(int(args.retryAmount)):
             # Connect to the hostname from the queryFile argument and get the certificate associated with it.
             myCertificate = o_myCertificate.getCertificate(myHostname["hostname"], myHostname["port"])
 
@@ -333,7 +333,7 @@ def processHostname():
         hostnameQuery = {"hostname": args.hostname, "port": 443}
 
     # Iterate through number of retryAmount
-    for counter in range(int(args.retryAmount)):
+    for _ in range(int(args.retryAmount)):
         # Connect to the hostname from the queryFile argument and get the certificate associated with it.
         myCertificate = o_myCertificate.getCertificate(hostnameQuery["hostname"], hostnameQuery["port"])
 
