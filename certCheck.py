@@ -1,13 +1,14 @@
 # Program:        Certificate Checker
 # Author:         Nolan Rumble
 # Date:           2023/04/15
-# Version:        0.37
+# Version:        0.38
 
 import argparse
 import datetime
 import sys
 import json
 import time
+import os
 
 from systemInfo import systemInfo
 from certificate import certificateModule
@@ -17,7 +18,7 @@ from data import sendDataMongoDB
 from data import emailTemplateBuilder
 from data import sendDataEmail
 
-scriptVersion = "0.37"
+scriptVersion = "0.38"
 
 # Global Variables
 args = None
@@ -68,6 +69,9 @@ def parseArguments():
     parser.add_argument('--contextVariables', action='store_true',
                         help='Read the context variables from contextVariables.json')
 
+    parser.add_argument('--environmentVariables', action='store_true',
+                        help='Uses the environment values for TENANT_ID and TAG to set the runtime environment.')
+
     parser.add_argument('--setTag', default='',
                         help='Set the tag for the query results. Use commas to separate multiple tags.')
 
@@ -110,9 +114,21 @@ def defineInfoArguments(o_systemInfo):
         o_systemInfo.createBlankConfigurationFile()
         sys.exit(0)
 
+    # Check to see if the environmentVariables argument is set.
+    if args.environmentVariables:
+        tenantId = os.environ.get('TENANT_ID')
+        tags = os.environ.get('TAGS')
+        if tenantId and tags:
+            o_systemInfo.setTag(tags, False)
+            o_systemInfo.setTenantId(tenantId, False)
+        else:
+            print('Environment variables TENANT_ID and TAGS are not both set.')
+            sys.exit(1)
+
+
     # If setTag argument is set, create the new Tag.
     if args.setTag:
-        o_systemInfo.setTag(args.setTag)
+        o_systemInfo.setTag(args.setTag, True)
         print('New tag set.')
         sys.exit(0)
 
@@ -144,7 +160,7 @@ def defineInfoArguments(o_systemInfo):
 
     # If setTenantId is set, add it to the configuration file.
     if args.setTenantId:
-        o_systemInfo.setTenantId(args.setTenantId)
+        o_systemInfo.setTenantId(args.setTenantId, True)
         sys.exit(0)
 
     # If getTenantId is set, retrieve the tenant Id from the configuration file.
@@ -158,7 +174,7 @@ def defineInfoArguments(o_systemInfo):
         sys.exit(0)
 
 
-def gatherData(__certResults, __scriptStartTime, __scriptEndTime):
+def gatherData(__certResults, __mySystemInfo, __scriptStartTime, __scriptEndTime):
     """
     This will collect all the data into a uniform data structure that can
     help with measuring results across multiple executions.
@@ -177,11 +193,11 @@ def gatherData(__certResults, __scriptStartTime, __scriptEndTime):
     * averageTemplateTime            - Average template time being used across all the tests.
     * queryResults                   - The results of all queries that were performed against the nameservers.
     """
-    mySystemInfo = systemInfo.systemInfo()
+    
     myDetails = calculateStats.calculateStats()
 
     # Create the json script structure with all the meta data.
-    myData = myDetails.combineData(__certResults, mySystemInfo, __scriptStartTime, __scriptEndTime)
+    myData = myDetails.combineData(__certResults, __mySystemInfo, __scriptStartTime, __scriptEndTime)
 
     return myData
 
@@ -274,7 +290,7 @@ def processQueryFile():
 
     scriptEndTime = datetime.datetime.utcnow()
 
-    myJsonScriptData = gatherData(jsonScriptData, scriptStartTime, scriptEndTime)
+    myJsonScriptData = gatherData(jsonScriptData, o_myInfo, scriptStartTime, scriptEndTime)
 
     if args.displayScriptDataJSON:
         # Display the certificate and system JSON structure
@@ -335,8 +351,9 @@ def processHostname():
 
     # Convert the certificate object into JSON format.
     jsonCertificateInfo = o_myCertificate.convertCertificateObject2Json(hostnameQuery["hostname"], hostnameQuery["port"], o_startTime, o_endTime, myCertificate)
+
     # Append system data to JSON certificate structure
-    jsonScriptData = gatherData([jsonCertificateInfo], o_startTime, o_endTime)
+    jsonScriptData = gatherData([jsonCertificateInfo], o_myInfo, o_startTime, o_endTime)
 
     if args.displayCertificateJSON:
         # Display the certificate JSON structure
