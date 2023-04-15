@@ -1,3 +1,8 @@
+# 2023/04/15
+## Version 0.37
+### Feature additions
+* [Adding time to output when error occurs](https://github.com/TheScriptGuy/certificateChecker/issues/11)
+
 # 2023/03/25
 ## Version 0.36
 ### Feature additions
