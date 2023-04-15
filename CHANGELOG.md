@@ -1,4 +1,8 @@
 # 2023/04/15
+## Version 0.38
+### Feature additions
+* [Allow environment variables usage](https://github.com/TheScriptGuy/certificateChecker/issues/13)
+
 ## Version 0.37
 ### Feature additions
 * [Adding time to output when error occurs](https://github.com/TheScriptGuy/certificateChecker/issues/11)
