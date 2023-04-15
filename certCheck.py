@@ -271,9 +271,7 @@ def processQueryFile():
             # Connect to the hostname from the queryFile argument and get the certificate associated with it.
             myCertificate = o_myCertificate.getCertificate(myHostname["hostname"], myHostname["port"])
 
-            if myCertificate["certificateMetaData"] is not None:
-                break
-            else:
+            if myCertificate["certificateMetaData"] is None:
                 # If unable to connect to host for whatever reason, pause for a second then try again.
                 time.sleep(int(args.timeBetweenRetries))
 
@@ -339,9 +337,7 @@ def processHostname():
         # Connect to the hostname from the queryFile argument and get the certificate associated with it.
         myCertificate = o_myCertificate.getCertificate(hostnameQuery["hostname"], hostnameQuery["port"])
 
-        if myCertificate["certificateMetaData"] is not None:
-            break
-        else:
+        if myCertificate["certificateMetaData"] is None:
             # If unable to connect to host for whatever reason, pause for a second then try again.
             time.sleep(int(args.timeBetweenRetries))
 
