@@ -1,4 +1,7 @@
+# Version:        0.05
+# Date:           2023/04/15
 # systemInfo class
+
 import socket
 from os import path
 import json
@@ -44,7 +47,7 @@ class systemInfo:
         # Return the value of __myTags
         return __myTags
 
-    def setTag(self, __tagName):
+    def setTag(self, __tagName, __writeConfig):
         """Set the tag for data aggregation purposes."""
         # Separate out all the tags using commas
         __newTagName = __tagName.rstrip().split(',')
@@ -55,8 +58,9 @@ class systemInfo:
         # Update the class's myConfigJson variable.
         self.myConfigJson["myTags"] = __newTagName
 
-        # Update the configuration file.
-        self.updateMyConfig()
+        # If __writeConfig is true, then write the configuration file.
+        if __writeConfig:
+            self.updateMyConfig()
 
     def deleteTag(self):
         """Delete the tag."""
@@ -72,14 +76,17 @@ class systemInfo:
         """Returns the tenant Id."""
         return self.myConfigJson["myTenantId"]
 
-    def setTenantId(self, __myTenantId):
+    def setTenantId(self, __myTenantId, __writeConfig):
         """Sets the tenant Id for the script."""
         self.myConfigJson["myTenantId"] = __myTenantId
-        self.updateMyConfig()
+
+        # If __writeConfig is true, then write it to file.
+        if __writeConfig:
+            self.updateMyConfig()
 
     def deleteTenantId(self):
         """Deletes the tenant Id and updates configuration file."""
-        self.setTenantId("")
+        self.setTenantId("", True)
 
     @staticmethod
     def checkMyTenantId(__myConfigJson):
@@ -167,7 +174,7 @@ class systemInfo:
     def __init__(self, __myConfigFile="myConfig.json"):
         """Initialize the class."""
         # Define the class version.
-        self.classVersion = "0.04"
+        self.classVersion = "0.05"
 
         self.myConfigJson = {}
 

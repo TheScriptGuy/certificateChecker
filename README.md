@@ -1,6 +1,6 @@
 # Certificate Checker
 
-Version: 0.37
+Version: 0.38
 
 Author: TheScriptGuy
 
@@ -27,10 +27,10 @@ python3 certChecker.py --hostname example.com --displayTimeLeft
 ## Help output
 ```bash
 usage: certCheck.py [-h] [--hostname HOSTNAME] [--displayCertificate] [--displayCertificateJSON] [--displayScriptDataJSON] [--displayTimeLeft] [--queryFile QUERYFILE] [--uploadJsonData UPLOADJSONDATA] [--mongoDB]
-                    [--sendEmail] [--retryAmount RETRYAMOUNT] [--timeBetweenRetries TIMEBETWEENRETRIES] [--contextVariables] [--setTag SETTAG] [--delTag] [--getTag] [--renewDeviceId] [--getDeviceId] [--deleteDeviceId]
-                    [--setTenantId SETTENANTID] [--getTenantId] [--delTenantId] [--createBlankConfiguration]
+                    [--sendEmail] [--retryAmount RETRYAMOUNT] [--timeBetweenRetries TIMEBETWEENRETRIES] [--contextVariables] [--environmentVariables] [--setTag SETTAG] [--delTag] [--getTag] [--renewDeviceId]
+                    [--getDeviceId] [--deleteDeviceId] [--setTenantId SETTENANTID] [--getTenantId] [--delTenantId] [--createBlankConfiguration]
 
-Certificate Checker v0.37
+Certificate Checker v0.38
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -52,6 +52,8 @@ optional arguments:
   --timeBetweenRetries TIMEBETWEENRETRIES
                         The number of seconds between each retry attempt if the connection fails. Defaults to 1 second.
   --contextVariables    Read the context variables from contextVariables.json
+  --environmentVariables
+                        Uses the environment values for TENANT_ID and TAG to set the runtime environment.
   --setTag SETTAG       Set the tag for the query results. Use commas to separate multiple tags.
   --delTag              Removes the tags from the configuration file.
   --getTag              Get tags from the configuration file.
@@ -65,6 +67,21 @@ optional arguments:
   --createBlankConfiguration
                         Creates a blank configuration file template - myConfig.json. Overwrites any existing configuration
 ```
+
+## Environment variables
+The script will by default attempt to look at a configuration file for the Tenant ID and Tags. If the environment variables are defined, then it will use that in preference to the configuration file.
+
+To use, first define the variables:
+```bash
+$ export TENANT_ID="<insert tenant id here>"
+$ export TAGS="<insert comma separated values>"
+```
+
+Now that environment variables are defined, we can use the `--environmentVariables` argument:
+```bash
+$ python3 certCheck.py --hostname apple.com --environmentVariables --displayScriptDataJSON
+```
+
 
 [Example to send an email](https://github.com/TheScriptGuy/certificateChecker/blob/main/README-email.md)
 
