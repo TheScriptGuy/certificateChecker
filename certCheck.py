@@ -193,7 +193,6 @@ def gatherData(__certResults, __mySystemInfo, __scriptStartTime, __scriptEndTime
     * averageTemplateTime            - Average template time being used across all the tests.
     * queryResults                   - The results of all queries that were performed against the nameservers.
     """
-    
     myDetails = calculateStats.calculateStats()
 
     # Create the json script structure with all the meta data.

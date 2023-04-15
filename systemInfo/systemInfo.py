@@ -79,14 +79,14 @@ class systemInfo:
     def setTenantId(self, __myTenantId, __writeConfig):
         """Sets the tenant Id for the script."""
         self.myConfigJson["myTenantId"] = __myTenantId
-        
+
         # If __writeConfig is true, then write it to file.
         if __writeConfig:
             self.updateMyConfig()
 
     def deleteTenantId(self):
         """Deletes the tenant Id and updates configuration file."""
-        self.setTenantId("")
+        self.setTenantId("", True)
 
     @staticmethod
     def checkMyTenantId(__myConfigJson):
