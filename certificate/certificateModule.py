@@ -34,6 +34,7 @@ class certificateModule:
         __ctx = ssl.create_default_context()
 
         if self.contextVariables is not None:
+            # If securityLevel is set
             if self.contextVariables["securityLevel"] == 1:
                 # Lower the default security level
                 __ctx.set_ciphers('DEFAULT@SECLEVEL=1')
