@@ -29,7 +29,6 @@ class certificateModule:
         except FileNotFoundError:
             print('I could not find contextVariables.json')
 
-
     def getCertificate(self, __hostname, __port):
         """Connect to the host and get the certificate."""
         __ctx = ssl.create_default_context()
