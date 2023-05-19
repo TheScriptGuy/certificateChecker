@@ -1,3 +1,8 @@
+# 2023/05/18
+## Version 0.39
+### Fixes
+* [MongoDB bugfix](https://github.com/TheScriptGuy/certificateChecker/issues/15)
+
 # 2023/04/15
 ## Version 0.38
 ### Feature additions

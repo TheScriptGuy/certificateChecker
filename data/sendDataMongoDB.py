@@ -1,7 +1,7 @@
 # Class:            sendDataMongoDB
-# Last updated:     2023/04/15
+# Last updated:     2023/05/18
 # Author:           TheScriptGuy (https://github.com/TheScriptGuy)
-# Version:          0.10
+# Version:          0.11
 # Description:      Send json list to mongoDB based on configuration in mongo.cfg
 
 import pymongo
@@ -108,7 +108,7 @@ class sendDataMongoDB:
             __uploadResult.append(__mongoResult)
         except pymongo.errors.ServerSelectionTimeoutError:
             # Get time of error
-            errTime = str(datetime.datetime.utcnow())
+            errTime = str(datetime.utcnow())
             print(f"{errTime} - Server connection timeout error when uploading data. Saving to certificateData.json")
 
             # Save test data to file.
@@ -117,7 +117,7 @@ class sendDataMongoDB:
 
         except pymongo.errors.OperationFailure as e:
             # Get time of error
-            errTime = str(datetime.datetime.utcnow())
+            errTime = str(datetime.utcnow())
             print(f"{errTime} - Mongo operation error - {e}. Saving to certificateData.json")
 
             # Save test data to file.
@@ -240,4 +240,4 @@ class sendDataMongoDB:
     def __init__(self):
         """Initialize the sendDataMongoDB class."""
         self.initialized = True
-        self.version = "0.10"
+        self.version = "0.11"
