@@ -1,6 +1,6 @@
 # Certificate Module1
-# Version: 0.13
-# Last updated: 2023-02-05
+# Version: 0.14
+# Last updated: 2023-05-22
 # Author: TheScriptGuy
 
 import ssl
@@ -29,10 +29,19 @@ class certificateModule:
         except FileNotFoundError:
             print('I could not find contextVariables.json')
 
-    def getCertificate(self, __hostname, __port):
+    def getCertificate(self, __hostinfo):
         """Connect to the host and get the certificate."""
+
+        # Create the default context.
         __ctx = ssl.create_default_context()
 
+        # Check to see if there are any options that need to be passed for the connection
+        if __hostinfo['options'] is not None:
+            for ssl_options in __hostinfo['options']:
+                if ssl_options == "unsafe_legacy":
+                    __ctx.options |= 0x4  # OP_LEGACY_SERVER_CONNECT
+
+        # If there are any global options that need to be set.
         if self.contextVariables is not None:
             # If securityLevel is set
             if self.contextVariables["securityLevel"] == 1:
@@ -46,31 +55,32 @@ class certificateModule:
         }
 
         try:
-            with __ctx.wrap_socket(socket.socket(), server_hostname=__hostname) as s:
-                s.connect((__hostname, __port))
+            with __ctx.wrap_socket(socket.socket(), server_hostname=__hostinfo['hostname']) as s:
+
+                s.connect((__hostinfo['hostname'], __hostinfo['port']))
                 __certificate = s.getpeercert()
                 __cipher = s.cipher()
                 __hostnameData["certificateMetaData"] = __certificate
                 __hostnameData["connectionCipher"] = __cipher
 
         except ssl.SSLCertVerificationError as e:
-            connectHost = __hostname + ":" + str(__port)
+            connectHost = f"{__hostinfo['hostname']}:{__hostinfo['port']}, options: {__hostinfo['options']}"
             print(connectHost + ' - Certificate error - ', e.verify_message)
 
         except socket.gaierror as e:
-            connectHost = __hostname + ":" + str(__port)
+            connectHost = f"{__hostinfo['hostname']}:{__hostinfo['port']}, options: {__hostinfo['options']}"
             print(connectHost + ' - Socket error - ', e.strerror)
 
         except FileNotFoundError as e:
-            connectHost = __hostname + ":" + str(__port)
+            connectHost = f"{__hostinfo['hostname']}:{__hostinfo['port']}, options: {__hostinfo['options']}"
             print(connectHost + ' - File not found - ', e.strerror)
 
         except TimeoutError as e:
-            connectHost = __hostname + ":" + str(__port)
+            connectHost = f"{__hostinfo['hostname']}:{__hostinfo['port']}, options: {__hostinfo['options']}"
             print(connectHost + ' - Timeout error - ', e.strerror)
 
         except OSError as e:
-            connectHost = __hostname + ":" + str(__port)
+            connectHost = f"{__hostinfo['hostname']}:{__hostinfo['port']}, options: {__hostinfo['options']}"
             print(connectHost + ' - OSError - ', e.strerror)
 
         return __hostnameData

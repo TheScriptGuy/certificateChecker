@@ -1,11 +1,14 @@
-# Certificate Data Handling
-# Version: 0.06
+# Description:        Certificate Data Handling
+# Author:             TheScriptGuy
+# Version:            0.07
+# Last modified:      2023/05/22
+
 
 import sys
 from os import path
 import requests
 import socket
-
+import ast
 
 class certData:
     """certData class"""
@@ -53,6 +56,31 @@ class certData:
         return x.headers
 
     @staticmethod
+    def parse_line(line):
+        # Default values
+        hostname = ''
+        port = 443
+        options = None
+
+        # Remove newline character if it exists
+        line = line.rstrip()
+
+        # Check if options exist
+        if '[' in line:
+            line, options = line.split('[', 1)
+            # Remove the closing bracket and convert to a list
+            options = ast.literal_eval('[' + options)
+
+        # Check if port number exists
+        if ':' in line:
+            hostname, port = line.split(':')
+            port = int(port.rstrip(','))
+        else:
+            hostname = line.rstrip(',')
+
+        return {"hostname": hostname, "port": port, "options": options}
+
+    @staticmethod
     def loadQueriesFile(queriesFile):
         """
         This will load the queries that need to be performed against each name server.
@@ -64,33 +92,21 @@ class certData:
         if queriesFile.startswith('http://') or queriesFile.startswith('https://'):
             myQueries = certData.getFileFromURL(queriesFile)
             for line in myQueries:
-                if ":" in line:
-                    tmpLine = line.split(':')
-                    queries.append({"hostname": tmpLine[0], "port": int(tmpLine[1])})
-                else:
-                    queries.append({"hostname": line, "port": 443})
+                hostEntry = certData.parse_line(line)
+                queries.append(hostEntry)
 
-            return queries
-
-        # Check to see if if the file exists. If not, exit with error code 1.
-        if not path.exists(queriesFile):
-            print('I cannot find file ' + queriesFile)
+        elif path.exists(queriesFile) and not (queriesFile.startswith('http://') or queriesFile.startswith('https://')):
+            with open(queriesFile, "r", encoding="utf-8") as f_queryFile:
+                queryFile = f_queryFile.readlines()
+                for line in queryFile:
+                    hostEntry = certData.parse_line(line)
+                    queries.append(hostEntry)
+        else:
+            print('I cannot get file ' + queriesFile)
             sys.exit(1)
-
-        queryFile = open(queriesFile, "r", encoding="utf-8")
-
-        for line in queryFile:
-            if ":" in line:
-                tmpLine = line.rstrip('\n').split(':')
-                queries.append({"hostname": tmpLine[0], "port": int(tmpLine[1])})
-            else:
-                queries.append({"hostname": line.rstrip('\n'), "port": 443})
-
-        queryFile.close()
-
         return queries
 
     def __init__(self):
         """Initialize the certData class."""
         self.initialized = True
-        self.version = "0.06"
+        self.version = "0.07"
