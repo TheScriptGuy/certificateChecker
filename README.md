@@ -1,6 +1,6 @@
 # Certificate Checker
 
-Version: 0.39
+Version: 0.40
 
 Author: TheScriptGuy
 
@@ -82,6 +82,7 @@ Now that environment variables are defined, we can use the `--environmentVariabl
 $ python3 certCheck.py --hostname apple.com --environmentVariables --displayScriptDataJSON
 ```
 
+[Example of queryFile structure](https://github.com/TheScriptGuy/certificateChecker/blob/main/README-queryFile.md)
 
 [Example to send an email](https://github.com/TheScriptGuy/certificateChecker/blob/main/README-email.md)
 

@@ -1,4 +1,8 @@
-# 2023/05/18
+# 2023/05/22
+## Version 0.40
+### Feature Additions/Enhancements
+* Adding the ability to use unsafe legacy method of connection. See examples here - [Example of queryFile structure](https://github.com/TheScriptGuy/certificateChecker/blob/main/README-queryFile.md)
+
 ## Version 0.39
 ### Fixes
 * [MongoDB bugfix](https://github.com/TheScriptGuy/certificateChecker/issues/15)
