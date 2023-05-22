@@ -1,5 +1,5 @@
 # Certificate Module1
-# Version: 0.14
+# Version: 0.15
 # Last updated: 2023-05-22
 # Author: TheScriptGuy
 
@@ -40,6 +40,9 @@ class certificateModule:
             for ssl_options in __hostinfo['options']:
                 if ssl_options == "unsafe_legacy":
                     __ctx.options |= 0x4  # OP_LEGACY_SERVER_CONNECT
+                if ssl_options == "local_untrusted_allow":
+                    __ctx.check_hostname = False
+                    __ctx.verify_mode = ssl.CERT_NONE
 
         # If there are any global options that need to be set.
         if self.contextVariables is not None:
@@ -423,7 +426,7 @@ class certificateModule:
     def __init__(self, __contextVariables=0):
         """Initialize the class."""
         self.initialized = True
-        self.moduleVersion = "0.13"
+        self.moduleVersion = "0.15"
         self.certificate = {}
         if __contextVariables == 1:
             self.contextVariables = self.getContextVariables()

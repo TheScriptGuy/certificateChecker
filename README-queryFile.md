@@ -16,10 +16,21 @@ hostname:port,[]
 In the lines where no `[` or `]` are seen, then it's treated as `None` options provided. i.e. use defaults.
 
 Now in the `[` and `]`, the options that are available to today are:
-`unsafe_legacy`
+* `unsafe_legacy` - this allows for legacy renegotiation
+* `local_untrusted_allow` - this prevents chain validation. Useful for when websites are misconfigured and presenting the full certificate chain.
 
 To connect to a host with an option configured, these would all be considered valid examples:
 ```
 apple.com,['unsafe_legacy']
 apple.com:443,['unsafe_legacy']
 ```
+
+Another example:
+```
+apple.com,['local_untrusted_allow']
+apple.com:443,['local_untrusted_allow']
+apple.com,['unsafe_legacy','local_untrusted_allow']
+apple.com:443,['unsafe_legacy','local_untrusted_allow']
+```
+
+As you can see, multiple options can be supported on each line.
