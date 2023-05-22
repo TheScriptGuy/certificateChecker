@@ -320,23 +320,18 @@ def processHostname():
         contextVariables = 0 
 
     o_myCertificate = certificateModule.certificateModule(contextVariables)
+    o_myCertData = certData.certData()
 
     # For SSL performance measurement - START
     o_startTime = datetime.datetime.utcnow()
 
     # Connect to the hostname from the --hostname argument and get the certificate associated with it.
-    if ":" in args.hostname:
-        tmpLine = args.hostname.split(':')
-        hostnameQuery = {"hostname": tmpLine[0], "port": int(tmpLine[1])}
-
-    else:
-        hostnameQuery = {"hostname": args.hostname, "port": 443}
+    hostnameQuery = o_myCertData.parse_line(args.hostname)
 
     # Iterate through number of retryAmount
     for _ in range(int(args.retryAmount)):
         # Connect to the hostname from the queryFile argument and get the certificate associated with it.
         myCertificate = o_myCertificate.getCertificate(hostnameQuery)
-
         if myCertificate["certificateMetaData"] is None:
             # If unable to connect to host for whatever reason, pause for a second then try again.
             time.sleep(int(args.timeBetweenRetries))

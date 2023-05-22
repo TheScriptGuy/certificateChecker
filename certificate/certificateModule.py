@@ -34,7 +34,6 @@ class certificateModule:
 
         # Create the default context.
         __ctx = ssl.create_default_context()
-
         # Check to see if there are any options that need to be passed for the connection
         if __hostinfo['options'] is not None:
             for ssl_options in __hostinfo['options']:
@@ -351,6 +350,7 @@ class certificateModule:
             if 'subject' in certKeys:
                 myJsonCertificateInfo["certificateInfo"]["subject"] = dict(x[0] for x in __certificateObject["certificateMetaData"]["subject"])
 
+            print(__certificateObject["certificateMetaData"])
             myJsonCertificateInfo["certificateInfo"]["certificateIssuer"] = dict(x[0] for x in __certificateObject["certificateMetaData"]["issuer"])
 
             myJsonCertificateInfo["certificateInfo"]["version"] = __certificateObject["certificateMetaData"]["version"]
