@@ -125,7 +125,6 @@ def defineInfoArguments(o_systemInfo):
             print('Environment variables TENANT_ID and TAGS are not both set.')
             sys.exit(1)
 
-
     # If setTag argument is set, create the new Tag.
     if args.setTag:
         o_systemInfo.setTag(args.setTag, True)
@@ -254,9 +253,10 @@ def processQueryFile():
     scriptStartTime = datetime.datetime.utcnow()
 
     for myHostname in myCertData.loadQueriesFile(args.queryFile):
-        
+        # Set contectVariables to zero
         contextVariables = 0
 
+        # Check to see if contextVariables argument was passed.
         if args.contextVariables:
             contextVariables = 1
 
@@ -281,12 +281,16 @@ def processQueryFile():
         # Convert the certificate object into JSON format.
         jsonCertificateInfo = o_myCertificate.convertCertificateObject2Json(myHostname["hostname"], myHostname["port"], o_startTime, o_endTime, myCertificate)
 
+        # Append jsonCertificateInfo to jsonScriptData
         jsonScriptData.append(jsonCertificateInfo)
 
+        # Check to see if additional arguments were passed
         checkArguments(myCertificate, jsonCertificateInfo)
 
+    # Get the time the script stopped gathering data.
     scriptEndTime = datetime.datetime.utcnow()
 
+    # Combine all the data into a dict.
     myJsonScriptData = gatherData(jsonScriptData, o_myInfo, scriptStartTime, scriptEndTime)
 
     if args.displayScriptDataJSON:
@@ -317,7 +321,7 @@ def processHostname():
     if args.contextVariables:
         contextVariables = 1
     else:
-        contextVariables = 0 
+        contextVariables = 0
 
     o_myCertificate = certificateModule.certificateModule(contextVariables)
     o_myCertData = certData.certData()

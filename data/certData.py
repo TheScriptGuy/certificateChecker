@@ -1,14 +1,14 @@
 # Description:        Certificate Data Handling
 # Author:             TheScriptGuy
-# Version:            0.07
-# Last modified:      2023/05/22
-
+# Version:            0.08
+# Last modified:      2023/05/31
 
 import sys
 from os import path
 import requests
 import socket
 import ast
+
 
 class certData:
     """certData class"""
@@ -109,4 +109,4 @@ class certData:
     def __init__(self):
         """Initialize the certData class."""
         self.initialized = True
-        self.version = "0.07"
+        self.version = "0.08"
