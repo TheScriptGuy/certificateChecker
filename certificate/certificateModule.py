@@ -193,7 +193,7 @@ class certificateModule:
             certNotBefore = datetime.datetime.strptime(self.returnNotBefore(__certificateObject), self.certTimeFormat).date()
 
             # Assume time not valid
-            isValid = bool((certNotBefore < timeNow) and (certNotAfter > timeNow))
+            isValid = bool(certNotBefore < timeNow < certNotAfter)
 
             return isValid
         return False
