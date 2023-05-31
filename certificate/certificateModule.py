@@ -1,6 +1,6 @@
 # Certificate Module1
-# Version: 0.15
-# Last updated: 2023-05-22
+# Version: 0.16
+# Last updated: 2023-05-31
 # Author: TheScriptGuy
 
 import ssl
@@ -350,7 +350,6 @@ class certificateModule:
             if 'subject' in certKeys:
                 myJsonCertificateInfo["certificateInfo"]["subject"] = dict(x[0] for x in __certificateObject["certificateMetaData"]["subject"])
 
-            print(__certificateObject["certificateMetaData"])
             myJsonCertificateInfo["certificateInfo"]["certificateIssuer"] = dict(x[0] for x in __certificateObject["certificateMetaData"]["issuer"])
 
             myJsonCertificateInfo["certificateInfo"]["version"] = __certificateObject["certificateMetaData"]["version"]
@@ -426,7 +425,7 @@ class certificateModule:
     def __init__(self, __contextVariables=0):
         """Initialize the class."""
         self.initialized = True
-        self.moduleVersion = "0.15"
+        self.moduleVersion = "0.16"
         self.certificate = {}
         if __contextVariables == 1:
             self.contextVariables = self.getContextVariables()
