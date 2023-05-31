@@ -1,3 +1,8 @@
+# 2023/05/31
+## Version 0.42
+### Fixes
+* A left over print statement from the previous build.
+
 # 2023/05/22
 ## Version 0.41
 ### Feature Additions/Enhancements
