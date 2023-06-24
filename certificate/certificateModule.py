@@ -1,6 +1,6 @@
 # Certificate Module1
-# Version: 0.16
-# Last updated: 2023-05-31
+# Version: 0.17
+# Last updated: 2023-06-24
 # Author: TheScriptGuy
 
 import ssl
@@ -34,6 +34,7 @@ class certificateModule:
 
         # Create the default context.
         __ctx = ssl.create_default_context()
+
         # Check to see if there are any options that need to be passed for the connection
         if __hostinfo['options'] is not None:
             for ssl_options in __hostinfo['options']:
@@ -57,13 +58,16 @@ class certificateModule:
         }
 
         try:
-            with __ctx.wrap_socket(socket.socket(), server_hostname=__hostinfo['hostname']) as s:
-
-                s.connect((__hostinfo['hostname'], __hostinfo['port']))
-                __certificate = s.getpeercert()
-                __cipher = s.cipher()
-                __hostnameData["certificateMetaData"] = __certificate
-                __hostnameData["connectionCipher"] = __cipher
+           # Create a new socket.
+            with socket.socket() as sock:
+                # Set timeout value for socket to 10 seconds.
+                sock.settimeout(10.0)
+                with __ctx.wrap_socket(sock, server_hostname=__hostinfo['hostname']) as s:
+                    s.connect((__hostinfo['hostname'], __hostinfo['port']))
+                    __certificate = s.getpeercert()
+                    __cipher = s.cipher()
+                    __hostnameData["certificateMetaData"] = __certificate
+                    __hostnameData["connectionCipher"] = __cipher
 
         except ssl.SSLCertVerificationError as e:
             connectHost = f"{__hostinfo['hostname']}:{__hostinfo['port']}, options: {__hostinfo['options']}"
