@@ -1,3 +1,8 @@
+# 2023/06/24
+## Version 0.43
+### Enhancements
+* [Socket timeout value](https://github.com/TheScriptGuy/certificateChecker/issues/17).
+
 # 2023/05/31
 ## Version 0.42
 ### Fixes
