@@ -58,7 +58,7 @@ class certificateModule:
         }
 
         try:
-           # Create a new socket.
+            # Create a new socket.
             with socket.socket() as sock:
                 # Set timeout value for socket to 10 seconds.
                 sock.settimeout(10.0)
