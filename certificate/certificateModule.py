@@ -1,6 +1,6 @@
-# Certificate Module1
-# Version: 0.17
-# Last updated: 2023-06-24
+# Certificate Module
+# Version: 0.18
+# Last updated: 2023-07-08
 # Author: TheScriptGuy
 
 import ssl
@@ -8,6 +8,9 @@ import socket
 import datetime
 import json
 import requests
+import hashlib
+import os
+from . import getCertificateChain
 
 from dateutil.relativedelta import relativedelta
 
@@ -32,17 +35,28 @@ class certificateModule:
     def getCertificate(self, __hostinfo):
         """Connect to the host and get the certificate."""
 
-        # Create the default context.
-        __ctx = ssl.create_default_context()
+        # Determine which context to create
+        if __hostinfo['options'] is not None and "local_untrusted_allow" in __hostinfo['options']:
+            hostnamePortPair = f'{__hostinfo["hostname"]}:{__hostinfo["port"]}'
+            certificateHashFilename = hashlib.sha256(hostnamePortPair.encode()).hexdigest() + ".pem"
+
+            if not os.path.exists(certificateHashFilename):
+                # Try to build the chain
+                occ = getCertificateChain.getCertificateChain()
+                occ.getCertificateChain(__hostinfo['hostname'],__hostinfo['port'])
+            
+            __ctx = ssl.create_default_context(cafile=certificateHashFilename)
+        else:
+            # Create the default context.
+            __ctx = ssl.create_default_context()
 
         # Check to see if there are any options that need to be passed for the connection
         if __hostinfo['options'] is not None:
-            for ssl_options in __hostinfo['options']:
-                if ssl_options == "unsafe_legacy":
-                    __ctx.options |= 0x4  # OP_LEGACY_SERVER_CONNECT
-                if ssl_options == "local_untrusted_allow":
-                    __ctx.check_hostname = False
-                    __ctx.verify_mode = ssl.CERT_NONE
+            if "unsafe_legacy" in __hostinfo['options']:
+                __ctx.options |= 0x4  # OP_LEGACY_SERVER_CONNECT
+            if "local_untrusted_allow" in __hostinfo['options']:
+                __ctx.check_hostname = False
+                __ctx.verify_mode = ssl.CERT_OPTIONAL
 
         # If there are any global options that need to be set.
         if self.contextVariables is not None:
@@ -429,7 +443,7 @@ class certificateModule:
     def __init__(self, __contextVariables=0):
         """Initialize the class."""
         self.initialized = True
-        self.moduleVersion = "0.16"
+        self.moduleVersion = "0.18"
         self.certificate = {}
         if __contextVariables == 1:
             self.contextVariables = self.getContextVariables()
