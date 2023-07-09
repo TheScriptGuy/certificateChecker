@@ -43,8 +43,8 @@ class certificateModule:
             if not os.path.exists(certificateHashFilename):
                 # Try to build the chain
                 occ = getCertificateChain.getCertificateChain()
-                occ.getCertificateChain(__hostinfo['hostname'],__hostinfo['port'])
-            
+                occ.getCertificateChain(__hostinfo['hostname'], __hostinfo['port'])
+
             __ctx = ssl.create_default_context(cafile=certificateHashFilename)
         else:
             # Create the default context.
