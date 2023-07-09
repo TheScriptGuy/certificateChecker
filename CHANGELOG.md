@@ -1,3 +1,8 @@
+# 2023/07/08
+## Version 0.44
+### Fixes
+* [traceback untrusted issuer](https://github.com/TheScriptGuy/certificateChecker/issues/19).
+
 # 2023/06/24
 ## Version 0.43
 ### Enhancements
