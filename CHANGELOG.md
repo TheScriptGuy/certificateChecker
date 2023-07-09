@@ -1,3 +1,8 @@
+# 2023/07/09
+## Version 0.45
+### Fixes
+* Fixed a minor bug with the certificate chain retrieval.
+
 # 2023/07/08
 ## Version 0.44
 ### Fixes

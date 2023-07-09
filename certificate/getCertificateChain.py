@@ -1,7 +1,7 @@
 # Description:     Get the certificate chain from a website.
 # Author:          TheScriptGuy
-# Last modified:   2023-07-08
-# Version:         0.01
+# Last modified:   2023-07-09
+# Version:         0.02
 
 import ssl
 import socket
@@ -258,7 +258,7 @@ class getCertificateChain:
         """Write all the elements in the chain to file."""
         myCertChain = __certificateChain
 
-        myCertChain.pop()
+        myCertChain.pop(0)
 
         # Iterate through all the elements in the chain.
         for counter, certificateItem in enumerate(myCertChain):
@@ -303,7 +303,7 @@ class getCertificateChain:
 
     def __init__(self):
         """Init the getCertChain class."""
-        self.classVersion = "0.01"
+        self.classVersion = "0.02"
         self.maxDepth = 4
         self.certChain = []
         self.certificateHash = ""
