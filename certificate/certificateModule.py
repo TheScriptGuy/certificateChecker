@@ -18,7 +18,7 @@ from dateutil.relativedelta import relativedelta
 class certificateModule:
     """certificateModule class"""
 
-    def getContextVariables(self):
+    def getContextVariables(self) -> dict:
         """Get the variables from the contextVariables.json"""
         try:
             # Assume contextVariables is empty.
@@ -32,25 +32,32 @@ class certificateModule:
         except FileNotFoundError:
             print('I could not find contextVariables.json')
 
-    def getCertificate(self, __hostinfo):
+    def getCertificate(self, __hostinfo: dict) -> dict:
         """Connect to the host and get the certificate."""
 
         # Determine which context to create
-        if __hostinfo['options'] is not None and "local_untrusted_allow" in __hostinfo['options']:
+        if __hostinfo['options'] is not None and \
+                "local_untrusted_allow" in __hostinfo['options']:
             hostnamePortPair = f'{__hostinfo["hostname"]}:{__hostinfo["port"]}'
-            certificateHashFilename = hashlib.sha256(hostnamePortPair.encode()).hexdigest() + ".pem"
+            certificateHashFilename = hashlib.sha256(
+                    hostnamePortPair.encode()
+                    ).hexdigest() + ".pem"
 
             if not os.path.exists(certificateHashFilename):
                 # Try to build the chain
                 occ = getCertificateChain.getCertificateChain()
-                occ.getCertificateChain(__hostinfo['hostname'], __hostinfo['port'])
+                occ.getCertificateChain(
+                        __hostinfo['hostname'],
+                        __hostinfo['port']
+                        )
 
             __ctx = ssl.create_default_context(cafile=certificateHashFilename)
         else:
             # Create the default context.
             __ctx = ssl.create_default_context()
 
-        # Check to see if there are any options that need to be passed for the connection
+        # Check to see if there are any options that need to be
+        # passed for the connection
         if __hostinfo['options'] is not None:
             if "unsafe_legacy" in __hostinfo['options']:
                 __ctx.options |= 0x4  # OP_LEGACY_SERVER_CONNECT
@@ -76,7 +83,10 @@ class certificateModule:
             with socket.socket() as sock:
                 # Set timeout value for socket to 10 seconds.
                 sock.settimeout(10.0)
-                with __ctx.wrap_socket(sock, server_hostname=__hostinfo['hostname']) as s:
+                with __ctx.wrap_socket(
+                        sock,
+                        server_hostname=__hostinfo['hostname']
+                        ) as s:
                     s.connect((__hostinfo['hostname'], __hostinfo['port']))
                     __certificate = s.getpeercert()
                     __cipher = s.cipher()
@@ -84,29 +94,44 @@ class certificateModule:
                     __hostnameData["connectionCipher"] = __cipher
 
         except ssl.SSLCertVerificationError as e:
-            connectHost = f"{__hostinfo['hostname']}:{__hostinfo['port']}, options: {__hostinfo['options']}"
+            connectHost = (
+                    f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
+                    f"options: {__hostinfo['options']}"
+                    )
             print(connectHost + ' - Certificate error - ', e.verify_message)
 
         except socket.gaierror as e:
-            connectHost = f"{__hostinfo['hostname']}:{__hostinfo['port']}, options: {__hostinfo['options']}"
+            connectHost = (
+                    f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
+                    f"options: {__hostinfo['options']}"
+                    )
             print(connectHost + ' - Socket error - ', e.strerror)
 
         except FileNotFoundError as e:
-            connectHost = f"{__hostinfo['hostname']}:{__hostinfo['port']}, options: {__hostinfo['options']}"
+            connectHost = (
+                    f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
+                    f"options: {__hostinfo['options']}"
+                    )
             print(connectHost + ' - File not found - ', e.strerror)
 
         except TimeoutError as e:
-            connectHost = f"{__hostinfo['hostname']}:{__hostinfo['port']}, options: {__hostinfo['options']}"
+            connectHost = (
+                    f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
+                    f"options: {__hostinfo['options']}"
+                    )
             print(connectHost + ' - Timeout error - ', e.strerror)
 
         except OSError as e:
-            connectHost = f"{__hostinfo['hostname']}:{__hostinfo['port']}, options: {__hostinfo['options']}"
+            connectHost = (
+                    f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
+                    f"options: {__hostinfo['options']}"
+                    )
             print(connectHost + ' - OSError - ', e.strerror)
 
         return __hostnameData
 
     @staticmethod
-    def printSubject(__certificateObject):
+    def printSubject(__certificateObject: dict) -> None:
         """Print the subject name of the certificate."""
         if __certificateObject is not None:
             subject = dict(x[0] for x in __certificateObject['subject'])
@@ -114,7 +139,7 @@ class certificateModule:
             print("Subject: ", issued_to, end='')
 
     @staticmethod
-    def printSubjectAltName(__certificateObject):
+    def printSubjectAltName(__certificateObject) -> None:
         """Print the Subject Alternate Name(s) of the certificate."""
         __subjectAltName = []
 
@@ -124,7 +149,7 @@ class certificateModule:
         print("Subject Alt Name: ", __subjectAltName)
 
     @staticmethod
-    def printIssuer(__certificateObject):
+    def printIssuer(__certificateObject) -> None:
         """Print the Issuer of the certificate."""
         if __certificateObject is not None:
             issuer = dict(x[0] for x in __certificateObject['issuer'])
@@ -132,38 +157,43 @@ class certificateModule:
             print("Issued by: ", issued_by)
 
     @staticmethod
-    def printNotBefore(__certificateObject):
+    def printNotBefore(__certificateObject) -> None:
         """Print the notBefore field of the certificate."""
         if __certificateObject is not None:
             notBefore = __certificateObject['notBefore']
             print("Certificate start date: ", notBefore)
 
     @staticmethod
-    def printNotAfter(__certificateObject):
+    def printNotAfter(__certificateObject) -> None:
         """Print the notAfter field of the certificate."""
         if __certificateObject is not None:
             notAfter = __certificateObject['notAfter']
             print("Certificate end date: ", notAfter)
 
     @staticmethod
-    def returnNotBefore(__certificateObject):
+    def returnNotBefore(__certificateObject) -> None:
         """Return the notBefore field from the certificate."""
         if __certificateObject is not None:
             return __certificateObject['notBefore']
         return ""
 
     @staticmethod
-    def returnNotAfter(__certificateObject):
+    def returnNotAfter(__certificateObject) -> None:
         """Return the notAfter field from the certificate."""
         if __certificateObject is not None:
             return __certificateObject['notAfter']
         return ""
 
-    def howMuchTimeLeft(self, __certificateObject):
+    def howMuchTimeLeft(self, __certificateObject) -> None:
         """Return the remaining time left on the certificate."""
         if __certificateObject is not None:
             timeNow = datetime.datetime.utcnow().replace(microsecond=0)
-            certNotAfter = datetime.datetime.strptime(self.returnNotAfter(__certificateObject["certificateMetaData"]), self.certTimeFormat)
+            certNotAfter = datetime.datetime.strptime(
+                    self.returnNotAfter(
+                        __certificateObject["certificateMetaData"]
+                        ),
+                    self.certTimeFormat
+                    )
 
             __delta = relativedelta(certNotAfter, timeNow)
 
@@ -190,16 +220,16 @@ class certificateModule:
         return certResult
 
     @staticmethod
-    def checkIssuer(__certificateObject):
+    def checkIssuer(__certificateObject) -> bool:
         """Check to see if issuers are trusted."""
         return True
 
     @staticmethod
-    def checkRevocation(__certificateObject):
+    def checkRevocation(__certificateObject) -> bool:
         """Check to see if certificate hasn't been revoked."""
         return True
 
-    def checkTimeValidity(self, __certificateObject):
+    def checkTimeValidity(self, __certificateObject) -> bool:
         """
         Check to see if the certificate is valid:
             current date is after certificate start date
@@ -207,8 +237,14 @@ class certificateModule:
         """
         if __certificateObject is not None:
             timeNow = datetime.datetime.utcnow().replace(microsecond=0).date()
-            certNotAfter = datetime.datetime.strptime(self.returnNotAfter(__certificateObject), self.certTimeFormat).date()
-            certNotBefore = datetime.datetime.strptime(self.returnNotBefore(__certificateObject), self.certTimeFormat).date()
+            certNotAfter = datetime.datetime.strptime(
+                    self.returnNotAfter(__certificateObject),
+                    self.certTimeFormat
+                    ).date()
+            certNotBefore = datetime.datetime.strptime(
+                    self.returnNotBefore(__certificateObject),
+                    self.certTimeFormat
+                    ).date()
 
             # Assume time not valid
             isValid = bool(certNotBefore < timeNow < certNotAfter)
@@ -217,7 +253,7 @@ class certificateModule:
         return False
 
     @staticmethod
-    def printOCSP(__certificateObject):
+    def printOCSP(__certificateObject) -> None:
         """Print the OCSP field of the certificate."""
         if __certificateObject is not None:
             __OCSPList = []
@@ -226,7 +262,7 @@ class certificateModule:
             print("OCSP: ", __OCSPList)
 
     @staticmethod
-    def printCRLDistributionPoints(__certificateObject):
+    def printCRLDistributionPoints(__certificateObject) -> None:
         """Print the CRL distribution points of the certificate."""
         if __certificateObject is not None:
             __CRLList = []
@@ -236,37 +272,39 @@ class certificateModule:
                 print("CRL: ", __CRLList)
 
     @staticmethod
-    def printCertificateSerialNumber(__certificateObject):
+    def printCertificateSerialNumber(__certificateObject) -> None:
         """Print the certificate serial number."""
         if __certificateObject is not None:
             certificateSerialNumber = __certificateObject['serialNumber']
             print("Serial Number: ", certificateSerialNumber)
 
     @staticmethod
-    def printCaIssuers(__certificateObject):
+    def printCaIssuers(__certificateObject) -> None:
         """Print the certificates CA issuers."""
         if __certificateObject is not None:
             certificateCaIssuers = __certificateObject['caIssuers']
             print("CA Issuers: ", certificateCaIssuers)
 
-    def printHowMuchTimeLeft(self, __certificateObject):
+    def printHowMuchTimeLeft(self, __certificateObject) -> None:
         """Print how much time is left on the certificate."""
         if __certificateObject is not None:
             timeLeft = self.howMuchTimeLeft(__certificateObject)
             print("Time left: ", timeLeft)
 
-    def certificateValid(self, __certificateObject):
+    def certificateValid(self, __certificateObject) -> None:
         """
         Currently not in use.
         Check to see if the certificate is valid (Time, Recovation, Issuer)
         """
         if __certificateObject is not None:
-            if self.checkTimeValidity(__certificateObject) and self.checkRevocation(__certificateObject) and self.checkIssuer(__certificateObject):
+            if self.checkTimeValidity(__certificateObject) and \
+                    self.checkRevocation(__certificateObject) and \
+                    self.checkIssuer(__certificateObject):
                 print("Certificate good!")
             else:
                 print("Certificate invalid!")
 
-    def printCertInfo(self, __certificateObject):
+    def printCertInfo(self, __certificateObject) -> None:
         """Print out all the certificate properties."""
         if __certificateObject is not None:
             self.printSubject(__certificateObject)
@@ -283,7 +321,7 @@ class certificateModule:
         else:
             print("No certificate info to display!")
 
-    def printCertInfoJSON(self, __certificateObject):
+    def printCertInfoJSON(self, __certificateObject) -> None:
         """Print the certificate information in JSON format."""
         if __certificateObject is not None:
             jsonCertInfoFormat = json.dumps(__certificateObject)
@@ -291,45 +329,63 @@ class certificateModule:
         else:
             jsonCertInfoFormat = {
                 "subject": {"None": "None"},
-                "certificateIssuer" : {"None": "None"},
-                "version" : 0,
-                "serialNumber" : "0",
-                "notBefore" : "Jan 1 00:00:00 0000 GMT",
-                "notAfter" : "Jan 1 00:00:00 0000 GMT",
-                "timeLeft" : "0 seconds",
-                "OCSP" : "None",
-                "crlDistributionPoints" : "None",
-                "caIssuers" : "None",
-                "subjectAltName" : {"None": "None"}
+                "certificateIssuer": {"None": "None"},
+                "version": 0,
+                "serialNumber": "0",
+                "notBefore": "Jan 1 00:00:00 0000 GMT",
+                "notAfter": "Jan 1 00:00:00 0000 GMT",
+                "timeLeft": "0 seconds",
+                "OCSP": "None",
+                "crlDistributionPoints": "None",
+                "caIssuers": "None",
+                "subjectAltName": {"None": "None"}
             }
             print(jsonCertInfoFormat)
 
-    def calculateCertificateUtilization(self, __notBefore, __notAfter):
+    def calculateCertificateUtilization(self, __notBefore: datetime, __notAfter: datetime) -> float:
         """Calculating the percentage utilization of the certificate"""
         # Convert __notBefore to datetime object
-        notBeforeTime = datetime.datetime.strptime(__notBefore, self.certTimeFormat)
+        notBeforeTime = datetime.datetime.strptime(
+                __notBefore,
+                self.certTimeFormat
+                )
+
         # Convert __notAfter to datetime object
-        notAfterTime = datetime.datetime.strptime(__notAfter, self.certTimeFormat)
+        notAfterTime = datetime.datetime.strptime(
+                __notAfter,
+                self.certTimeFormat
+                )
 
         # Get the current time.
         currentTime = datetime.datetime.utcnow()
 
-        # Calculate the differences between currentTime, notAfterTime, and notBeforeTime
+        # Calculate the differences between
+        # currentTime, notAfterTime, and notBeforeTime
         rest = notAfterTime - currentTime
         total = notAfterTime - notBeforeTime
 
-        # Calculate the percentage utilization of the time available before expiry.
+        # Calculate the percentage utilization of the time
+        # available before expiry.
         percentageUtilization = 100 - (rest / total * 100)
 
         # Return the percentage utilization as a string formatted to 2 places.
         return float(f"{percentageUtilization:.2f}")
 
-    def calculateCertificateTemplateTime(self, __notBefore, __notAfter):
-        """Calculate the number of seconds between __notBefore and __notAfter."""
+    def calculateCertificateTemplateTime(self, __notBefore: datetime, __notAfter: datetime) -> int:
+        """
+        Calculate the number of seconds between
+        __notBefore and __notAfter.
+        """
         # Convert __notBefore to datetime object
-        notBeforeTime = datetime.datetime.strptime(__notBefore, self.certTimeFormat)
+        notBeforeTime = datetime.datetime.strptime(
+                __notBefore,
+                self.certTimeFormat
+                )
         # Convert __notAfter to datetime object
-        notAfterTime = datetime.datetime.strptime(__notAfter, self.certTimeFormat)
+        notAfterTime = datetime.datetime.strptime(
+                __notAfter,
+                self.certTimeFormat
+                )
 
         # Calcualte the difference
         timeDifference = notAfterTime - notBeforeTime
@@ -339,7 +395,14 @@ class certificateModule:
 
         return timeDifferenceInSeconds
 
-    def convertCertificateObject2Json(self, __hostname, __port, __startTime, __endTime, __certificateObject):
+    def convertCertificateObject2Json(
+            self,
+            __hostname: str,
+            __port: int,
+            __startTime: datetime,
+            __endTime: datetime,
+            __certificateObject: dict
+            ) -> dict:
         """Convert the certificate object into JSON format."""
         myJsonCertificateInfo = {}
 
@@ -347,7 +410,12 @@ class certificateModule:
         endTime = __endTime.isoformat()
 
         # Calculate queryTime between __endTime and __startTime in milliseconds
-        queryTime = round(float((__endTime - __startTime).total_seconds() * 1000), 2)
+        queryTime = round(
+                float(
+                    (
+                        __endTime - __startTime
+                    ).total_seconds() * 1000
+                ), 2)
 
         myJsonCertificateInfo["hostname"] = __hostname
         myJsonCertificateInfo["port"] = int(__port)
@@ -356,7 +424,8 @@ class certificateModule:
         myJsonCertificateInfo["queryTime"] = queryTime
 
         if __certificateObject["connectionCipher"] is not None:
-            myJsonCertificateInfo["connectionCipher"] = __certificateObject["connectionCipher"]
+            myJsonCertificateInfo["connectionCipher"] = \
+                    __certificateObject["connectionCipher"]
 
         myJsonCertificateInfo["certificateInfo"] = {}
 
@@ -366,7 +435,9 @@ class certificateModule:
 
             # Certificate might not have subject defined.
             if 'subject' in certKeys:
-                myJsonCertificateInfo["certificateInfo"]["subject"] = dict(x[0] for x in __certificateObject["certificateMetaData"]["subject"])
+                myJsonCertificateInfo["certificateInfo"]["subject"] = dict(
+                        x[0] for x in __certificateObject["certificateMetaData"]["subject"]
+                    )
 
             myJsonCertificateInfo["certificateInfo"]["certificateIssuer"] = dict(x[0] for x in __certificateObject["certificateMetaData"]["issuer"])
 
@@ -429,7 +500,7 @@ class certificateModule:
 
         return myJsonCertificateInfo
 
-    def uploadJsonData(self, __certificateJsonData, __httpUrl):
+    def uploadJsonData(self, __certificateJsonData: dict, __httpUrl: str) -> str:
         """
         This will upload the json data to a URL via a POST method.
         If the verbose argument is set, it'll display what URL it's being

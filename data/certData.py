@@ -1,7 +1,7 @@
 # Description:        Certificate Data Handling
 # Author:             TheScriptGuy
-# Version:            0.08
-# Last modified:      2023/05/31
+# Version:            0.09
+# Last modified:      2023/07/11
 
 import sys
 from os import path
@@ -14,7 +14,7 @@ class certData:
     """certData class"""
 
     @staticmethod
-    def getFileFromURL(fileURL):
+    def getFileFromURL(fileURL: str) -> list:
         """This function will download the contents of fileURL and return a list with the contents."""
         tmpData = []
         try:
@@ -56,7 +56,7 @@ class certData:
         return x.headers
 
     @staticmethod
-    def parse_line(line):
+    def parse_line(line: str) -> dict:
         # Default values
         hostname = ''
         port = 443
@@ -81,7 +81,7 @@ class certData:
         return {"hostname": hostname, "port": port, "options": options}
 
     @staticmethod
-    def loadQueriesFile(queriesFile):
+    def loadQueriesFile(queriesFile: str) -> list:
         """
         This will load the queries that need to be performed against each name server.
         One hostname entry per line.
@@ -109,4 +109,4 @@ class certData:
     def __init__(self):
         """Initialize the certData class."""
         self.initialized = True
-        self.version = "0.08"
+        self.version = "0.09"

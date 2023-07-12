@@ -1,6 +1,6 @@
 # Certificate Checker
 
-Version: 0.45
+Version: 0.46
 
 Author: TheScriptGuy
 
@@ -30,7 +30,7 @@ usage: certCheck.py [-h] [--hostname HOSTNAME] [--displayCertificate] [--display
                     [--sendEmail] [--retryAmount RETRYAMOUNT] [--timeBetweenRetries TIMEBETWEENRETRIES] [--contextVariables] [--environmentVariables] [--setTag SETTAG] [--delTag] [--getTag] [--renewDeviceId]
                     [--getDeviceId] [--deleteDeviceId] [--setTenantId SETTENANTID] [--getTenantId] [--delTenantId] [--createBlankConfiguration]
 
-Certificate Checker v0.45
+Certificate Checker v0.46
 
 optional arguments:
   -h, --help            show this help message and exit
