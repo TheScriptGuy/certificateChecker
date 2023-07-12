@@ -1,7 +1,7 @@
 # Description:     Get the certificate chain from a website.
 # Author:          TheScriptGuy
-# Last modified:   2023-07-09
-# Version:         0.02
+# Last modified:   2023-07-11
+# Version:         0.03
 
 import ssl
 import socket
@@ -78,7 +78,7 @@ class getCertificateChain:
             sys.exit(1)
 
     @staticmethod
-    def getCertificate(__hostname: str, __port: int):
+    def getCertificate(__hostname: str, __port: int) -> x509.Certificate:
         """Retrieves the certificate from the website."""
         try:
             """
@@ -103,7 +103,7 @@ class getCertificateChain:
         return sslCertificate
 
     @staticmethod
-    def getCertificateFromUri(__uri: str):
+    def getCertificateFromUri(__uri: str) -> str:
         """Gets the certificate from a URI.
         By default, we're expecting to find nothing. Therefore certI = None. 
         If we find something, we'll update certI accordingly.
@@ -128,7 +128,7 @@ class getCertificateChain:
         return certI
 
     @staticmethod
-    def returnCertAKI(__sslCertificate):
+    def returnCertAKI(__sslCertificate: x509.Certificate) -> x509.extensions.Extension:
         """Returns the AKI of the certificate."""
         try:
             certAKI = __sslCertificate.extensions.get_extension_for_oid(ExtensionOID.AUTHORITY_KEY_IDENTIFIER)
@@ -155,7 +155,7 @@ class getCertificateChain:
         return certAIA
 
     @staticmethod
-    def returnCertAIAList(__sslCertificate):
+    def returnCertAIAList(__sslCertificate: x509.Certificate) -> list:
         """Returns a list of AIA's defined in __sslCertificate."""
         aiaUriList = []
 
@@ -173,7 +173,7 @@ class getCertificateChain:
         # Return the aiaUriList back to the script.
         return aiaUriList
 
-    def walkTheChain(self, __sslCertificate, __depth: int):
+    def walkTheChain(self, __sslCertificate: x509.Certificate, __depth: int):
         """
         Walk the length of the chain, fetching information from AIA 
         along the way until AKI == SKI (i.e. we've found the Root CA.

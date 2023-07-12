@@ -1,7 +1,7 @@
 # Class:          calculateStats
 # Author:         Nolan Rumble
-# Date:           2022/12/18
-# Version:        0.05
+# Date:           2023/07/11
+# Version:        0.06
 
 import datetime
 
@@ -12,7 +12,7 @@ class calculateStats:
     """This calculates statistics off the data provided."""
 
     @staticmethod
-    def convertTimeIntoHumanReadable(__seconds):
+    def convertTimeIntoHumanReadable(__seconds: int) -> str:
         """Return the remaining time left on the certificate."""
         # Get date/time since epoch based off seconds
         myDateTime = datetime.datetime.fromtimestamp(__seconds)
@@ -49,7 +49,7 @@ class calculateStats:
         # Return the human readable form string.
         return myDateTimeString
 
-    def calculateStatistics(self, __certResults):
+    def calculateStatistics(self, __certResults: dict) -> dict:
         """Returns statistics based off certificate information provided."""
         # Calculate the average utilization and query time across all tests.
         avgUtilization = float(0)
@@ -160,7 +160,7 @@ class calculateStats:
 
         return combinedStatistics
 
-    def combineData(self, __certResults, __mySystemInfo, __scriptStartTime, __scriptEndTime):
+    def combineData(self, __certResults: dict, __mySystemInfo: dict, __scriptStartTime: datetime, __scriptEndTime: datetime) -> dict:
         """Combines all the data into structured data."""
         # Convert script start/end times into string isoformat
         scriptStartTime = __scriptStartTime.isoformat()

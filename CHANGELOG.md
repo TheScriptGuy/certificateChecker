@@ -1,3 +1,8 @@
+# 2023/07/11
+## Version 0.46
+### Enhancements
+* Aligning with some python better code practices.
+
 # 2023/07/09
 ## Version 0.45
 ### Fixes
