@@ -40,16 +40,16 @@ class certificateModule:
                 "local_untrusted_allow" in __hostinfo['options']:
             hostnamePortPair = f'{__hostinfo["hostname"]}:{__hostinfo["port"]}'
             certificateHashFilename = hashlib.sha256(
-                    hostnamePortPair.encode()
-                    ).hexdigest() + ".pem"
+                hostnamePortPair.encode()
+            ).hexdigest() + ".pem"
 
             if not os.path.exists(certificateHashFilename):
                 # Try to build the chain
                 occ = getCertificateChain.getCertificateChain()
                 occ.getCertificateChain(
-                        __hostinfo['hostname'],
-                        __hostinfo['port']
-                        )
+                    __hostinfo['hostname'],
+                    __hostinfo['port']
+                )
 
             __ctx = ssl.create_default_context(cafile=certificateHashFilename)
         else:
@@ -84,9 +84,9 @@ class certificateModule:
                 # Set timeout value for socket to 10 seconds.
                 sock.settimeout(10.0)
                 with __ctx.wrap_socket(
-                        sock,
-                        server_hostname=__hostinfo['hostname']
-                        ) as s:
+                    sock,
+                    server_hostname=__hostinfo['hostname']
+                ) as s:
                     s.connect((__hostinfo['hostname'], __hostinfo['port']))
                     __certificate = s.getpeercert()
                     __cipher = s.cipher()
@@ -95,37 +95,37 @@ class certificateModule:
 
         except ssl.SSLCertVerificationError as e:
             connectHost = (
-                    f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
-                    f"options: {__hostinfo['options']}"
-                    )
+                f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
+                f"options: {__hostinfo['options']}"
+            )
             print(connectHost + ' - Certificate error - ', e.verify_message)
 
         except socket.gaierror as e:
             connectHost = (
-                    f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
-                    f"options: {__hostinfo['options']}"
-                    )
+                f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
+                f"options: {__hostinfo['options']}"
+            )
             print(connectHost + ' - Socket error - ', e.strerror)
 
         except FileNotFoundError as e:
             connectHost = (
-                    f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
-                    f"options: {__hostinfo['options']}"
-                    )
+                f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
+                f"options: {__hostinfo['options']}"
+            )
             print(connectHost + ' - File not found - ', e.strerror)
 
         except TimeoutError as e:
             connectHost = (
-                    f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
-                    f"options: {__hostinfo['options']}"
-                    )
+                f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
+                f"options: {__hostinfo['options']}"
+            )
             print(connectHost + ' - Timeout error - ', e.strerror)
 
         except OSError as e:
             connectHost = (
-                    f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
-                    f"options: {__hostinfo['options']}"
-                    )
+                f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
+                f"options: {__hostinfo['options']}"
+            )
             print(connectHost + ' - OSError - ', e.strerror)
 
         return __hostnameData
@@ -189,11 +189,11 @@ class certificateModule:
         if __certificateObject is not None:
             timeNow = datetime.datetime.utcnow().replace(microsecond=0)
             certNotAfter = datetime.datetime.strptime(
-                    self.returnNotAfter(
-                        __certificateObject["certificateMetaData"]
-                        ),
-                    self.certTimeFormat
-                    )
+                self.returnNotAfter(
+                    __certificateObject["certificateMetaData"]
+                ),
+                self.certTimeFormat
+            )
 
             __delta = relativedelta(certNotAfter, timeNow)
 
@@ -238,13 +238,14 @@ class certificateModule:
         if __certificateObject is not None:
             timeNow = datetime.datetime.utcnow().replace(microsecond=0).date()
             certNotAfter = datetime.datetime.strptime(
-                    self.returnNotAfter(__certificateObject),
-                    self.certTimeFormat
-                    ).date()
+                self.returnNotAfter(__certificateObject),
+                self.certTimeFormat
+            ).date()
+
             certNotBefore = datetime.datetime.strptime(
-                    self.returnNotBefore(__certificateObject),
-                    self.certTimeFormat
-                    ).date()
+                self.returnNotBefore(__certificateObject),
+                self.certTimeFormat
+            ).date()
 
             # Assume time not valid
             isValid = bool(certNotBefore < timeNow < certNotAfter)
@@ -346,15 +347,15 @@ class certificateModule:
         """Calculating the percentage utilization of the certificate"""
         # Convert __notBefore to datetime object
         notBeforeTime = datetime.datetime.strptime(
-                __notBefore,
-                self.certTimeFormat
-                )
+            __notBefore,
+            self.certTimeFormat
+        )
 
         # Convert __notAfter to datetime object
         notAfterTime = datetime.datetime.strptime(
-                __notAfter,
-                self.certTimeFormat
-                )
+            __notAfter,
+            self.certTimeFormat
+        )
 
         # Get the current time.
         currentTime = datetime.datetime.utcnow()
@@ -378,14 +379,15 @@ class certificateModule:
         """
         # Convert __notBefore to datetime object
         notBeforeTime = datetime.datetime.strptime(
-                __notBefore,
-                self.certTimeFormat
-                )
+            __notBefore,
+            self.certTimeFormat
+        )
+
         # Convert __notAfter to datetime object
         notAfterTime = datetime.datetime.strptime(
-                __notAfter,
-                self.certTimeFormat
-                )
+            __notAfter,
+            self.certTimeFormat
+        )
 
         # Calcualte the difference
         timeDifference = notAfterTime - notBeforeTime
@@ -411,11 +413,12 @@ class certificateModule:
 
         # Calculate queryTime between __endTime and __startTime in milliseconds
         queryTime = round(
-                float(
-                    (
-                        __endTime - __startTime
-                    ).total_seconds() * 1000
-                ), 2)
+            float(
+                (
+                    __endTime - __startTime
+                ).total_seconds() * 1000
+            ), 2
+        )
 
         myJsonCertificateInfo["hostname"] = __hostname
         myJsonCertificateInfo["port"] = int(__port)
@@ -425,7 +428,7 @@ class certificateModule:
 
         if __certificateObject["connectionCipher"] is not None:
             myJsonCertificateInfo["connectionCipher"] = \
-                    __certificateObject["connectionCipher"]
+                __certificateObject["connectionCipher"]
 
         myJsonCertificateInfo["certificateInfo"] = {}
 
@@ -436,8 +439,8 @@ class certificateModule:
             # Certificate might not have subject defined.
             if 'subject' in certKeys:
                 myJsonCertificateInfo["certificateInfo"]["subject"] = dict(
-                        x[0] for x in __certificateObject["certificateMetaData"]["subject"]
-                    )
+                    x[0] for x in __certificateObject["certificateMetaData"]["subject"]
+                )
 
             myJsonCertificateInfo["certificateInfo"]["certificateIssuer"] = dict(x[0] for x in __certificateObject["certificateMetaData"]["issuer"])
 

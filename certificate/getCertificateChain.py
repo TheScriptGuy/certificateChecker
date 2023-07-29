@@ -1,7 +1,7 @@
 # Description:     Get the certificate chain from a website.
 # Author:          TheScriptGuy
-# Last modified:   2023-07-11
-# Version:         0.03
+# Last modified:   2023-07-29
+# Version:         0.04
 
 import ssl
 import socket
@@ -23,7 +23,7 @@ class getCertificateChain:
     In some rare occassions where a website is poorly configured.
     e.g. not presenting the full certificate chain, the python's ssl fails to connect.
     This class will attempt to collect the certificate chain and store it to file for
-    later use. 
+    later use.
     """
     @staticmethod
     def loadRootCACertChain(__filename: str) -> dict:
@@ -105,14 +105,14 @@ class getCertificateChain:
     @staticmethod
     def getCertificateFromUri(__uri: str) -> str:
         """Gets the certificate from a URI.
-        By default, we're expecting to find nothing. Therefore certI = None. 
+        By default, we're expecting to find nothing. Therefore certI = None.
         If we find something, we'll update certI accordingly.
         """
         certI = None
 
         # Attempt to get the aia from __uri
         aiaRequest = requests.get(__uri)
-        
+
         # If response status code is 200
         if aiaRequest.status_code == 200:
             # Get the content and assign to aiaContent
@@ -151,7 +151,7 @@ class getCertificateChain:
 
         except x509.extensions.ExtensionNotFound:
             certAIA = None
-        
+
         return certAIA
 
     @staticmethod
@@ -175,10 +175,10 @@ class getCertificateChain:
 
     def walkTheChain(self, __sslCertificate: x509.Certificate, __depth: int):
         """
-        Walk the length of the chain, fetching information from AIA 
+        Walk the length of the chain, fetching information from AIA
         along the way until AKI == SKI (i.e. we've found the Root CA.
 
-        This is to prevent recursive loops. Usually there are only 4 certificates. 
+        This is to prevent recursive loops. Usually there are only 4 certificates.
         If the maxDepth is too small (why?) adjust it at the beginning of the script.
         """
 
@@ -196,7 +196,7 @@ class getCertificateChain:
 
             # Get the value of the SKI from certSKI
             certSKIValue = certSKI._value.digest
-            
+
             # Sometimes the AKI can be none. Lets handle this accordingly.
             if certAKIValue is not None:
                 aiaUriList = self.returnCertAIAList(__sslCertificate)
@@ -230,7 +230,7 @@ class getCertificateChain:
                             rootCACertificatePEM = caRootStore[rootCA]
                             rootCACertificate = x509.load_pem_x509_certificate(rootCACertificatePEM.encode('ascii'))
                             rootCASKI = self.returnCertSKI(rootCACertificate)
-                            rootCASKI_Value = rootCASKI._value.digest 
+                            rootCASKI_Value = rootCASKI._value.digest
                             if rootCASKI_Value == certAKIValue:
                                 rootCACN = rootCA
                                 print(f"Root CA Found - {rootCACN}")
@@ -240,7 +240,7 @@ class getCertificateChain:
                             # Apparently some Root CA's don't have a SKI?
                             pass
 
-                    if rootCACN == None:
+                    if rootCACN is None:
                         print("ERROR - Root CA NOT found.")
                         sys.exit(1)
 
@@ -281,7 +281,7 @@ class getCertificateChain:
 
         # Get the website certificate object from myHostname["hostname"]:myHostname["port"]
         __websiteCertificate = self.getCertificate(__hostname, __port)
-        
+
         if __websiteCertificate is not None:
             # Get the AIA from the __websiteCertificate object
             aia = self.returnCertAIA(__websiteCertificate)
@@ -293,7 +293,7 @@ class getCertificateChain:
                 self.certChain.append(__websiteCertificate)
 
                 # Now we walk the chain up until we get the Root CA.
-                self.walkTheChain(__websiteCertificate,1)
+                self.walkTheChain(__websiteCertificate, 1)
 
                 # Write the certificate chain to individual files.
                 self.writeChainToFile(self.certChain)
@@ -303,8 +303,7 @@ class getCertificateChain:
 
     def __init__(self):
         """Init the getCertChain class."""
-        self.classVersion = "0.02"
+        self.classVersion = "0.04"
         self.maxDepth = 4
         self.certChain = []
         self.certificateHash = ""
-
