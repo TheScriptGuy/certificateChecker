@@ -38,7 +38,7 @@ class certData:
             print('Too many redirects while accessing the URL')
             tmpData = ['URL Redirects too many']
         except requests.exceptions.ConnectionError:
-            print('Could not connect to URL - ' + fileURL + '\n')
+            print(f'Could not connect to URL - {fileURL}' + '\n')
             tmpData = ['URL connection error']
 
         return tmpData
@@ -69,7 +69,7 @@ class certData:
         if '[' in line:
             line, options = line.split('[', 1)
             # Remove the closing bracket and convert to a list
-            options = ast.literal_eval('[' + options)
+            options = ast.literal_eval(f'[{options}')
 
         # Check if port number exists
         if ':' in line:
@@ -95,14 +95,18 @@ class certData:
                 hostEntry = certData.parse_line(line)
                 queries.append(hostEntry)
 
-        elif path.exists(queriesFile) and not (queriesFile.startswith('http://') or queriesFile.startswith('https://')):
+        elif (
+            path.exists(queriesFile)
+            and not queriesFile.startswith('http://')
+            and not queriesFile.startswith('https://')
+        ):
             with open(queriesFile, "r", encoding="utf-8") as f_queryFile:
                 queryFile = f_queryFile.readlines()
                 for line in queryFile:
                     hostEntry = certData.parse_line(line)
                     queries.append(hostEntry)
         else:
-            print('I cannot get file ' + queriesFile)
+            print(f'I cannot get file {queriesFile}')
             sys.exit(1)
         return queries
 

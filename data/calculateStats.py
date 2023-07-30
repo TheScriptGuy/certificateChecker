@@ -36,18 +36,14 @@ class calculateStats:
 
         # Iterate through the myDateTime dict and formulate a list of the values.
         # If the delimeter field is 0, don't include it in final result
-        for field in myDateTime:
-            if myDateTime[field] > 1:
+        for field, value in myDateTime.items():
+            if value > 1:
                 humanReadable = f"{myDateTime[field]} {field}"
                 timeYMDHMS.append(humanReadable)
-            else:
-                if myDateTime[field] == 1:
-                    humanReadable = f"{myDateTime[field]} {field[:-1]}"
-                    timeYMDHMS.append(humanReadable)
-        myDateTimeString = ', '.join(timeYMDHMS)
-
-        # Return the human readable form string.
-        return myDateTimeString
+            elif myDateTime[field] == 1:
+                humanReadable = f"{myDateTime[field]} {field[:-1]}"
+                timeYMDHMS.append(humanReadable)
+        return ', '.join(timeYMDHMS)
 
     def calculateStatistics(self, __certResults: dict) -> dict:
         """Returns statistics based off certificate information provided."""
@@ -93,13 +89,13 @@ class calculateStats:
                 avgTemplateTimeSeconds += item["certificateTemplateTime"]
 
                 # Calculate lowest certificate template time.
-                if lowestCertificateTemplateTime > item["certificateTemplateTime"]:
-                    lowestCertificateTemplateTime = item["certificateTemplateTime"]
-
+                lowestCertificateTemplateTime = min(
+                    lowestCertificateTemplateTime, item["certificateTemplateTime"]
+                )
                 # Calculate highest certificate template time.
-                if highestCertificateTemplateTime < item["certificateTemplateTime"]:
-                    highestCertificateTemplateTime = item["certificateTemplateTime"]
-
+                highestCertificateTemplateTime = max(
+                    highestCertificateTemplateTime, item["certificateTemplateTime"]
+                )
                 caIssuerCommonName = item["certificateInfo"]["certificateIssuer"]["commonName"]
 
                 # Calculate common Certificate Authority Issuers
@@ -170,8 +166,7 @@ class calculateStats:
         # Get all the statistics for the measurements performed
         statistics = self.calculateStatistics(__certResults)
 
-        # Create the json script structure with all the meta data.
-        myData = {
+        return {
             "tenantId": __mySystemInfo.myConfigJson["myTenantId"],
             "deviceId": __mySystemInfo.myConfigJson["myDeviceId"],
             "deviceTag": __mySystemInfo.myConfigJson["myTags"],
@@ -182,21 +177,31 @@ class calculateStats:
                 "scriptEndTime": scriptEndTime,
                 "scriptExecutionTime": scriptExecutionTime,
                 "averageQueryTime": statistics["averageQueryTime"],
-                "averageCertificateUtilization": statistics["averageCertificateUtilization"],
+                "averageCertificateUtilization": statistics[
+                    "averageCertificateUtilization"
+                ],
                 "averageTemplateTime": statistics["averageTemplateTimeSeconds"],
-                "averageTemplateTimeHumanReadable": statistics["averageTemplateTimeHumanReadable"],
-                "lowestCertificateTemplateTime": statistics["lowestCertificateTemplateTime"],
-                "lowestCertificateTemplateTimeHumanReadable": statistics["lowestCertificateTemplateTimeHumanReadable"],
-                "highestCertificateTemplateTime": statistics["highestCertificateTemplateTime"],
-                "highestCertificateTemplateTimeHumanReadable": statistics["highestCertificateTemplateTimeHumanReadable"],
+                "averageTemplateTimeHumanReadable": statistics[
+                    "averageTemplateTimeHumanReadable"
+                ],
+                "lowestCertificateTemplateTime": statistics[
+                    "lowestCertificateTemplateTime"
+                ],
+                "lowestCertificateTemplateTimeHumanReadable": statistics[
+                    "lowestCertificateTemplateTimeHumanReadable"
+                ],
+                "highestCertificateTemplateTime": statistics[
+                    "highestCertificateTemplateTime"
+                ],
+                "highestCertificateTemplateTimeHumanReadable": statistics[
+                    "highestCertificateTemplateTimeHumanReadable"
+                ],
                 "commonCAIssuersCount": statistics["commonCAIssuersCount"],
                 "commonCipherInfoCount": statistics["commonCipherInfoCount"],
-                "numberofTests": statistics["numberOfTests"]
+                "numberofTests": statistics["numberOfTests"],
             },
-            "certResults": __certResults
+            "certResults": __certResults,
         }
-
-        return myData
 
     def __init__(self):
         """Initialize the calculateStats class."""

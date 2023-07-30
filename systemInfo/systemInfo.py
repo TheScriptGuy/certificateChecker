@@ -31,21 +31,15 @@ class systemInfo:
 
     def getDeviceId(self):
         """Get the uuid."""
-        __myDeviceId = ""
-        if "myDeviceId" in self.myConfigJson:
-            __myDeviceId = self.myConfigJson["myDeviceId"]
-        return __myDeviceId
+        return (
+            self.myConfigJson["myDeviceId"]
+            if "myDeviceId" in self.myConfigJson
+            else ""
+        )
 
     def getTag(self):
         """Get the tag(s)."""
-        __myTags = []
-
-        # First check to see if the myTags element is in the myConfigJson variable.
-        if "myTags" in self.myConfigJson:
-            __myTags = self.myConfigJson["myTags"]
-
-        # Return the value of __myTags
-        return __myTags
+        return self.myConfigJson["myTags"] if "myTags" in self.myConfigJson else []
 
     def setTag(self, __tagName, __writeConfig):
         """Set the tag for data aggregation purposes."""
@@ -95,10 +89,7 @@ class systemInfo:
         Returns True if it is.
         Returns False if it is not
         """
-        result = False
-        if "myTenantId" in __myConfigJson and __myConfigJson["myTenantId"] != "":
-            result = True
-        return result
+        return "myTenantId" in __myConfigJson and __myConfigJson["myTenantId"] != ""
 
     @staticmethod
     def checkMyTags(__myConfigJson):
@@ -107,8 +98,7 @@ class systemInfo:
         Returns True if it is.
         Returns False if it is not.
         """
-        result = bool("myTags" in __myConfigJson)
-        return result
+        return "myTags" in __myConfigJson
 
     @staticmethod
     def checkMyDeviceId(__myConfigJson):
@@ -117,10 +107,7 @@ class systemInfo:
         Returns True if it is.
         Returns False if is not.
         """
-        result = False
-        if "myDeviceId" in __myConfigJson and __myConfigJson["myDeviceId"] != "":
-            result = True
-        return result
+        return "myDeviceId" in __myConfigJson and __myConfigJson["myDeviceId"] != ""
 
     def checkIfTenantIdExists(self, __myConfigJson):
         """Check to see if the Tenant Id is defined."""

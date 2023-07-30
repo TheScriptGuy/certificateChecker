@@ -55,10 +55,7 @@ class emailTemplateBuilder:
             # Build the string from all of the components above with the correct formatting.
             monitoredHostsFormattedText += f"{iHostname:{filler}<{maxHostname}}{iPort:{filler}<6}{iTimeLeft:{filler}<{maxTimeLeft}}{iPercentageUtilization:{filler}<{maxPercentageUtilization}}" + "\n"
 
-        # Go through the body text message and replace the MONITOREDHOSTS field with the newly formatted hostnames and ports.
-        __newBodyText = bodyTextHeaders + monitoredHostsFormattedText
-
-        return __newBodyText
+        return bodyTextHeaders + monitoredHostsFormattedText
 
     def monitoredHostsHtml(self, __jsonData):
         """Builds out the html template for monitored hosts."""
@@ -75,9 +72,12 @@ class emailTemplateBuilder:
             iPercentageUtilization = entry["certificateInfo"]["percentageUtilization"]
 
             monitoredHostsFormattedHtml += f"<tr><td>{iHostname}</td><td>{iPort}</td><td>{iTimeLeft}</td><td>{iPercentageUtilization}</td></tr>\n"
-        __newBodyHtml = "<table>\n" + monitoredHostsFormattedHtmlHeaders + monitoredHostsFormattedHtml + "</table>\n"
-
-        return __newBodyHtml
+        return (
+            "<table>\n"
+            + monitoredHostsFormattedHtmlHeaders
+            + monitoredHostsFormattedHtml
+            + "</table>\n"
+        )
 
     def buildEmailFromTextTemplate(self, __jsonData):
         """Modifies a text file template based off the submitted hosts."""

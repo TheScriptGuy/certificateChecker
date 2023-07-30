@@ -139,9 +139,9 @@ class getCertificateChain:
     @staticmethod
     def returnCertSKI(__sslCertificate):
         """Returns the SKI of the certificate."""
-        certSKI = __sslCertificate.extensions.get_extension_for_oid(ExtensionOID.SUBJECT_KEY_IDENTIFIER)
-
-        return certSKI
+        return __sslCertificate.extensions.get_extension_for_oid(
+            ExtensionOID.SUBJECT_KEY_IDENTIFIER
+        )
 
     @staticmethod
     def returnCertAIA(__sslCertificate):
@@ -165,11 +165,12 @@ class getCertificateChain:
 
             # If the extension is x509.AuthorityInformationAccess) then lets get the caIssuers from the field.
             if isinstance(certValue, x509.AuthorityInformationAccess):
-                dataAIA = [x for x in certValue or []]
-                for item in dataAIA:
-                    if item.access_method._name == "caIssuers":
-                        aiaUriList.append(item.access_location._value)
-
+                dataAIA = list(certValue or [])
+                aiaUriList.extend(
+                    item.access_location._value
+                    for item in dataAIA
+                    if item.access_method._name == "caIssuers"
+                )
         # Return the aiaUriList back to the script.
         return aiaUriList
 
@@ -182,67 +183,64 @@ class getCertificateChain:
         If the maxDepth is too small (why?) adjust it at the beginning of the script.
         """
 
-        if __depth <= self.maxDepth:
-            # Retrive the AKI from the certificate.
-            certAKI = self.returnCertAKI(__sslCertificate)
-            # Retrieve the SKI from the certificate.
-            certSKI = self.returnCertSKI(__sslCertificate)
+        if __depth > self.maxDepth:
+            return
+        # Retrive the AKI from the certificate.
+        certAKI = self.returnCertAKI(__sslCertificate)
+        # Retrieve the SKI from the certificate.
+        certSKI = self.returnCertSKI(__sslCertificate)
 
             # Sometimes the AKI can be none. Lets handle this accordingly.
-            if certAKI is not None:
-                certAKIValue = certAKI._value.key_identifier
-            else:
-                certAKIValue = None
+        certAKIValue = certAKI._value.key_identifier if certAKI is not None else None
+        # Get the value of the SKI from certSKI
+        certSKIValue = certSKI._value.digest
 
-            # Get the value of the SKI from certSKI
-            certSKIValue = certSKI._value.digest
+        # Sometimes the AKI can be none. Lets handle this accordingly.
+        if certAKIValue is not None:
+            aiaUriList = self.returnCertAIAList(__sslCertificate)
+            if aiaUriList != []:
+                # Iterate through the aiaUriList list.
+                for item in aiaUriList:
+                    # get the certificate for the item element.
+                    nextCert = self.getCertificateFromUri(item)
 
-            # Sometimes the AKI can be none. Lets handle this accordingly.
-            if certAKIValue is not None:
-                aiaUriList = self.returnCertAIAList(__sslCertificate)
-                if aiaUriList != []:
-                    # Iterate through the aiaUriList list.
-                    for item in aiaUriList:
-                        # get the certificate for the item element.
-                        nextCert = self.getCertificateFromUri(item)
-
-                        # If the certificate is not none (great), append it to the certChain, increase the __depth and run the walkTheChain subroutine again.
-                        if nextCert is not None:
-                            self.certChain.append(nextCert)
-                            __depth += 1
-                            self.walkTheChain(nextCert, __depth)
-                        else:
-                            print("Could not retrieve certificate.")
-                            sys.exit(1)
-                else:
-                    """Now we have to go on a hunt to find the root from a standard root store."""
-                    print("Certificate didn't have AIA...ruh roh.")
-
-                    # Load the Root CA Cert Chain.
-                    caRootStore = self.loadRootCACertChain("cacert.pem")
-
-                    # Assume we cannot find a Root CA
-                    rootCACN = None
-
-                    # Iterate through the caRootStore object.
-                    for rootCA in caRootStore:
-                        try:
-                            rootCACertificatePEM = caRootStore[rootCA]
-                            rootCACertificate = x509.load_pem_x509_certificate(rootCACertificatePEM.encode('ascii'))
-                            rootCASKI = self.returnCertSKI(rootCACertificate)
-                            rootCASKI_Value = rootCASKI._value.digest
-                            if rootCASKI_Value == certAKIValue:
-                                rootCACN = rootCA
-                                print(f"Root CA Found - {rootCACN}")
-                                self.certChain.append(rootCACertificate)
-                                break
-                        except x509.extensions.ExtensionNotFound:
-                            # Apparently some Root CA's don't have a SKI?
-                            pass
-
-                    if rootCACN is None:
-                        print("ERROR - Root CA NOT found.")
+                    # If the certificate is not none (great), append it to the certChain, increase the __depth and run the walkTheChain subroutine again.
+                    if nextCert is not None:
+                        self.certChain.append(nextCert)
+                        __depth += 1
+                        self.walkTheChain(nextCert, __depth)
+                    else:
+                        print("Could not retrieve certificate.")
                         sys.exit(1)
+            else:
+                """Now we have to go on a hunt to find the root from a standard root store."""
+                print("Certificate didn't have AIA...ruh roh.")
+
+                # Load the Root CA Cert Chain.
+                caRootStore = self.loadRootCACertChain("cacert.pem")
+
+                # Assume we cannot find a Root CA
+                rootCACN = None
+
+                # Iterate through the caRootStore object.
+                for rootCA in caRootStore:
+                    try:
+                        rootCACertificatePEM = caRootStore[rootCA]
+                        rootCACertificate = x509.load_pem_x509_certificate(rootCACertificatePEM.encode('ascii'))
+                        rootCASKI = self.returnCertSKI(rootCACertificate)
+                        rootCASKI_Value = rootCASKI._value.digest
+                        if rootCASKI_Value == certAKIValue:
+                            rootCACN = rootCA
+                            print(f"Root CA Found - {rootCACN}")
+                            self.certChain.append(rootCACertificate)
+                            break
+                    except x509.extensions.ExtensionNotFound:
+                        # Apparently some Root CA's don't have a SKI?
+                        pass
+
+                if rootCACN is None:
+                    print("ERROR - Root CA NOT found.")
+                    sys.exit(1)
 
     @staticmethod
     def sendCertificateToFile(__filename: str, __sslCertificate) -> None:
@@ -261,7 +259,7 @@ class getCertificateChain:
         myCertChain.pop(0)
 
         # Iterate through all the elements in the chain.
-        for counter, certificateItem in enumerate(myCertChain):
+        for certificateItem in myCertChain:
             # Get the subject from the certificate.
             certSubject = certificateItem.subject.rfc4514_string()
 
