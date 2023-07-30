@@ -22,8 +22,7 @@ class sendDataMongoDB:
         try:
             with open(__fileName) as fileNameMongo:
                 __mongoConfig = fileNameMongo.read()
-            __mongoConfigJson = json.loads(__mongoConfig)
-            return __mongoConfigJson
+            return json.loads(__mongoConfig)
         except FileNotFoundError:
             print(f"Cannot find file {__fileName}.")
             sys.exit(1)
@@ -89,8 +88,6 @@ class sendDataMongoDB:
             # First check to see if we need to attempt to upload previous data that was not uploaded.
             previousJsonScriptData = self.getJsonScriptDataFromFile("certificateData.json")
             previousUploadResult = []
-            __uploadResult = []
-
             while len(previousJsonScriptData) > 0:
                 jsonScriptDataItem = previousJsonScriptData.pop(0)
                 previousUploadResultItem = __destCollection.insert_one(jsonScriptDataItem)
@@ -105,7 +102,7 @@ class sendDataMongoDB:
                 previousJsonScriptData = []
 
             __mongoResult = __destCollection.insert_one(__results)
-            __uploadResult.append(__mongoResult)
+            __uploadResult = [__mongoResult]
         except pymongo.errors.ServerSelectionTimeoutError:
             # Get time of error
             errTime = str(datetime.utcnow())
@@ -150,11 +147,10 @@ class sendDataMongoDB:
         # Builds the login credentials to be used.
         if __mongoUsername == "":
             __mongoLoginCredentials = ""
+        elif __mongoPassword == "":
+            __mongoLoginCredentials = __mongoUsername
         else:
-            if __mongoPassword == "":
-                __mongoLoginCredentials = __mongoUsername
-            else:
-                __mongoLoginCredentials = f"{__mongoUsername}:{__mongoPassword}"
+            __mongoLoginCredentials = f"{__mongoUsername}:{__mongoPassword}"
 
         # Check to see if __mongoUri is an IP address or not.
         if "cluster" in __destination and __destination["cluster"] is True:
@@ -174,11 +170,11 @@ class sendDataMongoDB:
         else:
             __collectionName = "certdataGlobal"
 
-        if __mongoLoginCredentials == "":
-            __mongoConnectionString = f"mongodb{__srv}://{__mongoUri}/{__tls}"
-        else:
-            __mongoConnectionString = f"mongodb{__srv}://{__mongoLoginCredentials}@{__mongoUri}/{__collectionName}{__tls}"
-        return __mongoConnectionString
+        return (
+            f"mongodb{__srv}://{__mongoUri}/{__tls}"
+            if __mongoLoginCredentials == ""
+            else f"mongodb{__srv}://{__mongoLoginCredentials}@{__mongoUri}/{__collectionName}{__tls}"
+        )
 
     def createDB(self, __destination):
         """create a destination database to upload the data to."""
@@ -233,9 +229,7 @@ class sendDataMongoDB:
             iResult["startTime"] = datetime.fromisoformat(iResult["startTime"])
             iResult["endTime"] = datetime.fromisoformat(iResult["endTime"])
 
-        uploadResult = self.sendResults(__jsonScriptData, collection)
-
-        return uploadResult
+        return self.sendResults(__jsonScriptData, collection)
 
     def __init__(self):
         """Initialize the sendDataMongoDB class."""
