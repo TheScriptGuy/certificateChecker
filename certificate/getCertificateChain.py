@@ -230,7 +230,7 @@ class getCertificateChain:
                             # Get the Subject Key Identifier (SKI) from the rootCACertificate object.
                             rootCASKI = self.returnCertSKI(rootCACertificate)
                             rootCASKI_Value = rootCASKI._value.digest
-                            
+ 
                             # Root CA is when SKI = AKI.
                             if rootCASKI_Value == certAKIValue:
                                 rootCACN = rootCA
