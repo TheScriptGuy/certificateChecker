@@ -1,7 +1,7 @@
 # Program:        Certificate Checker
 # Author:         Nolan Rumble
-# Date:           2023/07/11
-# Version:        0.46
+# Date:           2023/08/13
+# Version:        0.47
 
 import argparse
 import datetime
@@ -14,11 +14,11 @@ from systemInfo import systemInfo
 from certificate import certificateModule
 from data import calculateStats
 from data import certData
-from data import sendDataMongoDB
 from data import emailTemplateBuilder
 from data import sendDataEmail
+from mongo import mongo_connection
 
-scriptVersion = "0.46"
+scriptVersion = "0.47"
 
 # Global Variables
 args = None
@@ -30,7 +30,7 @@ o_mySystemData = None
 def parseArguments():
     """Create argument options and parse through them to determine what to do with script."""
     # Instantiate the parser
-    parser = argparse.ArgumentParser(description='Certificate Checker v' + scriptVersion)
+    parser = argparse.ArgumentParser(description=f'Certificate Checker v{scriptVersion}')
 
     # Optional arguments
     parser.add_argument('--hostname', default='',
@@ -304,7 +304,7 @@ def processQueryFile():
     if args.mongoDB:
         # Upload the data to the mongoDB, defined by mongo.cfg
         # Define the sendDataMongoDB object
-        sdMDB = sendDataMongoDB.sendDataMongoDB()
+        sdMDB = mongo_connection.mongo_connection()
         uploadResult = sdMDB.uploadDataToMongoDB(myJsonScriptData)
         uploadTime = str(datetime.datetime.utcnow())
         print(uploadTime + " - " + str(uploadResult))
@@ -373,7 +373,7 @@ def processHostname():
     if args.mongoDB:
         # Upload the data to the mongoDB, defined by mongo.cfg
         # Define the sendDataMongoDB object
-        sdMDB = sendDataMongoDB.sendDataMongoDB()
+        sdMDB = mongo_connection.mongo_connection()
         uploadResult = sdMDB.uploadDataToMongoDB(jsonScriptData)
         uploadTime = str(datetime.datetime.utcnow())
         print(uploadTime + " - " + str(uploadResult))

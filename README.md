@@ -1,6 +1,6 @@
 # Certificate Checker
 
-Version: 0.46
+Version: 0.47
 
 Author: TheScriptGuy
 
