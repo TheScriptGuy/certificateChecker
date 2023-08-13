@@ -10,10 +10,7 @@ from cryptography.x509.oid import ExtensionOID
 from cryptography.hazmat.primitives import hashes, serialization
 
 import requests
-import argparse
 import sys
-import os
-import glob
 import re
 import hashlib
 
@@ -165,7 +162,7 @@ class getCertificateChain:
 
             # If the extension is x509.AuthorityInformationAccess) then lets get the caIssuers from the field.
             if isinstance(certValue, x509.AuthorityInformationAccess):
-                dataAIA = [x for x in certValue or []]
+                dataAIA = list(certValue)
                 for item in dataAIA:
                     if item.access_method._name == "caIssuers":
                         aiaUriList.append(item.access_location._value)
