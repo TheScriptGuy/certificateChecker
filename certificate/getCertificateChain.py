@@ -191,13 +191,10 @@ class getCertificateChain:
             else:
                 certAKIValue = None
 
-            # Get the value of the SKI from certSKI
-            certSKIValue = certSKI._value.digest
-
             # Sometimes the AKI can be none. Lets handle this accordingly.
             if certAKIValue is not None:
                 aiaUriList = self.returnCertAIAList(__sslCertificate)
-                if aiaUriList != []:
+                if aiaUriList:
                     # Iterate through the aiaUriList list.
                     for item in aiaUriList:
                         # get the certificate for the item element.
@@ -224,10 +221,17 @@ class getCertificateChain:
                     # Iterate through the caRootStore object.
                     for rootCA in caRootStore:
                         try:
+                            # Get the pem encoded value from the caRootStore[rootCA] object
                             rootCACertificatePEM = caRootStore[rootCA]
+
+                            # Load the pem file into the x509 format.
                             rootCACertificate = x509.load_pem_x509_certificate(rootCACertificatePEM.encode('ascii'))
+
+                            # Get the Subject Key Identifier (SKI) from the rootCACertificate object.
                             rootCASKI = self.returnCertSKI(rootCACertificate)
                             rootCASKI_Value = rootCASKI._value.digest
+                            
+                            # Root CA is when SKI = AKI.
                             if rootCASKI_Value == certAKIValue:
                                 rootCACN = rootCA
                                 print(f"Root CA Found - {rootCACN}")
