@@ -1,3 +1,10 @@
+# 2023/08/13
+## Version 0.47
+### Enhancements
+* Making the interaction with the mongo database more modular.
+    * mongo_connection.py now handles the connectivity/upload of documents into the mongo database.
+    * mongo_data.py now handles the saving/retrieving of data in the event that the upload is unsuccessful.
+
 # 2023/07/11
 ## Version 0.46
 ### Enhancements
