@@ -5,14 +5,15 @@
 
 import ssl
 import socket
-from cryptography import x509
-from cryptography.x509.oid import ExtensionOID
-from cryptography.hazmat.primitives import hashes, serialization
-
 import requests
 import sys
 import re
 import hashlib
+
+from cryptography import x509
+from cryptography.x509.oid import ExtensionOID
+from cryptography.hazmat.primitives import hashes, serialization
+from typing import Optional
 
 
 class getCertificateChain:
@@ -23,7 +24,9 @@ class getCertificateChain:
     later use.
     """
     @staticmethod
-    def loadRootCACertChain(__filename: str) -> dict:
+    def loadRootCACertChain(
+                            __filename: str
+                            ) -> dict:
         """
         Load the Root CA Chain in a structured format.
         caRootStore = {
@@ -75,7 +78,10 @@ class getCertificateChain:
             sys.exit(1)
 
     @staticmethod
-    def getCertificate(__hostname: str, __port: int) -> x509.Certificate:
+    def getCertificate(
+                       __hostname: str,
+                       __port: int
+                        ) -> x509.Certificate:
         """Retrieves the certificate from the website."""
         try:
             """
@@ -84,10 +90,9 @@ class getCertificateChain:
             """
             sslContext = ssl._create_unverified_context()
 
-            with socket.create_connection((__hostname, __port)) as sock:
-                with sslContext.wrap_socket(sock, server_hostname=__hostname) as sslSocket:
-                    # Get the certificate from the connection, convert it to PEM format.
-                    sslCertificate = ssl.DER_cert_to_PEM_cert(sslSocket.getpeercert(True))
+            with socket.create_connection((__hostname, __port)) as sock, sslContext.wrap_socket(sock, server_hostname=__hostname) as sslSocket:
+                # Get the certificate from the connection, convert it to PEM format.
+                sslCertificate = ssl.DER_cert_to_PEM_cert(sslSocket.getpeercert(True))
 
             # Load the PEM formatted file.
             sslCertificate = x509.load_pem_x509_certificate(sslCertificate.encode('ascii'))
@@ -100,7 +105,9 @@ class getCertificateChain:
         return sslCertificate
 
     @staticmethod
-    def getCertificateFromUri(__uri: str) -> str:
+    def getCertificateFromUri(
+                              __uri: str
+                              ) -> str:
         """Gets the certificate from a URI.
         By default, we're expecting to find nothing. Therefore certI = None.
         If we find something, we'll update certI accordingly.
@@ -125,7 +132,7 @@ class getCertificateChain:
         return certI
 
     @staticmethod
-    def returnCertAKI(__sslCertificate: x509.Certificate) -> x509.extensions.Extension:
+    def returnCertAKI(__sslCertificate: x509.Certificate) -> Optional[x509.extensions.Extension]:
         """Returns the AKI of the certificate."""
         try:
             certAKI = __sslCertificate.extensions.get_extension_for_oid(ExtensionOID.AUTHORITY_KEY_IDENTIFIER)
@@ -134,14 +141,14 @@ class getCertificateChain:
         return certAKI
 
     @staticmethod
-    def returnCertSKI(__sslCertificate):
+    def returnCertSKI(__sslCertificate: x509.Certificate) -> x509.extensions.Extension:
         """Returns the SKI of the certificate."""
         certSKI = __sslCertificate.extensions.get_extension_for_oid(ExtensionOID.SUBJECT_KEY_IDENTIFIER)
 
         return certSKI
 
     @staticmethod
-    def returnCertAIA(__sslCertificate):
+    def returnCertAIA(__sslCertificate: x509.Certificate) -> Optional[x509.extensions.Extension]:
         """Returns the AIA of the certificate. If not defined, then return None."""
         try:
             certAIA = __sslCertificate.extensions.get_extension_for_oid(ExtensionOID.AUTHORITY_INFORMATION_ACCESS)
