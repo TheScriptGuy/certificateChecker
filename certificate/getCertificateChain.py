@@ -1,7 +1,7 @@
 # Description:     Get the certificate chain from a website.
 # Author:          TheScriptGuy
-# Last modified:   2023-07-29
-# Version:         0.04
+# Last modified:   2023-08-13
+# Version:         0.05
 
 import ssl
 import socket
@@ -258,10 +258,7 @@ class getCertificateChain:
         myCertChain.pop(0)
 
         # Iterate through all the elements in the chain.
-        for counter, certificateItem in enumerate(myCertChain):
-            # Get the subject from the certificate.
-            certSubject = certificateItem.subject.rfc4514_string()
-
+        for _, certificateItem in enumerate(myCertChain):
             # Generate the certificate file name
             sslCertificateFilename = f'{self.certificateHash}.pem'
 
@@ -283,9 +280,6 @@ class getCertificateChain:
             # Get the AIA from the __websiteCertificate object
             aia = self.returnCertAIA(__websiteCertificate)
             if aia is not None:
-                # Extract the AIA URI list from the __websiteCertificate object.
-                aiaUriList = self.returnCertAIAList(__websiteCertificate)
-
                 # Append the __websiteCertificate object to the certChain list.
                 self.certChain.append(__websiteCertificate)
 
@@ -300,7 +294,7 @@ class getCertificateChain:
 
     def __init__(self):
         """Init the getCertChain class."""
-        self.classVersion = "0.04"
+        self.classVersion = "0.05"
         self.maxDepth = 4
         self.certChain = []
         self.certificateHash = ""

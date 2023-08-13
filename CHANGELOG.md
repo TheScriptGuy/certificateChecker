@@ -2,6 +2,7 @@
 ## Version 0.48
 ### Fixes
 * Fixing certificate handling when setting the SSL context with the correct chain.
+* Cleaning up redundant code. Aligning code with better python practices.
 
 ## Version 0.47
 ### Enhancements
