@@ -46,7 +46,7 @@ class mongo_connection:
 
             # Create an object to allow interaction with the functions.
             mongo_data_object = mongo_data.mongo_data()
-           
+
             # First check to see if we need to attempt to upload previous data that was not uploaded.
             jsonScriptData = mongo_data_object.getJsonScriptDataFromFile("certificateData.json")
 
@@ -60,19 +60,19 @@ class mongo_connection:
 
             # Append the current __results to the jsonScriptData list.
             jsonScriptData.append(nextResult)
-          
+
             # If there is any previous data that needs to be uploaded,
             # first upload it.
             while jsonScriptData:
                 # Grab the first entry in the list.
                 jsonScriptDataItem = jsonScriptData.pop(0)
-               
+
                 # Attempt to insert this into the collection
                 previousUploadResultItem = __destCollection.insert_one(jsonScriptDataItem)
 
                 # The upload was successful, append the result to previousUploadResult
                 previousUploadResult.append(previousUploadResultItem)
-           
+
         except pymongo.errors.ServerSelectionTimeoutError:
             # Get time of error
             errTime = str(datetime.utcnow())
