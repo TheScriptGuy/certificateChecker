@@ -189,8 +189,6 @@ class getCertificateChain:
         if __depth <= self.maxDepth:
             # Retrive the AKI from the certificate.
             certAKI = self.returnCertAKI(__sslCertificate)
-            # Retrieve the SKI from the certificate.
-            certSKI = self.returnCertSKI(__sslCertificate)
 
             # Sometimes the AKI can be none. Lets handle this accordingly.
             if certAKI is not None:
