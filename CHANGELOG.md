@@ -1,4 +1,8 @@
 # 2023/08/13
+## Version 0.48
+### Fixes
+* Fixing certificate handling when setting the SSL context with the correct chain.
+
 ## Version 0.47
 ### Enhancements
 * Making the interaction with the mongo database more modular.

@@ -1,6 +1,6 @@
 # Certificate Module
-# Version: 0.18
-# Last updated: 2023-07-08
+# Version: 0.19
+# Last updated: 2023-08-13
 # Author: TheScriptGuy
 
 import ssl
@@ -10,6 +10,7 @@ import json
 import requests
 import hashlib
 import os
+import sys
 from . import getCertificateChain
 
 from dateutil.relativedelta import relativedelta
@@ -50,8 +51,13 @@ class certificateModule:
                     __hostinfo['hostname'],
                     __hostinfo['port']
                 )
-
-            __ctx = ssl.create_default_context(cafile=certificateHashFilename)
+            print(__hostinfo['hostname'])
+            # Lets try and see if we can create the right context with the hash file.
+            try:
+                __ctx = ssl.create_default_context(cafile=certificateHashFilename)
+            except ssl.SSLError:
+                print(f"An SSL error occured. Try deleting the {certificateHashFilename} file.")
+                sys.exit(1)
         else:
             # Create the default context.
             __ctx = ssl.create_default_context()
