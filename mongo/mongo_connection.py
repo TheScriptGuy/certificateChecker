@@ -18,7 +18,9 @@ class mongo_connection:
     """mongo_connection class"""
 
     @staticmethod
-    def loadConfigurationFile(__fileName="mongo.cfg"):
+    def loadConfigurationFile(
+            __fileName="mongo.cfg"
+            ) -> dict:
         """Loads the json formatted configuration file."""
         try:
             with open(__fileName) as fileNameMongo:
@@ -35,7 +37,10 @@ class mongo_connection:
             print(f"{e} - Error occured.")
             sys.exit(1)
 
-    def sendResults(self, __results, __destCollection):
+    def sendResults(self,
+                    __results: dict,
+                    __destCollection: pymongo.collection.Collection
+                    ) -> list:
         """upload the __results to __destCollection mongodb object."""
         try:
             # Initialize the variables
@@ -96,7 +101,9 @@ class mongo_connection:
         return previousUploadResult
 
     @staticmethod
-    def connectionString(__destination):
+    def connectionString(
+            __destination: dict
+            ) -> str:
         """Define the connection string to be used to connect to a MongoDB."""
         # The bare minimum for the URI string is having a hostname/IP address to connect to.
         # If this is blank, make sure we exit.
@@ -149,7 +156,9 @@ class mongo_connection:
             __mongoConnectionString = f"mongodb{__srv}://{__mongoLoginCredentials}@{__mongoUri}/{__collectionName}{__tls}"
         return __mongoConnectionString
 
-    def createDB(self, __destination):
+    def createDB(self,
+                 __destination: dict
+                 ) -> pymongo.database.Database:
         """create a destination database to upload the data to."""
         # Defaults to certificateDataDB if not defined.
         if "databaseName" in __destination:
@@ -170,7 +179,10 @@ class mongo_connection:
 
         return __mongoClient[__mongoDatabase]
 
-    def createCollection(self, __mongoConnection, __mongoConfiguration):
+    def createCollection(self,
+                         __mongoConnection: pymongo.database.Database,
+                         __mongoConfiguration: dict
+                         ) -> pymongo.collection.Collection:
         """create a collection within the DB."""
         # First check to see see if collectionName is defined in mongo.cfg
         if "collectionName" in __mongoConfiguration:
@@ -182,8 +194,13 @@ class mongo_connection:
 
         return __mongoConnection[__collectionName]
 
-    def uploadDataToMongoDB(self, __jsonScriptData):
-        """Upload the data to MongoDB"""
+    def uploadDataToMongoDB(self,
+                            __jsonScriptData: dict
+                            ) -> list:
+        """
+        Upload the data to MongoDB.
+        If successful, return the uploadResult in list type.
+        """
         # Load the configuration file (mongo.cfg)
         mongoConnectJson = self.loadConfigurationFile()
 
@@ -202,8 +219,10 @@ class mongo_connection:
             iResult["startTime"] = datetime.fromisoformat(iResult["startTime"])
             iResult["endTime"] = datetime.fromisoformat(iResult["endTime"])
 
+        # Send the results of __jsonScriptData into the collection
         uploadResult = self.sendResults(__jsonScriptData, collection)
 
+        # Return the uploadResult list.
         return uploadResult
 
     def __init__(self):
