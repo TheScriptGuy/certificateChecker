@@ -18,7 +18,7 @@ from dateutil.relativedelta import relativedelta
 
 class certificateModule:
     """certificateModule class"""
-    
+
     @staticmethod
     def getContextVariables() -> dict:
         """Get the variables from the contextVariables.json"""
