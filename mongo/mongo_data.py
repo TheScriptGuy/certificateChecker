@@ -58,10 +58,8 @@ class mongo_data:
             # Open the certificateData.json file for read-only mode.
             with open(__fileName, "r") as fileJsonScriptData:
                 while True:
-                    """
-                    Keep reading lines until we reach the end of the file.
-                    Strip the \n character from the end of the line.
-                    """
+                    # Keep reading lines until we reach the end of the file.
+                    # Strip the \n character from the end of the line.
                     fileLine = fileJsonScriptData.readline().replace("\n", "")
                     if not fileLine:
                         # We reached the end of the file, exit out of the loop

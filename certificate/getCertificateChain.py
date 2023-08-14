@@ -210,7 +210,7 @@ class getCertificateChain:
                             print("Could not retrieve certificate.")
                             sys.exit(1)
                 else:
-                    """Now we have to go on a hunt to find the root from a standard root store."""
+                    # Now we have to go on a hunt to find the root from a standard root store.
                     print("Certificate didn't have AIA...ruh roh.")
 
                     # Load the Root CA Cert Chain.
