@@ -329,7 +329,8 @@ class certificateModule:
         else:
             print("No certificate info to display!")
 
-    def printCertInfoJSON(self, __certificateObject) -> None:
+    @staticmethod
+    def printCertInfoJSON(__certificateObject) -> None:
         """Print the certificate information in JSON format."""
         if __certificateObject is not None:
             jsonCertInfoFormat = json.dumps(__certificateObject)
