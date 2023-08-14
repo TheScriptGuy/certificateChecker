@@ -57,6 +57,7 @@ class certData:
 
     @staticmethod
     def parse_line(line: str) -> dict:
+        """Create a collection of connection information based off the line string."""
         # Default values
         hostname = ''
         port = 443
