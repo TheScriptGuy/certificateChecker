@@ -23,6 +23,7 @@ class getCertificateChain:
     This class will attempt to collect the certificate chain and store it to file for
     later use.
     """
+
     @staticmethod
     def loadRootCACertChain(
                             __filename: str
