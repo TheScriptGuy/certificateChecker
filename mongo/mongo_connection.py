@@ -37,8 +37,8 @@ class mongo_connection:
             print(f"{e} - Error occured.")
             sys.exit(1)
 
-    def sendResults(self,
-                    __results: dict,
+    @staticmethod
+    def sendResults(__results: dict,
                     __destCollection: pymongo.collection.Collection
                     ) -> list:
         """upload the __results to __destCollection mongodb object."""
@@ -179,8 +179,8 @@ class mongo_connection:
 
         return __mongoClient[__mongoDatabase]
 
-    def createCollection(self,
-                         __mongoConnection: pymongo.database.Database,
+    @staticmethod
+    def createCollection(__mongoConnection: pymongo.database.Database,
                          __mongoConfiguration: dict
                          ) -> pymongo.collection.Collection:
         """create a collection within the DB."""
