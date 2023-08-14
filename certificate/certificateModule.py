@@ -37,7 +37,6 @@ class certificateModule:
 
     def getCertificate(self, __hostinfo: dict) -> dict:
         """Connect to the host and get the certificate."""
-
         # Determine which context to create
         if __hostinfo['options'] is not None and \
                 "local_untrusted_allow" in __hostinfo['options']:

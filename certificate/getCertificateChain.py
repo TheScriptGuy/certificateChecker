@@ -181,7 +181,6 @@ class getCertificateChain:
         This is to prevent recursive loops. Usually there are only 4 certificates.
         If the maxDepth is too small (why?) adjust it at the beginning of the script.
         """
-
         if __depth <= self.maxDepth:
             # Retrive the AKI from the certificate.
             certAKI = self.returnCertAKI(__sslCertificate)
@@ -272,7 +271,6 @@ class getCertificateChain:
 
     def getCertificateChain(self, __hostname: str, __port: int):
         """Get Certificate Chain."""
-
         # Create the hash for the __hostname:__port pair
         hostnamePort = f"{__hostname}:{__port}"
 
