@@ -49,13 +49,11 @@ class getCertificateChain:
                         break
 
                     if re.search("^\={5,}", currentLine):
-                        """
-                        This is where the Root CA certificate file begins.
-                        Iterate through all the lines between
-                        -----BEGIN CERTIFICATE-----
-                        ...
-                        -----END CERTIFICATE-----
-                        """
+                        # This is where the Root CA certificate file begins.
+                        # Iterate through all the lines between
+                        # -----BEGIN CERTIFICATE-----
+                        # ...
+                        # -----END CERTIFICATE-----
                         rootCACert = ""
                         rootCAName = previousLine.strip()
 
@@ -84,10 +82,8 @@ class getCertificateChain:
                         ) -> x509.Certificate:
         """Retrieves the certificate from the website."""
         try:
-            """
-            Create the SSL context.
-            We will ignore any certificate warnings for this process.
-            """
+            # Create the SSL context.
+            # We will ignore any certificate warnings for this process.
             sslContext = ssl._create_unverified_context()
 
             with socket.create_connection((__hostname, __port)) as sock, sslContext.wrap_socket(sock, server_hostname=__hostname) as sslSocket:
