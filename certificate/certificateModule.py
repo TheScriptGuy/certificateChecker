@@ -22,17 +22,18 @@ class certificateModule:
     @staticmethod
     def getContextVariables() -> dict:
         """Get the variables from the contextVariables.json"""
-        try:
-            # Assume contextVariables is empty.
-            contextVariables = None
+        # Assume contextVariables is empty.
+        contextVariables = None
 
+        try:
             # Attempt to load the contextVariables.json file.
             with open('contextVariables.json') as fContextVariables:
                 contextVariables = json.load(fContextVariables)
 
-            return contextVariables
         except FileNotFoundError:
             print('I could not find contextVariables.json')
+
+        return contextVariables
 
     def getCertificate(self, __hostinfo: dict) -> dict:
         """Connect to the host and get the certificate."""
