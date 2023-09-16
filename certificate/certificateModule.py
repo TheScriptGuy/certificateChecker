@@ -179,19 +179,6 @@ class certificateModule:
             certResult = "Invalid certificate"
         return certResult
 
-    def certificateValid(self, __certificateObject) -> None:
-        """
-        Currently not in use.
-        Check to see if the certificate is valid (Time, Recovation, Issuer)
-        """
-        if __certificateObject is not None:
-            if self.checkTimeValidity(__certificateObject) and \
-                    self.checkRevocation(__certificateObject) and \
-                    self.checkIssuer(__certificateObject):
-                print("Certificate good!")
-            else:
-                print("Certificate invalid!")
-
     def calculateCertificateUtilization(self, __notBefore: datetime, __notAfter: datetime) -> float:
         """Calculating the percentage utilization of the certificate"""
         # Convert __notBefore to datetime object
