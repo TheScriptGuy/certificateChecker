@@ -1,3 +1,8 @@
+# 2023/09/15
+## Version 0.49
+### Enhancements
+* Removing some unnecessary code.
+
 # 2023/08/13
 ## Version 0.48
 ### Fixes
