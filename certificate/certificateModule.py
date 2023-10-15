@@ -1,6 +1,6 @@
 # Certificate Module
-# Version:                 0.20
-# Last updated:            2023-09-15
+# Version:                 0.22
+# Last updated:            2023-10-14
 # Author:                  TheScriptGuy
 
 import ssl
@@ -85,6 +85,9 @@ class certificateModule:
             "connectionCipher": None,
         }
 
+        # Lets get a timestamp for this attempt
+        timeNow = datetime.datetime.utcnow().replace(microsecond=0)
+
         try:
             # Create a new socket.
             with socket.socket() as sock:
@@ -105,35 +108,35 @@ class certificateModule:
                 f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
                 f"options: {__hostinfo['options']}"
             )
-            print(connectHost + ' - Certificate error - ', e.verify_message)
+            print(str(timeNow) + ' - ' + connectHost + ' - Certificate error - ', e.verify_message)
 
         except socket.gaierror as e:
             connectHost = (
                 f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
                 f"options: {__hostinfo['options']}"
             )
-            print(connectHost + ' - Socket error - ', e.strerror)
+            print(str(timeNow) + ' - ' + connectHost + ' - Socket error - ', e.strerror)
 
         except FileNotFoundError as e:
             connectHost = (
                 f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
                 f"options: {__hostinfo['options']}"
             )
-            print(connectHost + ' - File not found - ', e.strerror)
+            print(str(timeNow) + ' - ' + connectHost + ' - File not found - ', e.strerror)
 
         except TimeoutError as e:
             connectHost = (
                 f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
                 f"options: {__hostinfo['options']}"
             )
-            print(connectHost + ' - Timeout error - ', e.strerror)
+            print(str(timeNow) + ' - ' + connectHost + ' - Timeout error - ', e.strerror)
 
         except OSError as e:
             connectHost = (
                 f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
                 f"options: {__hostinfo['options']}"
             )
-            print(connectHost + ' - OSError - ', e.strerror)
+            print(str(timeNow) + ' - ' + connectHost + ' - OSError - ', e.strerror)
 
         return __hostnameData
 
@@ -513,7 +516,7 @@ class certificateModule:
     def __init__(self, __contextVariables=0):
         """Initialize the class."""
         self.initialized = True
-        self.moduleVersion = "0.18"
+        self.moduleVersion = "0.22"
         self.certificate = {}
         if __contextVariables == 1:
             self.contextVariables = self.getContextVariables()
