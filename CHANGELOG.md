@@ -1,3 +1,8 @@
+# 2023/10/14
+## Version 0.50
+### Fixes
+* Fixing bug introduced with version's 0.49 and 0.48
+
 # 2023/09/15
 ## Version 0.49
 ### Enhancements
