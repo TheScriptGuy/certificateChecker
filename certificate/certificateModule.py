@@ -52,7 +52,7 @@ class certificateModule:
                     __hostinfo['hostname'],
                     __hostinfo['port']
                 )
- 
+
             # Lets try and see if we can create the right context with the hash file.
             try:
                 __ctx = ssl.create_default_context(cafile=certificateHashFilename)
@@ -186,7 +186,7 @@ class certificateModule:
         if __certificateObject is not None:
             return __certificateObject['notBefore']
         return ""
-    
+
     @staticmethod
     def checkIssuer(__certificateObject) -> bool:
         """Check to see if issuers are trusted."""
