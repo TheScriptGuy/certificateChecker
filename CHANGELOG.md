@@ -1,4 +1,8 @@
 # 2023/10/14
+## Version 0.51
+### Fixes
+* [Timeout errors do not indicate the time](https://github.com/TheScriptGuy/certificateChecker/issues/23)
+
 ## Version 0.50
 ### Fixes
 * Fixing bug introduced with version's 0.49 and 0.48
