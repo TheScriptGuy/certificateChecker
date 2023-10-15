@@ -39,7 +39,7 @@ class certificateModule:
         """Connect to the host and get the certificate."""
         # Determine which context to create
         if __hostinfo['options'] is not None and \
-                "local_untrusted_allow" in __hostinfo['options']:
+                    "local_untrusted_allow" in __hostinfo['options']:
             hostnamePortPair = f'{__hostinfo["hostname"]}:{__hostinfo["port"]}'
             certificateHashFilename = hashlib.sha256(
                 hostnamePortPair.encode()
@@ -52,7 +52,7 @@ class certificateModule:
                     __hostinfo['hostname'],
                     __hostinfo['port']
                 )
-            
+
             # Lets try and see if we can create the right context with the hash file.
             try:
                 __ctx = ssl.create_default_context(cafile=certificateHashFilename)
@@ -108,35 +108,38 @@ class certificateModule:
                 f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
                 f"options: {__hostinfo['options']}"
             )
-            print(str(timeNow) + ' - ' + connectHost + ' - Certificate error - ', e.verify_message)
+            print(
+                f'{str(timeNow)} - {connectHost} - Certificate error - ',
+                e.verify_message,
+            )
 
         except socket.gaierror as e:
             connectHost = (
                 f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
                 f"options: {__hostinfo['options']}"
             )
-            print(str(timeNow) + ' - ' + connectHost + ' - Socket error - ', e.strerror)
+            print(f'{str(timeNow)} - {connectHost} - Socket error - ', e.strerror)
 
         except FileNotFoundError as e:
             connectHost = (
                 f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
                 f"options: {__hostinfo['options']}"
             )
-            print(str(timeNow) + ' - ' + connectHost + ' - File not found - ', e.strerror)
+            print(f'{str(timeNow)} - {connectHost} - File not found - ', e.strerror)
 
         except TimeoutError as e:
             connectHost = (
                 f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
                 f"options: {__hostinfo['options']}"
             )
-            print(str(timeNow) + ' - ' + connectHost + ' - Timeout error - ', e.strerror)
+            print(f'{str(timeNow)} - {connectHost} - Timeout error - ', e.strerror)
 
         except OSError as e:
             connectHost = (
                 f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
                 f"options: {__hostinfo['options']}"
             )
-            print(str(timeNow) + ' - ' + connectHost + ' - OSError - ', e.strerror)
+            print(f'{str(timeNow)} - {connectHost} - OSError - ', e.strerror)
 
         return __hostnameData
 
@@ -151,11 +154,10 @@ class certificateModule:
     @staticmethod
     def printSubjectAltName(__certificateObject) -> None:
         """Print the Subject Alternate Name(s) of the certificate."""
-        __subjectAltName = []
-
-        for field, value in __certificateObject['subjectAltName']:
-            __subjectAltName.append({field: value})
-
+        __subjectAltName = [
+            {field: value}
+            for field, value in __certificateObject['subjectAltName']
+        ]
         print("Subject Alt Name: ", __subjectAltName)
 
     @staticmethod
@@ -183,9 +185,7 @@ class certificateModule:
     @staticmethod
     def returnNotBefore(__certificateObject) -> None:
         """Return the notBefore field from the certificate."""
-        if __certificateObject is not None:
-            return __certificateObject['notBefore']
-        return ""
+        return "" if __certificateObject is None else __certificateObject['notBefore']
     @staticmethod
     def checkIssuer(__certificateObject) -> bool:
         """Check to see if issuers are trusted."""
@@ -214,29 +214,22 @@ class certificateModule:
                 self.certTimeFormat
             ).date()
 
-            # Assume time not valid
-            isValid = bool(certNotBefore < timeNow < certNotAfter)
-
-            return isValid
+            return certNotBefore < timeNow < certNotAfter
         return False
 
     @staticmethod
     def printOCSP(__certificateObject) -> None:
         """Print the OCSP field of the certificate."""
         if __certificateObject is not None:
-            __OCSPList = []
-            for value in __certificateObject['OCSP']:
-                __OCSPList.append(value)
+            __OCSPList = list(__certificateObject['OCSP'])
             print("OCSP: ", __OCSPList)
 
     @staticmethod
     def printCRLDistributionPoints(__certificateObject) -> None:
         """Print the CRL distribution points of the certificate."""
         if __certificateObject is not None:
-            __CRLList = []
             if 'crlDistributionPoints' in __certificateObject:
-                for value in __certificateObject['crlDistributionPoints']:
-                    __CRLList.append(value)
+                __CRLList = list(__certificateObject['crlDistributionPoints'])
                 print("CRL: ", __CRLList)
 
     @staticmethod
@@ -281,7 +274,6 @@ class certificateModule:
         """Print the certificate information in JSON format."""
         if __certificateObject is not None:
             jsonCertInfoFormat = json.dumps(__certificateObject)
-            print(jsonCertInfoFormat)
         else:
             jsonCertInfoFormat = {
                 "subject": {"None": "None"},
@@ -296,51 +288,47 @@ class certificateModule:
                 "caIssuers": "None",
                 "subjectAltName": {"None": "None"}
             }
-            print(jsonCertInfoFormat)
+
+        print(jsonCertInfoFormat)
 
 
 
     @staticmethod
     def returnNotAfter(__certificateObject) -> None:
         """Return the notAfter field from the certificate."""
-        if __certificateObject is not None:
-            return __certificateObject['notAfter']
-        return ""
+        return "" if __certificateObject is None else __certificateObject['notAfter']
 
     def howMuchTimeLeft(self, __certificateObject) -> None:
         """Return the remaining time left on the certificate."""
-        if __certificateObject is not None:
-            timeNow = datetime.datetime.utcnow().replace(microsecond=0)
-            certNotAfter = datetime.datetime.strptime(
-                self.returnNotAfter(
-                    __certificateObject["certificateMetaData"]
-                ),
-                self.certTimeFormat
-            )
+        if __certificateObject is None:
+            return "Invalid certificate"
+        timeNow = datetime.datetime.utcnow().replace(microsecond=0)
+        certNotAfter = datetime.datetime.strptime(
+            self.returnNotAfter(
+                __certificateObject["certificateMetaData"]
+            ),
+            self.certTimeFormat
+        )
 
-            __delta = relativedelta(certNotAfter, timeNow)
+        __delta = relativedelta(certNotAfter, timeNow)
 
-            myDeltaDate = {
-                'years': __delta.years,
-                'months': __delta.months,
-                'days': __delta.days,
-                'hours': __delta.hours,
-                'minutes': __delta.minutes,
-                'seconds': __delta.seconds,
-            }
-            timeLeft = []
+        myDeltaDate = {
+            'years': __delta.years,
+            'months': __delta.months,
+            'days': __delta.days,
+            'hours': __delta.hours,
+            'minutes': __delta.minutes,
+            'seconds': __delta.seconds,
+        }
+        timeLeft = []
 
-            for field in myDeltaDate:
-                if myDeltaDate[field] > 1:
-                    timeLeft.append(f"{myDeltaDate[field]} {field}")
-                else:
-                    if myDeltaDate[field] == 1:
-                        timeLeft.append(f"{myDeltaDate[field]} {field[:-1]}")
+        for field, value in myDeltaDate.items():
+            if value > 1:
+                timeLeft.append(f"{myDeltaDate[field]} {field}")
+            elif myDeltaDate[field] == 1:
+                timeLeft.append(f"{myDeltaDate[field]} {field[:-1]}")
 
-            certResult = ', '.join(timeLeft)
-        else:
-            certResult = "Invalid certificate"
-        return certResult
+        return ', '.join(timeLeft)
 
     def calculateCertificateUtilization(self, __notBefore: datetime, __notAfter: datetime) -> float:
         """Calculating the percentage utilization of the certificate"""
@@ -391,10 +379,7 @@ class certificateModule:
         # Calcualte the difference
         timeDifference = notAfterTime - notBeforeTime
 
-        # Get the number of seconds from the calculation above
-        timeDifferenceInSeconds = int(timeDifference.total_seconds())
-
-        return timeDifferenceInSeconds
+        return int(timeDifference.total_seconds())
 
     def convertCertificateObject2Json(
             self,
@@ -405,8 +390,6 @@ class certificateModule:
             __certificateObject: dict
             ) -> dict:
         """Convert the certificate object into JSON format."""
-        myJsonCertificateInfo = {}
-
         startTime = __startTime.isoformat()
         endTime = __endTime.isoformat()
 
@@ -419,15 +402,16 @@ class certificateModule:
             ), 2
         )
 
-        myJsonCertificateInfo["hostname"] = __hostname
-        myJsonCertificateInfo["port"] = int(__port)
-        myJsonCertificateInfo["startTime"] = startTime
-        myJsonCertificateInfo["endTime"] = endTime
-        myJsonCertificateInfo["queryTime"] = queryTime
-
+        myJsonCertificateInfo = {
+            "hostname": __hostname,
+            "port": __port,
+            "startTime": startTime,
+            "endTime": endTime,
+            "queryTime": queryTime,
+        }
         if __certificateObject["connectionCipher"] is not None:
             myJsonCertificateInfo["connectionCipher"] = \
-                __certificateObject["connectionCipher"]
+                    __certificateObject["connectionCipher"]
 
         myJsonCertificateInfo["certificateInfo"] = {}
 
@@ -460,13 +444,8 @@ class certificateModule:
 
             # Initialize subjectAltName
             myJsonCertificateInfo["certificateInfo"]["subjectAltName"] = {}
-            # Keep track of how many entries there are
-            subjectAltNameCounter = 0
-
-            for field, value in __certificateObject["certificateMetaData"]["subjectAltName"]:
+            for subjectAltNameCounter, (field, value) in enumerate(__certificateObject["certificateMetaData"]["subjectAltName"]):
                 myJsonCertificateInfo["certificateInfo"]["subjectAltName"].update({field + str(subjectAltNameCounter): value})
-                subjectAltNameCounter += 1
-
             # Time left on certificate
             myJsonCertificateInfo["timeLeft"] = self.howMuchTimeLeft(__certificateObject)
 

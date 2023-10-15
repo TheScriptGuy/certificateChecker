@@ -194,10 +194,9 @@ def gatherData(__certResults, __mySystemInfo, __scriptStartTime, __scriptEndTime
     """
     myDetails = calculateStats.calculateStats()
 
-    # Create the json script structure with all the meta data.
-    myData = myDetails.combineData(__certResults, __mySystemInfo, __scriptStartTime, __scriptEndTime)
-
-    return myData
+    return myDetails.combineData(
+        __certResults, __mySystemInfo, __scriptStartTime, __scriptEndTime
+    )
 
 
 def checkArguments(__myCertificate, __jsonCertificateInfo):
@@ -307,7 +306,7 @@ def processQueryFile():
         sdMDB = mongo_connection.mongo_connection()
         uploadResult = sdMDB.uploadDataToMongoDB(myJsonScriptData)
         uploadTime = str(datetime.datetime.utcnow())
-        print(uploadTime + " - " + str(uploadResult))
+        print(f"{uploadTime} - {str(uploadResult)}")
 
     if args.sendEmail:
         # Send an email with the results.
@@ -318,11 +317,7 @@ def processHostname():
     """This will attempt to connect to the hostname defined by the --hostname argument."""
     # Define initial certificate object
 
-    if args.contextVariables:
-        contextVariables = 1
-    else:
-        contextVariables = 0
-
+    contextVariables = 1 if args.contextVariables else 0
     o_myCertificate = certificateModule.certificateModule(contextVariables)
     o_myCertData = certData.certData()
 
@@ -376,7 +371,7 @@ def processHostname():
         sdMDB = mongo_connection.mongo_connection()
         uploadResult = sdMDB.uploadDataToMongoDB(jsonScriptData)
         uploadTime = str(datetime.datetime.utcnow())
-        print(uploadTime + " - " + str(uploadResult))
+        print(f"{uploadTime} - {str(uploadResult)}")
 
     if args.sendEmail:
         # Send an email with the results.
