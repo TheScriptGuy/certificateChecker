@@ -1,6 +1,6 @@
 # Certificate Module
-# Version:                 0.20
-# Last updated:            2023-09-15
+# Version:                 0.22
+# Last updated:            2023-10-14
 # Author:                  TheScriptGuy
 
 import ssl
@@ -85,10 +85,10 @@ class certificateModule:
             "connectionCipher": None,
         }
 
-        try:
-            # Lets get a timestamp for this attempt
-            timeNow = datetime.datetime.utcnow().replace(microsecond=0)
+       # Lets get a timestamp for this attempt
+       timeNow = datetime.datetime.utcnow().replace(microsecond=0)
 
+       try:
             # Create a new socket.
             with socket.socket() as sock:
                 # Set timeout value for socket to 10 seconds.
@@ -516,7 +516,7 @@ class certificateModule:
     def __init__(self, __contextVariables=0):
         """Initialize the class."""
         self.initialized = True
-        self.moduleVersion = "0.18"
+        self.moduleVersion = "0.22"
         self.certificate = {}
         if __contextVariables == 1:
             self.contextVariables = self.getContextVariables()
