@@ -1,4 +1,8 @@
 # 2023/10/14
+## Version 0.52
+### Fixes
+* Refactoring older strings to use f-strings.
+
 ## Version 0.51
 ### Fixes
 * [Timeout errors do not indicate the time](https://github.com/TheScriptGuy/certificateChecker/issues/23)

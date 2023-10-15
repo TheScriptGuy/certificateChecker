@@ -1,7 +1,7 @@
 # Description:        Certificate Data Handling
 # Author:             TheScriptGuy
-# Version:            0.09
-# Last modified:      2023/07/11
+# Version:            0.10
+# Last modified:      2023/10/14
 
 import sys
 from os import path
@@ -38,7 +38,7 @@ class certData:
             print('Too many redirects while accessing the URL')
             tmpData = ['URL Redirects too many']
         except requests.exceptions.ConnectionError:
-            print('Could not connect to URL - ' + fileURL + '\n')
+            print(f'Could not connect to URL - {fileURL}\n')
             tmpData = ['URL connection error']
 
         return tmpData
@@ -103,11 +103,11 @@ class certData:
                     hostEntry = certData.parse_line(line)
                     queries.append(hostEntry)
         else:
-            print('I cannot get file ' + queriesFile)
+            print(f'I cannot get file {queriesFile}')
             sys.exit(1)
         return queries
 
     def __init__(self):
         """Initialize the certData class."""
         self.initialized = True
-        self.version = "0.09"
+        self.version = "0.10"

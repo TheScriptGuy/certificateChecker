@@ -1,7 +1,7 @@
 # Program:        Certificate Checker
 # Author:         Nolan Rumble
 # Date:           2023/10/14
-# Version:        0.51
+# Version:        0.52
 
 import argparse
 import datetime
@@ -18,7 +18,7 @@ from data import emailTemplateBuilder
 from data import sendDataEmail
 from mongo import mongo_connection
 
-scriptVersion = "0.51"
+scriptVersion = "0.52"
 
 # Global Variables
 args = None
@@ -307,7 +307,7 @@ def processQueryFile():
         sdMDB = mongo_connection.mongo_connection()
         uploadResult = sdMDB.uploadDataToMongoDB(myJsonScriptData)
         uploadTime = str(datetime.datetime.utcnow())
-        print(uploadTime + " - " + str(uploadResult))
+        print(f'{uploadTime} - {uploadResult}')
 
     if args.sendEmail:
         # Send an email with the results.
@@ -376,7 +376,7 @@ def processHostname():
         sdMDB = mongo_connection.mongo_connection()
         uploadResult = sdMDB.uploadDataToMongoDB(jsonScriptData)
         uploadTime = str(datetime.datetime.utcnow())
-        print(uploadTime + " - " + str(uploadResult))
+        print(f'{uploadTime} - {uploadResult}')
 
     if args.sendEmail:
         # Send an email with the results.
