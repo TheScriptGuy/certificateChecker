@@ -1,5 +1,5 @@
 # Certificate Module
-# Version:                 0.22
+# Version:                 0.23
 # Last updated:            2023-10-14
 # Author:                  TheScriptGuy
 
@@ -108,35 +108,35 @@ class certificateModule:
                 f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
                 f"options: {__hostinfo['options']}"
             )
-            print(str(timeNow) + ' - ' + connectHost + ' - Certificate error - ', e.verify_message)
+            print(f'{timeNow} - {connectHost} - Certificate error - {e.verify_message}')
 
         except socket.gaierror as e:
             connectHost = (
                 f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
                 f"options: {__hostinfo['options']}"
             )
-            print(str(timeNow) + ' - ' + connectHost + ' - Socket error - ', e.strerror)
+            print(f'{timeNow} - {connectHost} - Socket error - {e.strerror}')
 
         except FileNotFoundError as e:
             connectHost = (
                 f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
                 f"options: {__hostinfo['options']}"
             )
-            print(str(timeNow) + ' - ' + connectHost + ' - File not found - ', e.strerror)
+            print(f'{timeNow} - {connectHost} - File not found - {e.strerror}')
 
         except TimeoutError as e:
             connectHost = (
                 f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
                 f"options: {__hostinfo['options']}"
             )
-            print(str(timeNow) + ' - ' + connectHost + ' - Timeout error - ', e.strerror)
+            print(f'{timeNow} - {connectHost} - Timeout error - {e.strerror}')
 
         except OSError as e:
             connectHost = (
                 f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
                 f"options: {__hostinfo['options']}"
             )
-            print(str(timeNow) + ' - ' + connectHost + ' - OSError - ', e.strerror)
+            print(f'{timeNow} - {connectHost} - OSError - {e.strerror}')
 
         return __hostnameData
 
@@ -516,7 +516,7 @@ class certificateModule:
     def __init__(self, __contextVariables=0):
         """Initialize the class."""
         self.initialized = True
-        self.moduleVersion = "0.22"
+        self.moduleVersion = "0.23"
         self.certificate = {}
         if __contextVariables == 1:
             self.contextVariables = self.getContextVariables()
