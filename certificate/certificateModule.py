@@ -85,10 +85,10 @@ class certificateModule:
             "connectionCipher": None,
         }
 
-       # Lets get a timestamp for this attempt
-       timeNow = datetime.datetime.utcnow().replace(microsecond=0)
+        # Lets get a timestamp for this attempt
+        timeNow = datetime.datetime.utcnow().replace(microsecond=0)
 
-       try:
+        try:
             # Create a new socket.
             with socket.socket() as sock:
                 # Set timeout value for socket to 10 seconds.
