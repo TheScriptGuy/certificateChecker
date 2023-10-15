@@ -86,6 +86,9 @@ class certificateModule:
         }
 
         try:
+            # Lets get a timestamp for this attempt
+            timeNow = datetime.datetime.utcnow().replace(microsecond=0)
+
             # Create a new socket.
             with socket.socket() as sock:
                 # Set timeout value for socket to 10 seconds.
@@ -105,35 +108,35 @@ class certificateModule:
                 f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
                 f"options: {__hostinfo['options']}"
             )
-            print(connectHost + ' - Certificate error - ', e.verify_message)
+            print(str(timeNow) + ' - ' + connectHost + ' - Certificate error - ', e.verify_message)
 
         except socket.gaierror as e:
             connectHost = (
                 f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
                 f"options: {__hostinfo['options']}"
             )
-            print(connectHost + ' - Socket error - ', e.strerror)
+            print(str(timeNow) + ' - ' + connectHost + ' - Socket error - ', e.strerror)
 
         except FileNotFoundError as e:
             connectHost = (
                 f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
                 f"options: {__hostinfo['options']}"
             )
-            print(connectHost + ' - File not found - ', e.strerror)
+            print(str(timeNow) + ' - ' + connectHost + ' - File not found - ', e.strerror)
 
         except TimeoutError as e:
             connectHost = (
                 f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
                 f"options: {__hostinfo['options']}"
             )
-            print(connectHost + ' - Timeout error - ', e.strerror)
+            print(str(timeNow) + ' - ' + connectHost + ' - Timeout error - ', e.strerror)
 
         except OSError as e:
             connectHost = (
                 f"{__hostinfo['hostname']}:{__hostinfo['port']}, "
                 f"options: {__hostinfo['options']}"
             )
-            print(connectHost + ' - OSError - ', e.strerror)
+            print(str(timeNow) + ' - ' + connectHost + ' - OSError - ', e.strerror)
 
         return __hostnameData
 
