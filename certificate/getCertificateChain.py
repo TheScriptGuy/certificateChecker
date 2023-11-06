@@ -1,7 +1,7 @@
 # Description:     Get the certificate chain from a website.
 # Author:          TheScriptGuy
-# Last modified:   2023-08-13
-# Version:         0.05
+# Last modified:   2023-11-05
+# Version:         0.06
 
 import ssl
 import socket
@@ -86,8 +86,7 @@ class getCertificateChain:
             # Create the SSL context.
             # We will ignore any certificate warnings for this process.
             sslContext = ssl._create_unverified_context()
-            sslContext.options &= ~ssl.OP_NO_RENEGOTIATION
-
+            sslContext.options |= 0x4  # OP_LEGACY_SERVER_CONNECT
             with socket.create_connection((__hostname, __port)) as sock, sslContext.wrap_socket(sock, server_hostname=__hostname) as sslSocket:
                 # Get the certificate from the connection, convert it to PEM format.
                 sslCertificate = ssl.DER_cert_to_PEM_cert(sslSocket.getpeercert(True))
@@ -98,6 +97,8 @@ class getCertificateChain:
         except ConnectionRefusedError:
             print(f"Connection refused to {__hostname}:{__port}")
             sys.exit(1)
+        except ssl.SSLError as e:
+            print(f"SSL Error - {e}")
 
         # Return the sslCertificate object.
         return sslCertificate
@@ -299,7 +300,7 @@ class getCertificateChain:
 
     def __init__(self):
         """Init the getCertChain class."""
-        self.classVersion = "0.05"
+        self.classVersion = "0.06"
         self.maxDepth = 4
         self.certChain = []
         self.certificateHash = ""

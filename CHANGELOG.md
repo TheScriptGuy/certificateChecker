@@ -1,3 +1,7 @@
+# 2023/11/05
+## Version 0.53
+* Fixed an issue with the mechanism behind getting the SSL certificate chain.
+
 # 2023/10/14
 ## Version 0.52
 ### Fixes
