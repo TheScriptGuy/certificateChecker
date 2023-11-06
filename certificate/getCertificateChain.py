@@ -86,6 +86,7 @@ class getCertificateChain:
             # Create the SSL context.
             # We will ignore any certificate warnings for this process.
             sslContext = ssl._create_unverified_context()
+            sslContext.options &= ~ssl.OP_NO_RENEGOTIATION
 
             with socket.create_connection((__hostname, __port)) as sock, sslContext.wrap_socket(sock, server_hostname=__hostname) as sslSocket:
                 # Get the certificate from the connection, convert it to PEM format.
