@@ -1,7 +1,7 @@
 # Class:            mongo_connection
-# Last updated:     2023/08/13
+# Last updated:     2023/12/16
 # Author:           TheScriptGuy (https://github.com/TheScriptGuy)
-# Version:          0.01
+# Version:          0.02
 # Description:      Create a mongo Connection from mongo.cfg
 
 import pymongo
@@ -144,16 +144,16 @@ class mongo_connection:
         else:
             __tls = ""
 
-        # Get the collection name. If it's empty, use the default.
-        if "collectionName" in __destination and __destination["collectionName"] != "":
-            __collectionName = __destination["collectionName"]
+        # Get the database name. If it's empty, use the default.
+        if "databaseName" in __destination and __destination["databaseName"] != "":
+            __databaseName = __destination["databaseName"]
         else:
-            __collectionName = "certdataGlobal"
+            __databaseName = "certdataGlobal"
 
         if __mongoLoginCredentials == "":
             __mongoConnectionString = f"mongodb{__srv}://{__mongoUri}/{__tls}"
         else:
-            __mongoConnectionString = f"mongodb{__srv}://{__mongoLoginCredentials}@{__mongoUri}/{__collectionName}{__tls}"
+            __mongoConnectionString = f"mongodb{__srv}://{__mongoLoginCredentials}@{__mongoUri}/{__databaseName}{__tls}"
         return __mongoConnectionString
 
     def createDB(self,
@@ -228,4 +228,4 @@ class mongo_connection:
     def __init__(self):
         """Initialize the mongo_collection class."""
         self.initialized = True
-        self.version = "0.01"
+        self.version = "0.02"
