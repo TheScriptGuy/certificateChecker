@@ -1,3 +1,7 @@
+# 2023/12/16
+## Version 0.54
+* Fixed a bug in the Mongo Connection String builder. Referred to collectionName rather than databaseName
+
 # 2023/11/05
 ## Version 0.53
 * Fixed an issue with the mechanism behind getting the SSL certificate chain.
