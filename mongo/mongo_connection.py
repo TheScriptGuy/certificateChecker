@@ -1,18 +1,18 @@
 # Class:            mongo_connection
-# Last updated:     2023/12/16
+# Last updated:     2023/12/20
 # Author:           TheScriptGuy (https://github.com/TheScriptGuy)
-# Version:          0.02
+# Version:          0.03
 # Description:      Create a mongo Connection from mongo.cfg
 
-import pymongo
-from pymongo import MongoClient
 import json
 import sys
 import os
-from . import mongo_data
+import pymongo
+from pymongo import MongoClient
 from datetime import datetime
 from bson.objectid import ObjectId
-
+from . import mongo_data
+from . import MongoDBKeyTransformer
 
 class mongo_connection:
     """mongo_connection class"""
@@ -219,8 +219,13 @@ class mongo_connection:
             iResult["startTime"] = datetime.fromisoformat(iResult["startTime"])
             iResult["endTime"] = datetime.fromisoformat(iResult["endTime"])
 
+        # MongoDB does not like periods or dollar signs in the key.
+        # Convert any periods in the keys of the json to a unique format.
+        transformer = MongoDBKeyTransformer.MongoDBKeyTransformer()
+        jsonScriptData = transformer.encode_document(jsonScriptData)
+
         # Send the results of __jsonScriptData into the collection
-        uploadResult = self.sendResults(__jsonScriptData, collection)
+        uploadResult = self.sendResults(jsonScriptData, collection)
 
         # Return the uploadResult list.
         return uploadResult
@@ -228,4 +233,4 @@ class mongo_connection:
     def __init__(self):
         """Initialize the mongo_collection class."""
         self.initialized = True
-        self.version = "0.02"
+        self.version = "0.03"

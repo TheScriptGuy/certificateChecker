@@ -1,7 +1,7 @@
 # Class:          calculateStats
 # Author:         Nolan Rumble
-# Date:           2023/07/11
-# Version:        0.06
+# Date:           2023/12/17
+# Version:        0.07
 
 import datetime
 
@@ -88,19 +88,19 @@ class calculateStats:
         }
         for item in __certResults:
             if item["certificateInfo"]["version"] != 0:
-                avgUtilization += item["percentageUtilization"]
-                avgQueryTime += item["queryTime"]
-                avgTemplateTimeSeconds += item["certificateTemplateTime"]
+                avgUtilization += item.get("percentageUtilization", 0)
+                avgQueryTime += item.get("queryTime", 0)
+                avgTemplateTimeSeconds += item.get("certificateTemplateTime", 0)
 
                 # Calculate lowest certificate template time.
-                if lowestCertificateTemplateTime > item["certificateTemplateTime"]:
-                    lowestCertificateTemplateTime = item["certificateTemplateTime"]
+                if lowestCertificateTemplateTime > item.get("certificateTemplateTime"):
+                    lowestCertificateTemplateTime = item.get("certificateTemplateTime")
 
                 # Calculate highest certificate template time.
-                if highestCertificateTemplateTime < item["certificateTemplateTime"]:
-                    highestCertificateTemplateTime = item["certificateTemplateTime"]
-
-                caIssuerCommonName = item["certificateInfo"]["certificateIssuer"]["commonName"]
+                if highestCertificateTemplateTime < item.get("certificateTemplateTime"):
+                    highestCertificateTemplateTime = item.get("certificateTemplateTime")
+                
+                caIssuerCommonName = item.get("certificateInfo").get("certificateIssuer").get("commonName")
 
                 # Calculate common Certificate Authority Issuers
                 if caIssuerCommonName in commonCAIssuers:
@@ -181,17 +181,17 @@ class calculateStats:
                 "scriptStartTime": scriptStartTime,
                 "scriptEndTime": scriptEndTime,
                 "scriptExecutionTime": scriptExecutionTime,
-                "averageQueryTime": statistics["averageQueryTime"],
-                "averageCertificateUtilization": statistics["averageCertificateUtilization"],
-                "averageTemplateTime": statistics["averageTemplateTimeSeconds"],
-                "averageTemplateTimeHumanReadable": statistics["averageTemplateTimeHumanReadable"],
-                "lowestCertificateTemplateTime": statistics["lowestCertificateTemplateTime"],
-                "lowestCertificateTemplateTimeHumanReadable": statistics["lowestCertificateTemplateTimeHumanReadable"],
-                "highestCertificateTemplateTime": statistics["highestCertificateTemplateTime"],
-                "highestCertificateTemplateTimeHumanReadable": statistics["highestCertificateTemplateTimeHumanReadable"],
-                "commonCAIssuersCount": statistics["commonCAIssuersCount"],
-                "commonCipherInfoCount": statistics["commonCipherInfoCount"],
-                "numberofTests": statistics["numberOfTests"]
+                "averageQueryTime": statistics.get("averageQueryTime"),
+                "averageCertificateUtilization": statistics.get("averageCertificateUtilization"),
+                "averageTemplateTime": statistics.get("averageTemplateTimeSeconds"),
+                "averageTemplateTimeHumanReadable": statistics.get("averageTemplateTimeHumanReadable"),
+                "lowestCertificateTemplateTime": statistics.get("lowestCertificateTemplateTime"),
+                "lowestCertificateTemplateTimeHumanReadable": statistics.get("lowestCertificateTemplateTimeHumanReadable"),
+                "highestCertificateTemplateTime": statistics.get("highestCertificateTemplateTime"),
+                "highestCertificateTemplateTimeHumanReadable": statistics.get("highestCertificateTemplateTimeHumanReadable"),
+                "commonCAIssuersCount": statistics.get("commonCAIssuersCount"),
+                "commonCipherInfoCount": statistics.get("commonCipherInfoCount"),
+                "numberofTests": statistics.get("numberOfTests")
             },
             "certResults": __certResults
         }
@@ -201,5 +201,5 @@ class calculateStats:
     def __init__(self):
         """Initialize the calculateStats class."""
         self.initialized = True
-        self.version = "0.05"
+        self.version = "0.06"
         self.dataFormatVersion = 20

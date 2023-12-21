@@ -1,7 +1,7 @@
 # Program:        Certificate Checker
 # Author:         Nolan Rumble
-# Date:           2023/12/16
-# Version:        0.54
+# Date:           2023/12/20
+# Version:        0.56
 
 import argparse
 import datetime
@@ -18,7 +18,7 @@ from data import emailTemplateBuilder
 from data import sendDataEmail
 from mongo import mongo_connection
 
-scriptVersion = "0.54"
+scriptVersion = "0.56"
 
 # Global Variables
 args = None
@@ -128,7 +128,7 @@ def defineInfoArguments(o_systemInfo):
     # If setTag argument is set, create the new Tag.
     if args.setTag:
         o_systemInfo.setTag(args.setTag, True)
-        print('New tag set.')
+        print(f'New tag set - {args.setTag}')
         sys.exit(0)
 
     # If getTag is set, it will grab the value in tag.cfg file.

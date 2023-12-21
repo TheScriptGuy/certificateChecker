@@ -1,5 +1,18 @@
+# 2023/12/22
+## Version 0.56
+### Enhancements :rocket:
+* Adding feature enhancement for listing the tags that were set.
+
+### Fixes :wrench:
+* Mongo documents do not allow the period character to appear (reserved) in document keys. Added a key converter class that will change the '.' character to `__dot__`
+
 # 2023/12/16
+## Version 0.55
+### Enhancements :rocket:
+* Added features for context handling at a global level.
+
 ## Version 0.54
+### Fixes :wrench:
 * Fixed a bug in the Mongo Connection String builder. Referred to collectionName rather than databaseName
 
 # 2023/11/05
@@ -8,113 +21,113 @@
 
 # 2023/10/14
 ## Version 0.52
-### Fixes
+### Fixes :wrench:
 * Refactoring older strings to use f-strings.
 
 ## Version 0.51
-### Fixes
+### Fixes :wrench:
 * [Timeout errors do not indicate the time](https://github.com/TheScriptGuy/certificateChecker/issues/23)
 
 ## Version 0.50
-### Fixes
+### Fixes :wrench:
 * Fixing bug introduced with version's 0.49 and 0.48
 
 # 2023/09/15
 ## Version 0.49
-### Enhancements
+### Enhancements :rocket:
 * Removing some unnecessary code.
 
 # 2023/08/13
 ## Version 0.48
-### Fixes
+### Fixes :wrench:
 * Fixing certificate handling when setting the SSL context with the correct chain.
 * Cleaning up redundant code. Aligning code with better python practices.
 
 ## Version 0.47
-### Enhancements
+### Enhancements :rocket:
 * Making the interaction with the mongo database more modular.
     * mongo_connection.py now handles the connectivity/upload of documents into the mongo database.
     * mongo_data.py now handles the saving/retrieving of data in the event that the upload is unsuccessful.
 
 # 2023/07/11
 ## Version 0.46
-### Enhancements
+### Enhancements :rocket:
 * Aligning with some python better code practices.
 
 # 2023/07/09
 ## Version 0.45
-### Fixes
+### Fixes :wrench:
 * Fixed a minor bug with the certificate chain retrieval.
 
 # 2023/07/08
 ## Version 0.44
-### Fixes
+### Fixes :wrench:
 * [traceback untrusted issuer](https://github.com/TheScriptGuy/certificateChecker/issues/19).
 
 # 2023/06/24
 ## Version 0.43
-### Enhancements
+### Enhancements :rocket:
 * [Socket timeout value](https://github.com/TheScriptGuy/certificateChecker/issues/17).
 
 # 2023/05/31
 ## Version 0.42
-### Fixes
+### Fixes :wrench:
 * A left over print statement from the previous build.
 
 # 2023/05/22
 ## Version 0.41
-### Feature Additions/Enhancements
+### Feature Additions/Enhancements :rocket:
 * Add the ability to ignore ssl warnings on a host by host basis. See examples here - [Example of queryFile structure](https://github.com/TheScriptGuy/certificateChecker/blob/main/README-queryFile.md)
 
 ## Version 0.40
-### Feature Additions/Enhancements
+### Feature Additions/Enhancements :rocket:
 * Adding the ability to use unsafe legacy method of connection. See examples here - [Example of queryFile structure](https://github.com/TheScriptGuy/certificateChecker/blob/main/README-queryFile.md)
 
 ## Version 0.39
-### Fixes
+### Fixes :wrench:
 * [MongoDB bugfix](https://github.com/TheScriptGuy/certificateChecker/issues/15)
 
 # 2023/04/15
 ## Version 0.38
-### Feature additions
+### Feature additions :dizzy:
 * [Allow environment variables usage](https://github.com/TheScriptGuy/certificateChecker/issues/13)
 
 ## Version 0.37
-### Feature additions
+### Feature additions :dizzy:
 * [Adding time to output when error occurs](https://github.com/TheScriptGuy/certificateChecker/issues/11)
 
 # 2023/03/25
 ## Version 0.36
-### Feature additions
+### Feature additions :dizzy:
 * [MongoDB enhancement](https://github.com/TheScriptGuy/certificateChecker/issues/9)
 
 # 2023/02/05
 ## Version 0.35
-### Feature additions
+### Feature additions :dizzy:
 * Added the ability to load the context flags from contextVariables.json file.
 
 # 2022/12/04
 ## Version 0.34
-### Additions
+### Additions :dizzy:
 * Added the ability to retry attempts if a connection fails.
     * `--retryAttempts x`, where x is the number of attempts. Defaults to 1 attempt.
     * `--timeBetweenRetries y` where y is the number of seconds between attempts. Defaults to 1 second.
 
-### Fixes
+### Fixes :wrench:
 * Fixed an error when calculating statistics for a single host that didn't exist.
 
 # 2022/10/26
 ## Version 0.33
-### Changes
+### Enhancements :rocket: 
 * When using --mongoDB argument, the output will include the timestamp of the result being uploaded.
 
 ## Version 0.32
-### Fixes
+### Fixes :wrench:
 * Resolving [issue](https://github.com/TheScriptGuy/certificateChecker/issues/6)
 
 # 2022/10/23
 ## Version 0.31
-### Changes
+### Enhancements :rocket:
 * updated dataFormatVersion to 20:
     * added new fields - `lowestTemplateTime`, `lowestTemplateTimeHumanReadable`, `highestTemplateTime`, `highestTemplateTimeHumanReadable`
     * added Certificate Authority Common Name count field - `commonCAIssuersCount`
@@ -170,13 +183,13 @@
 
 # 2022/07/22
 ## Version 0.30
-### Changes
+### Enhancements :rocket:
 * improved MongoDB connection string handling.
 * improved MongoDB error handling.
 
 # 2022/07/17
 ## Version 0.30
-### Changes
+### Enhancements :rocket:
 * Updated dataFormatVersion to 19: 
     * to reflect a new structure for the statistics (`queryStatistics`) from all the test results,
     * moved the `scriptStartTime`, `scriptEndTime`, `scriptExecutionTime`, `averageQueryTime`, `averageCertificateTemplateTime` under the `queryStatistics` field,
@@ -202,57 +215,57 @@
 
 # 2022/07/16
 ## Version 0.29
-### Changes
+### Enhancements :rocket:
 * Updated dataFormatVersion to 17 to reflect the time delta in seconds between the notBefore and notAfter times.
 
 ## Version 0.28
-### Changes
+### Enhancements :rocket:
 * Updated dataFormatVersion to 16 to reflect 1 new field for cipher suites used in connection.
 
 # 2022/07/10
 ## Version 0.27
-### Changes
+### Enhancements :rocket:
 * Updated dataFormatVersion to 15 to reflect 2 new fields for average utilization of certificates (`averageCertificateUtilization`) and average query time (`averageQueryTime`). 
 
 # 2022/07/04
 ## Version 0.26
-### Fixes
+### Fixes :wrench:
 * Fixed minor bug with sendDataMongoDB.py to reference collectionNames from mongo.cfg correctly.
 
 # 2022/07/02
 ## Version 0.26
-### Changes
+### Enhancements :rocket:
 * Changed dataFormatVersion to 14 to include script execution time. 
 
-### Fixes
+### Fixes :wrench:
 * Fixed a bug with the creation of the the --createConfigurationFile option.
 
 ## Version 0.25
-### Changes
+### Enhancements :rocket:
 * Changed dataFormatVersion to 13 to include script start and end times for improved data searchability.
 
 # 2022/07/01
 ## Version 0.24
-### Changes
+### Enhancements :rocket:
 * Changed dataFormatVersion to 12 to reflect minor change to `startTime` and `endTime` formats to datetime objects for easier searching in Mongo.
 
 ## Version 0.23
-### Changes
+### Enhancements :rocket:
 * Changed dataFormatVersion to 11 to reflect date/time changes for `startTime` and `endTime` fields to comply with `ISO8601 format`.
 * Changed all references to `now()` to reference `utcnow()`
 
 # 2022/06/28
 ## Version 0.22
-### Changes
+### Enhancements :rocket:
 * Changed dataFormatVersion to 10 to reflect minor change to `percentageUtilization` and `queryTime` field from str() to float() and rounded float value to 2 decimal places.
 
 # 2022/06/26
 ## Version 0.21
-### Changes
+### Enhancements :rocket:
 * Changed dataFormatVersion to 9 to reflect new data format. The `percentageUtilization` and `timeLeft` fields have moved up one level in the data structure.
 
 ## Version 0.20
-### Changes
+### Enhancements :rocket:
 * Changed dataFormatVersion to 8 to reflect `queryTime` change from seconds to milliseconds.
 
 ## Version 0.19
@@ -261,7 +274,7 @@
 * Added the --getTenantId, --setTenantId, --delTenantId arguments.
 * Added the --createBlankConfiguration option to create a new configuration file.
 
-### Changes
+### Enhancements :rocket:
 * Changed the arguments:
     * `--renewUuid`, now called `--renewDeviceId` 
     * `--getUuid`, now called `--getDeviceId`
@@ -286,30 +299,30 @@
 
 # 2022/06/14
 ## Version 0.17
-### Changes
+### Enhancements :rocket:
 * Updated dataFormatVersion to 6. This is to address a new feature. The certResults field has changed to a list.
 
 ## Version 0.16
 ### Additions
 * Add ability for tagging a device with multiple tags. See README.md for to apply.
 
-### Changes
+### Enhancements :rocket:
 * Updated the dataFormatVersion to reflect the new multiple tag options.
 
 # 2022/05/25
 ## Version 0.15
-### Fixes
+### Fixes :wrench:
 * Fixed a logic flaw with the --displayCertificateJSON and --queryFile argument.
 
 ### Additions
 * Added a percentage utilization of the certificate time frame.
 
-### Changes
+### Enhancements :rocket:
 * Updated the dataFormatVersion to reflect the new version format with the new `percentageUtilization` field.
 
 # 2022/05/24
 ## Version 0.14
-### Changes
+### Enhancements :rocket:
 * Changed the logic of how the MongoDB feature works. Moved the entries to the sendDataMongoDB.py file.
 
 # 2022/05/16
@@ -319,47 +332,47 @@
 
 # 2022/04/15
 ## Version 0.12
-### Fixes
+### Fixes :wrench:
 * Aligning code with best practices.
 * Fixing logic with displaying the amount of time left until certificate expires.
 
 ## Version 0.11
-### Fixes
+### Fixes :wrench:
 * Insert None values for a hostname that doesn't have a valid certificate into the Json output.
 * Fixed bug with --hostname argument and not having the the port defined
 
 ## Version 0.10
-### Fixes
+### Fixes :wrench:
 * Fixed a bug with the --hostname argument and the amount of keyword arguments that needed to be used.
 
-### Changes
+### Enhancements :rocket:
 * Added the ability to do a custom port with the --hostname argument. For example, `--hostname example.com` assumes you want to connect on TCP port 443. The entry `--hostname example.com:1234` connections to example.com on TCP port 1234.
 
 ## Version 0.09
-### Changes
+### Enhancements :rocket:
 * Added ability to query a custom port. Script will by default connect on port 443, but you can append a port number in the --queryFile reference (the file that it's iterating through) with a :port_number. e.g. example.com:443
 
 ## Version 0.08
-### Changes
+### Enhancements :rocket:
 * Added queryFile option. Allows the querying of multiple hostnames in a single file on filesystem or downloading it from a HTTP/HTTPS link.
 * Updated JSON format to reflect new data version due to multiple certificates that can now appear in structure.
 * Updated the display output of `howMuchTimeLeft` function to also show the commonName of the certificate.
 
 # 2022/04/10
-### Changes
+### Enhancements :rocket:
 * Adding comments to certificateModule and a version number.
 
 # 2022/04/03
 ## Version 0.07
-### Changes
+### Enhancements :rocket:
 * Added ability to post the results of the certificate check and system data where query is performed from (in JSON format) to a specific URL via HTTP post method.
 
 ## Version 0.06 
-### Bugfixes
+### Fixes :wrench:
 * Added some error handling for when a host doesn't exist.
 * displayTimeLeft was not showing how much time was left for the certificate.
 
-### Changes
+### Enhancements :rocket:
 * Added device UUID generation.
 * Added ability to regenerate device UUID if necessary
 * Added ability to add/remove tags for data aggregation purposes.

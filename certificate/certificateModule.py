@@ -1,6 +1,6 @@
 # Certificate Module
-# Version:                 0.23
-# Last updated:            2023-10-14
+# Version:                 0.25
+# Last updated:            2023-12-17
 # Author:                  TheScriptGuy
 
 import ssl
@@ -12,6 +12,7 @@ import hashlib
 import os
 import sys
 from . import getCertificateChain
+from . import CertificateDecoder
 
 from dateutil.relativedelta import relativedelta
 
@@ -62,7 +63,7 @@ class certificateModule:
         else:
             # Create the default context.
             __ctx = ssl.create_default_context()
-
+            
         # Check to see if there are any options that need to be
         # passed for the connection
         if __hostinfo['options'] is not None:
@@ -74,10 +75,24 @@ class certificateModule:
 
         # If there are any global options that need to be set.
         if self.contextVariables is not None:
-            # If securityLevel is set
-            if self.contextVariables["securityLevel"] == 1:
-                # Lower the default security level
-                __ctx.set_ciphers('DEFAULT@SECLEVEL=1')
+            if self.contextVariables.get("insecure") != 1:
+                # If security_level is set
+                if self.contextVariables.get("security_level") == 1:
+                    # Lower the default security level
+                    __ctx.set_ciphers('DEFAULT@SECLEVEL=1')
+            
+                # Check to see if local_untrusted_certificates should be allowed
+                if self.contextVariables.get("local_untrusted_allow") == 1:
+                    __ctx.check_hostname = False
+                    __ctx.verify_mode = ssl.CERT_OPTIONAL
+
+                # Check to see if unsafe_legacy is defined
+                if self.contextVariables.get("unsafe_legacy") == 1:
+                    __ctx.options |= 0x4 # OP_LEGACY_SERVER_CONNECT
+
+            else:
+                __ctx.check_hostname = False
+                __ctx.verify_mode = ssl.CERT_NONE
 
         # Initialize the __hostnameData object.
         __hostnameData = {
@@ -98,7 +113,13 @@ class certificateModule:
                     server_hostname=__hostinfo['hostname']
                 ) as s:
                     s.connect((__hostinfo['hostname'], __hostinfo['port']))
-                    __certificate = s.getpeercert()
+                    if self.contextVariables.get("insecure") != 1:
+                        __certificate = s.getpeercert()
+                    else:
+                        __binary_certificate = s.getpeercert(binary_form=True)
+                        _certdecoder = CertificateDecoder.CertificateDecoder()
+                        __certificate = _certdecoder.decode(__binary_certificate)
+ 
                     __cipher = s.cipher()
                     __hostnameData["certificateMetaData"] = __certificate
                     __hostnameData["connectionCipher"] = __cipher
@@ -439,7 +460,6 @@ class certificateModule:
                 myJsonCertificateInfo["certificateInfo"]["subject"] = dict(
                     x[0] for x in __certificateObject["certificateMetaData"]["subject"]
                 )
-
             myJsonCertificateInfo["certificateInfo"]["certificateIssuer"] = dict(x[0] for x in __certificateObject["certificateMetaData"]["issuer"])
 
             myJsonCertificateInfo["certificateInfo"]["version"] = __certificateObject["certificateMetaData"]["version"]
@@ -462,9 +482,10 @@ class certificateModule:
             # Keep track of how many entries there are
             subjectAltNameCounter = 0
 
-            for field, value in __certificateObject["certificateMetaData"]["subjectAltName"]:
-                myJsonCertificateInfo["certificateInfo"]["subjectAltName"].update({field + str(subjectAltNameCounter): value})
-                subjectAltNameCounter += 1
+            if __certificateObject["certificateMetaData"]["subjectAltName"]:
+                for field, value in __certificateObject["certificateMetaData"]["subjectAltName"]:
+                    myJsonCertificateInfo["certificateInfo"]["subjectAltName"].update({field + str(subjectAltNameCounter): value})
+                    subjectAltNameCounter += 1
 
             # Time left on certificate
             myJsonCertificateInfo["timeLeft"] = self.howMuchTimeLeft(__certificateObject)
@@ -515,8 +536,9 @@ class certificateModule:
     def __init__(self, __contextVariables=0):
         """Initialize the class."""
         self.initialized = True
-        self.moduleVersion = "0.23"
+        self.moduleVersion = "0.24"
         self.certificate = {}
+
         if __contextVariables == 1:
             self.contextVariables = self.getContextVariables()
         else:
