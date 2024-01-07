@@ -1,7 +1,7 @@
 # Program:        Certificate Checker
 # Author:         Nolan Rumble
-# Date:           2023/12/20
-# Version:        0.56
+# Date:           2024/01/06
+# Version:        0.57
 
 import argparse
 import datetime
@@ -12,13 +12,14 @@ import os
 
 from systemInfo import systemInfo
 from certificate import certificateModule
+from certificate import DisplayCertificate
 from data import calculateStats
 from data import certData
 from data import emailTemplateBuilder
 from data import sendDataEmail
 from mongo import mongo_connection
 
-scriptVersion = "0.56"
+scriptVersion = "0.57"
 
 # Global Variables
 args = None
@@ -35,6 +36,12 @@ def parseArguments():
     # Optional arguments
     parser.add_argument('--hostname', default='',
                         help='Hostname to get certificate from')
+
+    parser.add_argument('--save_certificate', action='store_true',
+                        help='Save the certificate to file.')
+
+    parser.add_argument('--output_directory', default='certificate_directory',
+                        help='Save the file to the certificate directory. Will create directory if it does not exist. Defaults to certificate_directory')
 
     parser.add_argument('--displayCertificate', action='store_true',
                         help='Display certificate info')
@@ -204,16 +211,20 @@ def checkArguments(__myCertificate, __jsonCertificateInfo):
     """This will see how the data needs to be displayed to stdout."""
     if args.displayCertificateJSON:
         # Display the certificate JSON structure
-        o_myCertificate.printCertInfoJSON(__jsonCertificateInfo)
+        print_cert_object = DisplayCertificate.DisplayCertificate()
+        print_cert_object.printCertInfoJSON(__jsonCertificateInfo)
 
     if __myCertificate is not None:
         if args.displayCertificate:
-            o_myCertificate.printCertInfo(__myCertificate)
+            print_cert_object = DisplayCertificate.DisplayCertificate()
+            print_cert_object.printCertInfo(__myCertificate["certificateMetaData"])
 
         if args.displayTimeLeft:
             # Display the remaining time left on the certificate being queried.
-            o_myCertificate.printSubject(__myCertificate)
-            print(" ", o_myCertificate.howMuchTimeLeft(__myCertificate))
+            print_cert_object = DisplayCertificate.DisplayCertificate()
+
+            #print_cert_object.printSubject(__myCertificate["certificateMetaData"])
+            print(f"{print_cert_object.howMuchTimeLeft(__myCertificate)}")
 
 
 def emailSendResults(__myJsonScriptData):
@@ -253,15 +264,19 @@ def processQueryFile():
     scriptStartTime = datetime.datetime.utcnow()
 
     for myHostname in myCertData.loadQueriesFile(args.queryFile):
-        # Set contectVariables to zero
-        contextVariables = 0
+        ## Set contectVariables to zero
+        #contextVariables = 0
 
-        # Check to see if contextVariables argument was passed.
-        if args.contextVariables:
-            contextVariables = 1
+        ## Check to see if contextVariables argument was passed.
+        #if args.contextVariables:
+        #    contextVariables = 1
 
         # Define initial certificate object
-        o_myCertificate = certificateModule.certificateModule(contextVariables)
+        o_myCertificate = certificateModule.certificateModule(
+                contextVariables=args.contextVariables,
+                save_certificate=args.save_certificate,
+                output_directory=args.output_directory
+                )
 
         # For SSL performance measurement - START
         o_startTime = datetime.datetime.utcnow()
@@ -270,7 +285,7 @@ def processQueryFile():
         for _ in range(int(args.retryAmount)):
             # Connect to the hostname from the queryFile argument and get the certificate associated with it.
             myCertificate = o_myCertificate.getCertificate(myHostname)
-
+            
             if myCertificate["certificateMetaData"] is None:
                 # If unable to connect to host for whatever reason, pause for a second then try again.
                 time.sleep(int(args.timeBetweenRetries))
@@ -318,12 +333,12 @@ def processHostname():
     """This will attempt to connect to the hostname defined by the --hostname argument."""
     # Define initial certificate object
 
-    if args.contextVariables:
-        contextVariables = 1
-    else:
-        contextVariables = 0
+    o_myCertificate = certificateModule.certificateModule(
+            contextVariables=args.contextVariables,
+            save_certificate=args.save_certificate,
+            output_directory=args.output_directory 
+            )
 
-    o_myCertificate = certificateModule.certificateModule(contextVariables)
     o_myCertData = certData.certData()
 
     # For SSL performance measurement - START
@@ -336,6 +351,7 @@ def processHostname():
     for _ in range(int(args.retryAmount)):
         # Connect to the hostname from the queryFile argument and get the certificate associated with it.
         myCertificate = o_myCertificate.getCertificate(hostnameQuery)
+
         if myCertificate["certificateMetaData"] is None:
             # If unable to connect to host for whatever reason, pause for a second then try again.
             time.sleep(int(args.timeBetweenRetries))
@@ -349,17 +365,20 @@ def processHostname():
     # Append system data to JSON certificate structure
     jsonScriptData = gatherData([jsonCertificateInfo], o_myInfo, o_startTime, o_endTime)
 
+    # Create a DisplayCertifcate Object
+    print_cert_object = DisplayCertificate.DisplayCertificate()
+   
     if args.displayCertificateJSON:
         # Display the certificate JSON structure
-        o_myCertificate.printCertInfoJSON(jsonCertificateInfo)
+        print_cert_object.printCertInfoJSON(jsonCertificateInfo)
 
     if args.displayCertificate:
         # Display the certificate properties.
-        o_myCertificate.printCertInfo(myCertificate)
+        print_cert_object.printCertInfo(myCertificate['certificateMetaData'])
 
     if args.displayTimeLeft:
         # Display the remaining time left on the certificate being queried.
-        print(o_myCertificate.howMuchTimeLeft(myCertificate))
+        print_cert_object.printHowMuchTimeLeft(myCertificate['certificateMetaData'])
 
     if args.displayScriptDataJSON:
         # Display the certificate and system JSON structure

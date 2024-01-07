@@ -1,6 +1,6 @@
 # Certificate Checker
 
-Version: 0.56
+Version: 0.57
 
 Author: TheScriptGuy
 
@@ -26,15 +26,18 @@ python3 certChecker.py --hostname example.com --displayTimeLeft
 
 ## Help output
 ```bash
-usage: certCheck.py [-h] [--hostname HOSTNAME] [--displayCertificate] [--displayCertificateJSON] [--displayScriptDataJSON] [--displayTimeLeft] [--queryFile QUERYFILE] [--uploadJsonData UPLOADJSONDATA] [--mongoDB]
-                    [--sendEmail] [--retryAmount RETRYAMOUNT] [--timeBetweenRetries TIMEBETWEENRETRIES] [--contextVariables] [--environmentVariables] [--setTag SETTAG] [--delTag] [--getTag] [--renewDeviceId]
-                    [--getDeviceId] [--deleteDeviceId] [--setTenantId SETTENANTID] [--getTenantId] [--delTenantId] [--createBlankConfiguration]
+usage: certCheck.py [-h] [--hostname HOSTNAME] [--save_certificate] [--output_directory OUTPUT_DIRECTORY] [--displayCertificate] [--displayCertificateJSON] [--displayScriptDataJSON] [--displayTimeLeft]
+                    [--queryFile QUERYFILE] [--uploadJsonData UPLOADJSONDATA] [--mongoDB] [--sendEmail] [--retryAmount RETRYAMOUNT] [--timeBetweenRetries TIMEBETWEENRETRIES] [--contextVariables] [--environmentVariables]
+                    [--setTag SETTAG] [--delTag] [--getTag] [--renewDeviceId] [--getDeviceId] [--deleteDeviceId] [--setTenantId SETTENANTID] [--getTenantId] [--delTenantId] [--createBlankConfiguration]
 
-Certificate Checker v0.56
+Certificate Checker v0.57
 
-optional arguments:
+options:
   -h, --help            show this help message and exit
   --hostname HOSTNAME   Hostname to get certificate from
+  --save_certificate    Save the certificate to file.
+  --output_directory OUTPUT_DIRECTORY
+                        Save the file to the certificate directory. Will create directory if it does not exist. Defaults to certificate_directory
   --displayCertificate  Display certificate info
   --displayCertificateJSON
                         Display certificate info in JSON format
@@ -67,6 +70,26 @@ optional arguments:
   --createBlankConfiguration
                         Creates a blank configuration file template - myConfig.json. Overwrites any existing configuration
 ```
+
+## Saving certificate data to disk
+If there is a need to save the files to disk, use the `--save_certificate` and `--output_directory` arguments.
+Some examples
+```bash
+$ python3 certCheck.py --hostname google.com --save_certificate
+2024-01-07 00:09:47 - Certificate for host google.com:443 saved to certificate_directory/bb701e2040fc41cbc99c6a152ab6aa6ea8f8488c13321df70efcf132e0fe8e1d.pem...Done
+```
+Notice that the certificate is saveed into the `certificate_directory` by default.
+To adjust the save location, use the `--output_directory` argument.
+
+In this example below, we'll save the certificates into the `saved_certs/2024` directory (neither of these directories exist).
+```bash
+$ python3 certCheck.py --hostname google.com --save_certificate --output_directory saved_certs/2024
+2024-01-07 00:12:14 - Certificate for host google.com:443 saved to saved_certs/2024/bb701e2040fc41cbc99c6a152ab6aa6ea8f8488c13321df70efcf132e0fe8e1d.pem...Done
+$ ls -l saved_certs/2024
+total 4
+-rw-r--r-- 1 programming programming 3701 Jan  6 16:12 bb701e2040fc41cbc99c6a152ab6aa6ea8f8488c13321df70efcf132e0fe8e1d.pem
+```
+
 
 ## Environment variables
 The script will by default attempt to look at a configuration file for the Tenant ID and Tags. If the environment variables are defined, then it will use that in preference to the configuration file.
