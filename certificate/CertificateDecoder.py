@@ -27,20 +27,6 @@ class CertificateDecoder:
             for rdn in name.rdns # Use .rdns to iterate over RDNs in the Name
         )
 
-#    def _get_extension_value(self, cert: x509.Certificate, ext_type, method: Optional[str] = None) -> Union[Tuple[str, ...], None]:
-#        try:
-#            ext = cert.extensions.get_extension_for_class(ext_type)
-#            if method == 'OCSP':
-#                return tuple(a.access_location.value for a in ext.value if a.access_method == x509.oid.AuthorityInformationAccessOID.OCSP)
-#            elif method == 'caIssuers':
-#                return tuple(a.access_location.value for a in ext.value if a.access_method == x509.oid.AuthorityInformationAccessOID.CA_ISSUERS)
-#            elif isinstance(ext.value, x509.SubjectAlternativeName):
-#                return tuple(("DNS", name.value) for name in ext.value)
-#            elif isinstance(ext.value, x509.CRLDistributionPoints):
-#                return tuple(dp.full_name[0].value for dp in ext.value)
-#        except x509.ExtensionNotFound:
-#            return None
-
     def _get_extension_value(self, cert: x509.Certificate, ext_type, method: Optional[str] = None) -> Union[Tuple[str, ...], None]:
         try:
             ext = cert.extensions.get_extension_for_class(ext_type)

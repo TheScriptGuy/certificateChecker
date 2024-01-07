@@ -1,3 +1,13 @@
+# 2024/01/06
+## Version 0.57
+### Enhancements :rocket:
+* Adding argument `--save_certificate`. This will save the certificate to disk. Files are stored as a SHA256 hash of the hostname:port combination.
+* Adding argument `--output_directory`. This informs the `--save_certificate` option and where it should save the file. If the directory doesn't exist, it'll create it.
+* Aligning the code to use classes and make it easier to improve smaller code. Trying to avoid code-bloat! :whale:
+
+### Fixes :wrench:
+* Squashing some pesky (and legacy) bugs while displaying content and making code to use classes.
+
 # 2023/12/22
 ## Version 0.56
 ### Enhancements :rocket:
