@@ -25,7 +25,7 @@ class FileOperations:
         """
         Ensures that the directory for the file path exists. If not, it creates the necessary directories.
         """
-        
+
         directory = os.path.dirname(self.file_path)
         if not os.path.exists(directory):
             os.makedirs(directory)
@@ -41,7 +41,7 @@ class FileOperations:
             ValueError: If the content is not of type bytes.
             IOError: If there is an issue writing to the file.
         """
-        
+
         if not isinstance(content, bytes):
             raise ValueError("Content must be of type bytes.")
 
