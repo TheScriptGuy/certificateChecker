@@ -4,7 +4,7 @@ from . import CertificateStatistics
 class DisplayCertificate:
     """This class is responsible for displaying the certificate Meta Data."""
     CLASS_VERSION = "0.01"
-    
+
     # Define a certificate_stats object for use when calculating statistics about the certificate.
     certificate_stats = CertificateStatistics.CertificateStatistics()
 
