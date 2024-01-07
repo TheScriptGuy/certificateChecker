@@ -285,7 +285,7 @@ def processQueryFile():
         for _ in range(int(args.retryAmount)):
             # Connect to the hostname from the queryFile argument and get the certificate associated with it.
             myCertificate = o_myCertificate.getCertificate(myHostname)
-            
+
             if myCertificate["certificateMetaData"] is None:
                 # If unable to connect to host for whatever reason, pause for a second then try again.
                 time.sleep(int(args.timeBetweenRetries))
@@ -367,7 +367,7 @@ def processHostname():
 
     # Create a DisplayCertifcate Object
     print_cert_object = DisplayCertificate.DisplayCertificate()
-   
+
     if args.displayCertificateJSON:
         # Display the certificate JSON structure
         print_cert_object.printCertInfoJSON(jsonCertificateInfo)

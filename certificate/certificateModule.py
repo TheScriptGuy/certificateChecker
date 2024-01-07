@@ -68,7 +68,7 @@ class certificateModule:
         else:
             # Create the default context.
             __ctx = ssl.create_default_context()
-        
+
         """
         Check to see if save_certificate is true.
         If it is, save the certificate to the file.
@@ -90,7 +90,7 @@ class certificateModule:
                     if self.contextVariables.get("security_level") == 1:
                         # Lower the default security level
                         __ctx.set_ciphers('DEFAULT@SECLEVEL=1')
-            
+
                     # Check to see if local_untrusted_certificates should be allowed
                     if self.contextVariables.get("local_untrusted_allow") == 1:
                         __ctx.check_hostname = False
@@ -137,10 +137,10 @@ class certificateModule:
                             file_writer = FileOperations.FileOperations(output_file)
                             file_writer.write_binary(__binary_certificate)
                             print("...Done")
-  
+
                     _certdecoder = CertificateDecoder.CertificateDecoder()
                     __certificate = _certdecoder.decode(__binary_certificate)
- 
+
                     __cipher = s.cipher()
                     __hostnameData["certificateMetaData"] = __certificate
                     __hostnameData["connectionCipher"] = __cipher
@@ -399,7 +399,7 @@ class certificateModule:
         self.initialized = True
         self.moduleVersion = "0.26"
         self.certificate = {}
-        
+
         self.save_certificate = kwargs['save_certificate']
         self.output_directory = kwargs['output_directory']
 
