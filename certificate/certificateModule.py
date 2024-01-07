@@ -136,10 +136,8 @@ class certificateModule:
                             file_writer = FileOperations.FileOperations(output_file)
                             file_writer.write_binary(__binary_certificate)
                             print("...Done")
-
-                    if not self.save_certificate:
-                        _certdecoder = CertificateDecoder.CertificateDecoder()
-                        __certificate = _certdecoder.decode(__binary_certificate)
+                            _certdecoder = CertificateDecoder.CertificateDecoder()
+                            __certificate = _certdecoder.decode(__binary_certificate)
 
                     __cipher = s.cipher()
                     __hostnameData["certificateMetaData"] = __certificate
