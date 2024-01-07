@@ -7,6 +7,8 @@ class CertificateDecoder:
     CLASS_VERSION = "0.01"
 
     def decode(self, der_cert_bytes: bytes) -> dict:
+        """This returns the same format as the output of getpeercert()"""
+
         cert = x509.load_der_x509_certificate(der_cert_bytes, default_backend())
         return {
             "subject": self._parse_name(cert.subject),
@@ -22,12 +24,16 @@ class CertificateDecoder:
         }
 
     def _parse_name(self, name: x509.Name) -> Tuple[Tuple[Tuple[str, str], ...], ...]:
+        """This will iterate over the values."""
+
         return tuple(
             tuple((attr.oid._name, attr.value) for attr in rdn)
             for rdn in name.rdns  # Use .rdns to iterate over RDNs in the Name
         )
 
     def _get_extension_value(self, cert: x509.Certificate, ext_type, method: Optional[str] = None) -> Union[Tuple[str, ...], None]:
+        """This will iterate through the OCSP, caIssuers, subjectAlternativeNames and CRLDistributionsPoints."""
+
         try:
             ext = cert.extensions.get_extension_for_class(ext_type)
             if method == 'OCSP':
