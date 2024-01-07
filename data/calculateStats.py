@@ -99,7 +99,7 @@ class calculateStats:
                 # Calculate highest certificate template time.
                 if highestCertificateTemplateTime < item.get("certificateTemplateTime"):
                     highestCertificateTemplateTime = item.get("certificateTemplateTime")
-                
+
                 caIssuerCommonName = item.get("certificateInfo").get("certificateIssuer").get("commonName")
 
                 # Calculate common Certificate Authority Issuers
