@@ -17,8 +17,6 @@ from . import FileOperations
 from . import CertificateStatistics
 from . import CertificateTimeFormat
 
-from dateutil.relativedelta import relativedelta
-
 
 class certificateModule:
     """certificateModule class"""

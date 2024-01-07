@@ -222,8 +222,6 @@ def checkArguments(__myCertificate, __jsonCertificateInfo):
         if args.displayTimeLeft:
             # Display the remaining time left on the certificate being queried.
             print_cert_object = DisplayCertificate.DisplayCertificate()
-
-            #print_cert_object.printSubject(__myCertificate["certificateMetaData"])
             print(f"{print_cert_object.howMuchTimeLeft(__myCertificate)}")
 
 
@@ -264,13 +262,6 @@ def processQueryFile():
     scriptStartTime = datetime.datetime.utcnow()
 
     for myHostname in myCertData.loadQueriesFile(args.queryFile):
-        ## Set contectVariables to zero
-        #contextVariables = 0
-
-        ## Check to see if contextVariables argument was passed.
-        #if args.contextVariables:
-        #    contextVariables = 1
-
         # Define initial certificate object
         o_myCertificate = certificateModule.certificateModule(
                 contextVariables=args.contextVariables,
