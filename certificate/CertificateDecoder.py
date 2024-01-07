@@ -2,9 +2,9 @@ from cryptography import x509
 from cryptography.hazmat.backends import default_backend
 from typing import Tuple, Optional, Union
 
+
 class CertificateDecoder:
-    def __init__(self):
-        self.CLASS_VERSION = "0.01"
+    CLASS_VERSION = "0.01"
 
     def decode(self, der_cert_bytes: bytes) -> dict:
         cert = x509.load_der_x509_certificate(der_cert_bytes, default_backend())
@@ -24,7 +24,7 @@ class CertificateDecoder:
     def _parse_name(self, name: x509.Name) -> Tuple[Tuple[Tuple[str, str], ...], ...]:
         return tuple(
             tuple((attr.oid._name, attr.value) for attr in rdn)
-            for rdn in name.rdns # Use .rdns to iterate over RDNs in the Name
+            for rdn in name.rdns  # Use .rdns to iterate over RDNs in the Name
         )
 
     def _get_extension_value(self, cert: x509.Certificate, ext_type, method: Optional[str] = None) -> Union[Tuple[str, ...], None]:

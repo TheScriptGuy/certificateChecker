@@ -3,6 +3,7 @@ from dateutil.relativedelta import relativedelta
 
 from . import CertificateTimeFormat
 
+
 class CertificateStatistics:
     """This class is responsible for helping with calculations of meta data."""
     CLASS_VERSION = "0.01"

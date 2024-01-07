@@ -96,7 +96,7 @@ class certificateModule:
 
                     # Check to see if unsafe_legacy is defined
                     if self.contextVariables.get("unsafe_legacy") == 1:
-                        __ctx.options |= 0x4 # OP_LEGACY_SERVER_CONNECT
+                        __ctx.options |= 0x4  # OP_LEGACY_SERVER_CONNECT
 
                 else:
                     __ctx.check_hostname = False

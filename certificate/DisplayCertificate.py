@@ -1,6 +1,7 @@
 import json
 from . import CertificateStatistics
 
+
 class DisplayCertificate:
     """This class is responsible for displaying the certificate Meta Data."""
     CLASS_VERSION = "0.01"
