@@ -20,6 +20,7 @@ from . import CertificateTimeFormat
 
 class certificateModule:
     """certificateModule class"""
+
     # Define a certificate_time_format object to be used in certificate calculations.
     certificate_time_format = CertificateTimeFormat.CertificateTimeFormat().cert_time_format
 

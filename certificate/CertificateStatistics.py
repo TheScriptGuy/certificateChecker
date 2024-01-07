@@ -6,6 +6,7 @@ from . import CertificateTimeFormat
 
 class CertificateStatistics:
     """This class is responsible for helping with calculations of meta data."""
+ 
     CLASS_VERSION = "0.01"
 
     certificate_time_format = CertificateTimeFormat.CertificateTimeFormat().cert_time_format
