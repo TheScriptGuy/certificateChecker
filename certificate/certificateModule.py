@@ -1,6 +1,6 @@
 # Certificate Module
-# Version:                 0.26
-# Last updated:            2024-01-06
+# Version:                 0.27
+# Last updated:            2024-05-18
 # Author:                  TheScriptGuy
 
 import ssl
@@ -136,8 +136,8 @@ class certificateModule:
                             file_writer = FileOperations.FileOperations(output_file)
                             file_writer.write_binary(__binary_certificate)
                             print("...Done")
-                            _certdecoder = CertificateDecoder.CertificateDecoder()
-                            __certificate = _certdecoder.decode(__binary_certificate)
+                        _certdecoder = CertificateDecoder.CertificateDecoder()
+                        __certificate = _certdecoder.decode(__binary_certificate)
 
                     __cipher = s.cipher()
                     __hostnameData["certificateMetaData"] = __certificate
@@ -395,7 +395,7 @@ class certificateModule:
     def __init__(self, **kwargs):
         """Initialize the class."""
         self.initialized = True
-        self.moduleVersion = "0.26"
+        self.moduleVersion = "0.27"
         self.certificate = {}
 
         self.save_certificate = kwargs['save_certificate']

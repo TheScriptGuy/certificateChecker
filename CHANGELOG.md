@@ -1,3 +1,8 @@
+# 2024/05/18
+## Version 0.58
+### Fixes :wrench:
+* Fixed a minor indentation bug in certificateModule.py. The decoder would (incorrectly) only be executed if the save_certificate option was enabled.
+
 # 2024/01/06
 ## Version 0.57
 ### Enhancements :rocket:
