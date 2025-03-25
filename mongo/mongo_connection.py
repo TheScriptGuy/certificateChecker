@@ -1,14 +1,18 @@
 # Class:            mongo_connection
-# Last updated:     2023/12/20
+# Last updated:     2025/03/25
 # Author:           TheScriptGuy (https://github.com/TheScriptGuy)
-# Version:          0.03
+# Version:          0.04
 # Description:      Create a mongo Connection from mongo.cfg
 
 import json
 import sys
 import os
 import pymongo
+
 from pymongo import MongoClient
+from pymongo.collection import Collection
+from pymongo.database import Database
+
 from datetime import datetime
 from bson.objectid import ObjectId
 from . import mongo_data
@@ -159,7 +163,7 @@ class mongo_connection:
 
     def createDB(self,
                  __destination: dict
-                 ) -> pymongo.database.Database:
+                 ) -> Database:
         """create a destination database to upload the data to."""
         # Defaults to certificateDataDB if not defined.
         if "databaseName" in __destination:
@@ -181,9 +185,9 @@ class mongo_connection:
         return __mongoClient[__mongoDatabase]
 
     @staticmethod
-    def createCollection(__mongoConnection: pymongo.database.Database,
+    def createCollection(__mongoConnection: Database,
                          __mongoConfiguration: dict
-                         ) -> pymongo.collection.Collection:
+                         ) -> Collection:
         """create a collection within the DB."""
         # First check to see see if collectionName is defined in mongo.cfg
         if "collectionName" in __mongoConfiguration:
@@ -234,4 +238,4 @@ class mongo_connection:
     def __init__(self):
         """Initialize the mongo_collection class."""
         self.initialized = True
-        self.version = "0.03"
+        self.version = "0.04"
