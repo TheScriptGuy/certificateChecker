@@ -312,7 +312,7 @@ def processQueryFile():
         # Define the sendDataMongoDB object
         sdMDB = mongo_connection.mongo_connection()
         uploadResult = sdMDB.uploadDataToMongoDB(myJsonScriptData)
-        uploadTime = str(datetime.datetime.utcnow())
+        uploadTime = str(datetime.datetime.now(datetime.UTC))
         print(f'{uploadTime} - {uploadResult}')
 
     if args.sendEmail:
