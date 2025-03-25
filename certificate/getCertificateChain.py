@@ -1,7 +1,7 @@
 # Description:     Get the certificate chain from a website.
 # Author:          TheScriptGuy
-# Last modified:   2023-11-05
-# Version:         0.06
+# Last modified:   2025-03-25
+# Version:         0.07
 
 import ssl
 import socket
@@ -49,7 +49,7 @@ class getCertificateChain:
                     if not currentLine:
                         break
 
-                    if re.search("^\={5,}", currentLine):
+                    if re.search(r"^={5,}", currentLine):
                         # This is where the Root CA certificate file begins.
                         # Iterate through all the lines between
                         # -----BEGIN CERTIFICATE-----
@@ -300,7 +300,7 @@ class getCertificateChain:
 
     def __init__(self):
         """Init the getCertChain class."""
-        self.classVersion = "0.06"
+        self.classVersion = "0.07"
         self.maxDepth = 4
         self.certChain = []
         self.certificateHash = ""
