@@ -259,7 +259,7 @@ def processQueryFile():
 
     jsonScriptData = []
 
-    scriptStartTime = datetime.datetime.utcnow()
+    scriptStartTime = datetime.datetime.now(datetime.UTC)
 
     for myHostname in myCertData.loadQueriesFile(args.queryFile):
         # Define initial certificate object
@@ -270,7 +270,7 @@ def processQueryFile():
                 )
 
         # For SSL performance measurement - START
-        o_startTime = datetime.datetime.utcnow()
+        o_startTime = datetime.datetime.now(datetime.UTC)
 
         # Iterate through number of retryAmount
         for _ in range(int(args.retryAmount)):
@@ -282,7 +282,7 @@ def processQueryFile():
                 time.sleep(int(args.timeBetweenRetries))
 
         # For SSL performance measurement - END
-        o_endTime = datetime.datetime.utcnow()
+        o_endTime = datetime.datetime.now(datetime.UTC)
 
         # Convert the certificate object into JSON format.
         jsonCertificateInfo = o_myCertificate.convertCertificateObject2Json(myHostname["hostname"], myHostname["port"], o_startTime, o_endTime, myCertificate)
@@ -294,7 +294,7 @@ def processQueryFile():
         checkArguments(myCertificate, jsonCertificateInfo)
 
     # Get the time the script stopped gathering data.
-    scriptEndTime = datetime.datetime.utcnow()
+    scriptEndTime = datetime.datetime.now(datetime.UTC)
 
     # Combine all the data into a dict.
     myJsonScriptData = gatherData(jsonScriptData, o_myInfo, scriptStartTime, scriptEndTime)

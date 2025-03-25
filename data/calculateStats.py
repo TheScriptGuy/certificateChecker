@@ -1,7 +1,7 @@
 # Class:          calculateStats
 # Author:         Nolan Rumble
-# Date:           2023/12/17
-# Version:        0.07
+# Date:           2025/03/25
+# Version:        0.08
 
 import datetime
 
@@ -15,10 +15,10 @@ class calculateStats:
     def convertTimeIntoHumanReadable(__seconds: int) -> str:
         """Return the remaining time left on the certificate."""
         # Get date/time since epoch based off seconds
-        myDateTime = datetime.datetime.fromtimestamp(__seconds)
+        myDateTime = datetime.datetime.fromtimestamp(__seconds, tz=datetime.UTC)
 
         # Create epoch time datetime object.
-        beginDate = datetime.date(1970, 1, 1)
+        beginDate = datetime.datetime(1970, 1, 1, tzinfo=datetime.UTC)
 
         # Calculate the difference between the 2 dates myDateTime and beginDate
         myDateTimeObject = relativedelta(myDateTime, beginDate)
@@ -201,5 +201,5 @@ class calculateStats:
     def __init__(self):
         """Initialize the calculateStats class."""
         self.initialized = True
-        self.version = "0.06"
+        self.version = "0.07"
         self.dataFormatVersion = 20
