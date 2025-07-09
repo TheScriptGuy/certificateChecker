@@ -1,6 +1,6 @@
 # Program:        Certificate Checker
 # Author:         Nolan Rumble
-# Date:           2025/07-09
+# Date:           2025/07/09
 # Version:        0.60
 
 import argparse
