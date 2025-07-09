@@ -1,4 +1,8 @@
 # 2025/07/09
+## Version 0.62
+### Fixes: :wrench:
+* Updating certificate chain walker logic to handle p7c files.
+
 ## Version 0.61
 ### Fixes :wrench:
 * Updating `local_untrusted_allow` option. Changing context from `CERT_OPTIONAL` to `CERT_NONE` to align with original intent of option.
