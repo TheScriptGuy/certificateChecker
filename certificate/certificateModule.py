@@ -80,7 +80,7 @@ class certificateModule:
                     __ctx.options |= 0x4  # OP_LEGACY_SERVER_CONNECT
                 if "local_untrusted_allow" in __hostinfo['options']:
                     __ctx.check_hostname = False
-                    __ctx.verify_mode = ssl.CERT_OPTIONAL
+                    __ctx.verify_mode = ssl.CERT_NONE
 
             # If there are any global options that need to be set.
             if self.contextVariables is not None:
@@ -93,7 +93,7 @@ class certificateModule:
                     # Check to see if local_untrusted_certificates should be allowed
                     if self.contextVariables.get("local_untrusted_allow") == 1:
                         __ctx.check_hostname = False
-                        __ctx.verify_mode = ssl.CERT_OPTIONAL
+                        __ctx.verify_mode = ssl.CERT_NONE
 
                     # Check to see if unsafe_legacy is defined
                     if self.contextVariables.get("unsafe_legacy") == 1:

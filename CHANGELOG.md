@@ -1,4 +1,8 @@
 # 2025/07/09
+## Version 0.61
+### Fixes :wrench:
+* Updating `local_untrusted_allow` option. Changing context from `CERT_OPTIONAL` to `CERT_NONE` to align with original intent of option.
+
 ## Version 0.60
 ### Fixes :wrench:
 * Updating code to reference newer datetime timezone aware objects.
