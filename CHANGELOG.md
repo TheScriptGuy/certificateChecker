@@ -1,3 +1,8 @@
+# 2025/07/09
+## Version 0.60
+### Fixes :wrench:
+* Updating code to reference newer datetime timezone aware objects.
+
 # 2024/05/18
 ## Version 0.58
 ### Fixes :wrench:

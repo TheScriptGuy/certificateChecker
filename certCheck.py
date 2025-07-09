@@ -1,7 +1,7 @@
 # Program:        Certificate Checker
 # Author:         Nolan Rumble
-# Date:           2025/03/25
-# Version:        0.59
+# Date:           2025/07-09
+# Version:        0.60
 
 import argparse
 import datetime
@@ -19,7 +19,7 @@ from data import emailTemplateBuilder
 from data import sendDataEmail
 from mongo import mongo_connection
 
-scriptVersion = "0.59"
+scriptVersion = "0.60"
 
 # Global Variables
 args = None
@@ -333,7 +333,7 @@ def processHostname():
     o_myCertData = certData.certData()
 
     # For SSL performance measurement - START
-    o_startTime = datetime.datetime.utcnow()
+    o_startTime = datetime.datetime.now(datetime.UTC)
 
     # Connect to the hostname from the --hostname argument and get the certificate associated with it.
     hostnameQuery = o_myCertData.parse_line(args.hostname)
@@ -348,7 +348,7 @@ def processHostname():
             time.sleep(int(args.timeBetweenRetries))
 
     # For SSL performance measurement - END
-    o_endTime = datetime.datetime.utcnow()
+    o_endTime = datetime.datetime.now(datetime.UTC)
 
     # Convert the certificate object into JSON format.
     jsonCertificateInfo = o_myCertificate.convertCertificateObject2Json(hostnameQuery["hostname"], hostnameQuery["port"], o_startTime, o_endTime, myCertificate)
