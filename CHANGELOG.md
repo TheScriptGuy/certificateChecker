@@ -1,3 +1,8 @@
+# 2026/05/09
+## Verison 0.63
+### Fixes :wrench:
+* Fixing logic bug when attempting to download certificate files in certficate/certificateModule.py
+
 # 2025/07/09
 ## Version 0.62
 ### Fixes: :wrench:

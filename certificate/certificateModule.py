@@ -1,6 +1,6 @@
 # Certificate Module
-# Version:                 0.27
-# Last updated:            2024-05-18
+# Version:                 0.28
+# Last updated:            2026-05-09
 # Author:                  TheScriptGuy
 
 import ssl
@@ -23,6 +23,21 @@ class certificateModule:
 
     # Define a certificate_time_format object to be used in certificate calculations.
     certificate_time_format = CertificateTimeFormat.CertificateTimeFormat().cert_time_format
+
+    @staticmethod
+    def _certificate_metadata_complete(__certificate: dict) -> bool:
+        """Return true when peer certificate metadata has fields needed downstream."""
+        required_certificate_keys = (
+            "issuer",
+            "version",
+            "serialNumber",
+            "notBefore",
+            "notAfter",
+        )
+
+        return bool(__certificate) and all(
+            key in __certificate for key in required_certificate_keys
+        )
 
     @staticmethod
     def getContextVariables() -> dict:
@@ -125,22 +140,30 @@ class certificateModule:
                     server_hostname=__hostinfo['hostname']
                 ) as s:
                     s.connect((__hostinfo['hostname'], __hostinfo['port']))
+                    __certificate = None
+                    __binary_certificate = None
+
                     if self.contextVariables != {} and self.contextVariables.get("insecure") != 1:
                         __certificate = s.getpeercert()
-                    else:
+
+                    if not self._certificate_metadata_complete(__certificate):
                         __binary_certificate = s.getpeercert(binary_form=True)
-                        if self.save_certificate:
-                            output_file = f"{self.output_directory}/{certificateHashFilename}"
-                            file_write_time = datetime.datetime.utcnow().replace(microsecond=0)
-                            print(f"{file_write_time} - Certificate for host {__hostinfo['hostname']}:{__hostinfo['port']} saved to {output_file}", end='')
-                            file_writer = FileOperations.FileOperations(output_file)
-                            file_writer.write_binary(__binary_certificate)
-                            print("...Done")
-                        _certdecoder = CertificateDecoder.CertificateDecoder()
-                        __certificate = _certdecoder.decode(__binary_certificate)
+                        if __binary_certificate is not None:
+                            _certdecoder = CertificateDecoder.CertificateDecoder()
+                            __certificate = _certdecoder.decode(__binary_certificate)
+
+                    if self.save_certificate:
+                        if __binary_certificate is None:
+                            __binary_certificate = s.getpeercert(binary_form=True)
+                        output_file = f"{self.output_directory}/{certificateHashFilename}"
+                        file_write_time = datetime.datetime.utcnow().replace(microsecond=0)
+                        print(f"{file_write_time} - Certificate for host {__hostinfo['hostname']}:{__hostinfo['port']} saved to {output_file}", end='')
+                        file_writer = FileOperations.FileOperations(output_file)
+                        file_writer.write_binary(__binary_certificate)
+                        print("...Done")
 
                     __cipher = s.cipher()
-                    __hostnameData["certificateMetaData"] = __certificate
+                    __hostnameData["certificateMetaData"] = __certificate or None
                     __hostnameData["connectionCipher"] = __cipher
 
         except ssl.SSLCertVerificationError as e:
@@ -310,55 +333,74 @@ class certificateModule:
 
         myJsonCertificateInfo["certificateInfo"] = {}
 
-        if __certificateObject["certificateMetaData"] is not None:
-            certKeys = __certificateObject.keys()
+        certificateMetaData = __certificateObject.get("certificateMetaData")
+
+        if certificateMetaData:
+            certKeys = certificateMetaData.keys()
 
             # Certificate might not have subject defined.
             if 'subject' in certKeys:
                 myJsonCertificateInfo["certificateInfo"]["subject"] = dict(
-                    x[0] for x in __certificateObject["certificateMetaData"]["subject"]
+                    x[0] for x in certificateMetaData["subject"]
                 )
-            myJsonCertificateInfo["certificateInfo"]["certificateIssuer"] = dict(x[0] for x in __certificateObject["certificateMetaData"]["issuer"])
+            else:
+                myJsonCertificateInfo["certificateInfo"]["subject"] = {"None": "None"}
 
-            myJsonCertificateInfo["certificateInfo"]["version"] = __certificateObject["certificateMetaData"]["version"]
-            myJsonCertificateInfo["certificateInfo"]["serialNumber"] = __certificateObject["certificateMetaData"]["serialNumber"]
-            myJsonCertificateInfo["certificateInfo"]["notBefore"] = __certificateObject["certificateMetaData"]["notBefore"]
-            myJsonCertificateInfo["certificateInfo"]["notAfter"] = __certificateObject["certificateMetaData"]["notAfter"]
+            if "issuer" in certKeys:
+                myJsonCertificateInfo["certificateInfo"]["certificateIssuer"] = dict(
+                    x[0] for x in certificateMetaData["issuer"]
+                )
+            else:
+                myJsonCertificateInfo["certificateInfo"]["certificateIssuer"] = {"None": "None"}
+
+            myJsonCertificateInfo["certificateInfo"]["version"] = certificateMetaData.get("version", 0)
+            myJsonCertificateInfo["certificateInfo"]["serialNumber"] = certificateMetaData.get("serialNumber", "0")
+            myJsonCertificateInfo["certificateInfo"]["notBefore"] = certificateMetaData.get("notBefore", "Jan 1 00:00:00 0000 GMT")
+            myJsonCertificateInfo["certificateInfo"]["notAfter"] = certificateMetaData.get("notAfter", "Jan 1 00:00:00 0000 GMT")
 
             # Certificate might not have OCSP defined
             if "OCSP" in certKeys:
-                myJsonCertificateInfo["certificateInfo"]["OCSP"] = __certificateObject["certificateMetaData"]["OCSP"]
+                myJsonCertificateInfo["certificateInfo"]["OCSP"] = certificateMetaData["OCSP"]
+            else:
+                myJsonCertificateInfo["certificateInfo"]["OCSP"] = "None"
 
             # Certificate might not have CRL defined
             if "crlDistributionPoints" in certKeys:
-                myJsonCertificateInfo["certificateInfo"]["crlDistributionPoints"] = __certificateObject["certificateMetaData"]["crlDistributionPoints"]
+                myJsonCertificateInfo["certificateInfo"]["crlDistributionPoints"] = certificateMetaData["crlDistributionPoints"]
+            else:
+                myJsonCertificateInfo["certificateInfo"]["crlDistributionPoints"] = "None"
 
-            myJsonCertificateInfo["certificateInfo"]["caIssuers"] = __certificateObject["certificateMetaData"]["caIssuers"]
+            myJsonCertificateInfo["certificateInfo"]["caIssuers"] = certificateMetaData.get("caIssuers", "None")
 
             # Initialize subjectAltName
             myJsonCertificateInfo["certificateInfo"]["subjectAltName"] = {}
             # Keep track of how many entries there are
             subjectAltNameCounter = 0
 
-            if __certificateObject["certificateMetaData"]["subjectAltName"]:
-                for field, value in __certificateObject["certificateMetaData"]["subjectAltName"]:
+            if certificateMetaData.get("subjectAltName"):
+                for field, value in certificateMetaData["subjectAltName"]:
                     myJsonCertificateInfo["certificateInfo"]["subjectAltName"].update({field + str(subjectAltNameCounter): value})
                     subjectAltNameCounter += 1
 
-            # Time left on certificate
-            certificate_stats = CertificateStatistics.CertificateStatistics()
-            myJsonCertificateInfo["timeLeft"] = certificate_stats.howMuchTimeLeft(__certificateObject["certificateMetaData"])
-
             # Get the notBefore and notAfter dates.
-            certBeforeDate = __certificateObject["certificateMetaData"]["notBefore"]
-            certAfterDate = __certificateObject["certificateMetaData"]["notAfter"]
+            certBeforeDate = certificateMetaData.get("notBefore")
+            certAfterDate = certificateMetaData.get("notAfter")
 
-            # Percentage Utilization of certificate
-            myJsonCertificateInfo["percentageUtilization"] = self.calculateCertificateUtilization(certBeforeDate, certAfterDate)
+            if certBeforeDate and certAfterDate:
+                # Time left on certificate
+                certificate_stats = CertificateStatistics.CertificateStatistics()
+                myJsonCertificateInfo["timeLeft"] = certificate_stats.howMuchTimeLeft(certificateMetaData)
 
-            # Certificate template time validity
-            # Work out the time that certificates are issued for
-            myJsonCertificateInfo["certificateTemplateTime"] = self.calculateCertificateTemplateTime(certBeforeDate, certAfterDate)
+                # Percentage Utilization of certificate
+                myJsonCertificateInfo["percentageUtilization"] = self.calculateCertificateUtilization(certBeforeDate, certAfterDate)
+
+                # Certificate template time validity
+                # Work out the time that certificates are issued for
+                myJsonCertificateInfo["certificateTemplateTime"] = self.calculateCertificateTemplateTime(certBeforeDate, certAfterDate)
+            else:
+                myJsonCertificateInfo["percentageUtilization"] = 0.00
+                myJsonCertificateInfo["timeLeft"] = "0 seconds"
+                myJsonCertificateInfo["certificateTemplateTime"] = 0
 
             # Reset number of entries
             subjectAltNameCounter = 0
@@ -395,7 +437,7 @@ class certificateModule:
     def __init__(self, **kwargs):
         """Initialize the class."""
         self.initialized = True
-        self.moduleVersion = "0.27"
+        self.moduleVersion = "0.28"
         self.certificate = {}
 
         self.save_certificate = kwargs['save_certificate']
@@ -405,4 +447,3 @@ class certificateModule:
             self.contextVariables = self.getContextVariables()
         else:
             self.contextVariables = {}
-
